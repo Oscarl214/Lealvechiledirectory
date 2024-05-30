@@ -1,36 +1,31 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+# Leals Vechile Directory
 
-## Getting Started
+This is a personal project dedicated to keep track of my families vehicles. Its purpose is to serve as a reminder of the last time they had any maintenance to their vehicles, and to give them a chance to update the site.
 
-First, run the development server:
+- **Home Page:**
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+## Features
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## Technologies
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+- **NextUI:** https://nextui.org/
+- **Vercel:** https://vercel.com/home
+- **DaisyUI:** https://daisyui.com/
+- **Framer-Motion:** https://www.framer.com/motion/
+- **Yes-Icons:** https://yesicon.app/
+- **AWS S3 Bucket:** https://aws.amazon.com/s3/
+- **React-Scroll-Up:** https://www.npmjs.com/package/react-scroll-up
 
-This project uses [`next/font`](https://nextjs.org/docs/basic-features/font-optimization) to automatically optimize and load Inter, a custom Google Font.
+## Desktop View
 
-## Learn More
+# Mobile View
 
-To learn more about Next.js, take a look at the following resources:
+## Live
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+- (Coming Soon)
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
+## License
 
-## Deploy on Vercel
+This project is licensed under the [MIT License](LICENSE).
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
+---
