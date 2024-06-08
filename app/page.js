@@ -3,10 +3,13 @@ import React from 'react';
 import signIn from '../app/firebase/auth/signin';
 import { useRouter } from 'next/navigation';
 import { Image, Button } from '@nextui-org/react';
-
+import Link from 'next/link';
 function SignInPage() {
   const [email, setEmail] = React.useState('');
   const [password, setPassword] = React.useState('');
+
+  const [errorMessage, setErrorMessage] = React.useState('');
+
   const router = useRouter();
 
   const handleForm = async (event) => {
@@ -15,13 +18,26 @@ function SignInPage() {
     const { result, error } = await signIn(email, password);
 
     if (error) {
-      return console.log(error);
+      setErrorMessage('Wrong password, try again');
+      setPassword('');
+      return;
     }
 
     // else successful
     console.log(result);
     return router.push('/admin');
   };
+
+  const handleEmailChange = (e) => {
+    setEmail(e.target.value);
+    setErrorMessage(''); // Clear the error message
+  };
+
+  const handlePasswordChange = (e) => {
+    setPassword(e.target.value);
+    setErrorMessage(''); // Clear the error message
+  };
+
   return (
     <main className="flex min-h-screen flex-col lg:flex-row items-center justify-around lg:m-[5rem]">
       <div>
@@ -47,14 +63,15 @@ function SignInPage() {
               src="https://flowbite.s3.amazonaws.com/blocks/marketing-ui/logo.svg"
               alt="logo"
             /> */}
-            Sign Up
+            Sign In
           </a>
           <div class="w-full bg-white rounded-lg shadow dark:border md:mt-0 sm:max-w-md xl:p-0 dark:bg-gray-800 dark:border-gray-700">
             <div class="p-6 space-y-4 md:space-y-6 sm:p-8">
-              <h1 class="text-xl font-bold leading-tight tracking-tight text-gray-900 md:text-2xl dark:text-white">
-                Create an account
-              </h1>
-              <form class="space-y-4 md:space-y-6" action="#">
+              <form
+                class="space-y-4 md:space-y-6"
+                action="#"
+                onSubmit={handleForm}
+              >
                 <div>
                   <label
                     for="email"
@@ -69,6 +86,7 @@ function SignInPage() {
                     class="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                     placeholder="name@gmail.com"
                     required=""
+                    onChange={handleEmailChange}
                   />
                 </div>
                 <div>
@@ -84,7 +102,9 @@ function SignInPage() {
                     id="password"
                     placeholder="••••••••"
                     class="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                    value={password}
                     required=""
+                    onChange={handlePasswordChange}
                   />
                 </div>
 
@@ -92,16 +112,22 @@ function SignInPage() {
                   color="primary"
                   variant="bordered"
                   className="text-white"
+                  type="submit"
                 >
-                  Bordered
+                  Sign In
                 </Button>
-                <p class="text-sm font-light text-gray-500 dark:text-gray-400">
-                  Already have an account?{' '}
+                {errorMessage && (
+                  <div className="text-red-500 text-sm mt-2">
+                    {errorMessage}
+                  </div>
+                )}
+                <p class="text-sm font-light  text-gray-500 dark:text-gray-400">
+                  Don{''}t have an Account?
                   <a
-                    href="#"
-                    class="font-medium text-primary-600 hover:underline dark:text-primary-500"
+                    href="/signup"
+                    class="font-medium text-primary-600 hover:underline dark:text-primary-500 pl-2"
                   >
-                    Login here
+                    Sign Up Here
                   </a>
                 </p>
               </form>
