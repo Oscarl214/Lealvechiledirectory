@@ -25,13 +25,13 @@ const config: Config = {
       themes: {
         light: {
           layout: {
-            foreground: '#000000',
+            foreground: '#ffffff',
           }, // light theme layout tokens
         },
         dark: {
           layout: {}, // dark theme layout tokens
           colors: {
-            foreground: '#ffffff',
+            foreground: '#000000',
           }, // dark theme colors
         },
       },
