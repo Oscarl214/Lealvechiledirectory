@@ -38,14 +38,16 @@ export default function SignUpPage() {
     setErrorMessage('');
   };
   return (
-    <main className="flex min-h-screen flex-col lg:flex-row items-center justify-around lg:m-[5rem]">
+    <main className="flex wrap-reverse lg:flex-nowrap min-h-screen flex-col lg:flex-row items-center justify-around lg:m-[5rem] m-4">
       <section class="">
         <div class="flex flex-col items-center justify-center  lg:py-0">
           <a
             href="#"
             class="flex items-center mb-6 text-2xl font-semibold text-5xl"
           >
-            Sign Up
+            <h1 className="text-xl text-blue text-center m-5">
+              LEAL CAR DIRECTORY
+            </h1>
           </a>
           <div class="w-full bg-white rounded-lg shadow dark:border md:mt-0 sm:max-w-md xl:p-0 dark:bg-gray-800 dark:border-gray-700">
             <div class="p-6 space-y-4 md:space-y-6 sm:p-8">
@@ -54,6 +56,7 @@ export default function SignUpPage() {
                 action="#"
                 onSubmit={handleForm}
               >
+                <h2>Sign Up</h2>
                 <div>
                   <label
                     for="email"
@@ -94,7 +97,7 @@ export default function SignUpPage() {
                 <Button
                   color="primary"
                   variant="bordered"
-                  className="text-white"
+                  className="text-white hover:bg-blue-400"
                   type="submit"
                 >
                   Sign Up
@@ -104,6 +107,7 @@ export default function SignUpPage() {
                     {errorMessage}
                   </div>
                 )}
+
                 <p class="text-sm font-light  text-gray-500 dark:text-gray-400">
                   Already have an Account?
                   <a
@@ -121,13 +125,12 @@ export default function SignUpPage() {
       <div>
         {' '}
         <Image
-          isZoomed
           isBlurred
           width={550}
           height={500}
           src="https://firebasestorage.googleapis.com/v0/b/lealvehicledirectory.appspot.com/o/SignInTruck.jpg?alt=media&token=f1cb4d7f-c922-458c-9837-2451f523142d"
           alt="Nissan GTR"
-          className="m-5"
+          className="lg:m-5 mt-3"
         />
       </div>
     </main>
