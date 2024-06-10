@@ -6,6 +6,8 @@ import { Button } from '@nextui-org/react';
 import Link from 'next';
 import { useRouter } from 'next/navigation';
 import logOut from '../firebase/auth/logout';
+import NavBar from '../components/navbar';
+
 
 const AdminView = () => {
   const { user } = useAuthContext();
@@ -17,22 +19,12 @@ const AdminView = () => {
     }
   }, [user]);
 
-  const handleLogOut = async (event) => {
-    event.preventDefault();
-
-    const { result, error } = await logOut();
-
-    if (error) {
-      return console.log('Error logging user out', error);
-    }
-    console.log(result);
-    return Router.push('/');
-  };
 
   return (
-    <div>
+    <div className='bg-[#E5E5E5] bg-opacity-25 h-screen w-screen'>
+      <NavBar/>
       <h1>Only logged-in users can view this page</h1>
-      <Button onClick={handleLogOut}>Log Out</Button>
+     
     </div>
   );
 };

@@ -4,6 +4,8 @@ import './globals.css';
 import { AuthContextProvider } from './context/AuthContext';
 import Providers from './providers';
 
+
+
 const Robo = Roboto_Serif({ subsets: ['latin'] });
 
 export const metadata: Metadata = {
@@ -20,7 +22,8 @@ export default function RootLayout({
     <html lang="en" suppressHydrationWarning>
       <body className={Robo.className}>
         <AuthContextProvider>
-          <Providers>{children}</Providers>
+          <Providers>
+            {children}</Providers>
         </AuthContextProvider>
       </body>
     </html>
