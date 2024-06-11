@@ -1,6 +1,6 @@
 'use client'
 import React from 'react'
-import {Navbar, NavbarBrand, NavbarContent, NavbarItem, NavbarMenuToggle, NavbarMenu, NavbarMenuItem, Link, Button} from "@nextui-org/react";
+import {Navbar, NavbarBrand, NavbarContent, NavbarItem, NavbarMenuToggle, NavbarMenu, NavbarMenuItem, Link, Button, Image} from "@nextui-org/react";
 import  {useAuthContext} from '../context/AuthContext'
 
 import logOut from '../firebase/auth/logout';
@@ -35,8 +35,12 @@ const NavBar = () => {
         className="sm:hidden"
       />
       <NavbarBrand>
-   
-        <p className="font-bold text-inherit">ACME</p>
+      <Image
+      width={50}
+      alt="NextUI hero Image"
+      src="./favicon.png"
+    />
+        
       </NavbarBrand>
     </NavbarContent>
 
@@ -62,8 +66,8 @@ const NavBar = () => {
         <Link href="#">Login</Link>
       </NavbarItem> */}
       <NavbarItem>
-          
-        <Button onClick={handleLogOut} color="primary" href="#" variant="flat">
+   
+        <Button onClick={handleLogOut} color="primary" href="#" variant="flat" className='bg-trasnparent text-gray-300'>
           Log Out
         </Button>
       </NavbarItem>
