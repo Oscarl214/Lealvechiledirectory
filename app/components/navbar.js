@@ -38,7 +38,7 @@ const NavBar = () => {
       {' '}
       <Navbar
         onMenuOpenChange={setIsMenuOpen}
-        className="bg-gray-400  font-popping"
+        className="bg-gray-300  font-popping"
       >
         <NavbarContent>
           <NavbarMenuToggle
@@ -77,7 +77,7 @@ const NavBar = () => {
               color="primary"
               href="#"
               variant="flat"
-              className="bg-transparent text-black"
+              className="bg-transparent text-white"
             >
               Log Out
             </Button>
