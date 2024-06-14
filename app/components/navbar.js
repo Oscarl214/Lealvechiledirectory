@@ -12,6 +12,7 @@ import {
   Button,
   Image,
 } from '@nextui-org/react';
+import { motion } from 'framer-motion';
 import { useAuthContext } from '../context/AuthContext';
 
 import logOut from '../firebase/auth/logout';
@@ -31,7 +32,7 @@ const NavBar = () => {
     return Router.push('/');
   };
 
-  const menuItems = ['Profile', 'Dashboard', 'Log Out'];
+  const menuItems = ['Logout', 'Profile', 'Dashboard'];
 
   return (
     <div>
@@ -86,20 +87,26 @@ const NavBar = () => {
         <NavbarMenu className="bg-gray-300 opacity-95 text-black">
           {menuItems.map((item, index) => (
             <NavbarMenuItem key={`${item}-${index}`}>
-              <Link
-                color={
-                  index === 2
-                    ? 'primary'
-                    : index === menuItems.length - 1
-                    ? 'danger'
-                    : 'foreground'
-                }
-                className="w-full text-black"
-                href="#"
-                size="lg"
-              >
-                {item}
-              </Link>
+              {item === 'Logout' ? (
+                <Link onClick={handleLogOut} href="/">
+                  <div className="">{item}</div>
+                </Link>
+              ) : (
+                <Link
+                  color={
+                    index === 2
+                      ? 'primary'
+                      : index === menuItems.length - 1
+                      ? 'danger'
+                      : 'foreground'
+                  }
+                  className="w-full text-black"
+                  href="#"
+                  size="lg"
+                >
+                  {item}
+                </Link>
+              )}
             </NavbarMenuItem>
           ))}
         </NavbarMenu>

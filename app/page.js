@@ -54,11 +54,11 @@ function SignInPage() {
   };
   return (
     <main className="flex wrap-reverse lg:flex-nowrap min-h-screen flex-col lg:flex-row items-center justify-around lg:m-[5rem] m-4">
-      <section class="">
-        <div class="flex flex-col items-center justify-center  lg:py-0">
+      <section className="">
+        <div className="flex flex-col items-center justify-center  lg:py-0">
           <a
             href="#"
-            class="flex items-center mb-6 text-2xl font-semibold text-5xl"
+            className="flex items-center mb-6 text-2xl font-semibold text-5xl"
           >
             {/* <img
               class="w-8 h-8 mr-2"
@@ -67,21 +67,21 @@ function SignInPage() {
             /> */}
             <h1 className="text-xl text-blue text-center m-5">
               {' '}
-              LEAL CAR DIRECTORY
+              LEAL VEHICLE DIRECTORY
             </h1>
           </a>
-          <div class="w-full bg-white rounded-lg shadow dark:border md:mt-0 sm:max-w-md xl:p-0 dark:bg-gray-800 dark:border-gray-700">
-            <div class="p-6 space-y-4 md:space-y-6 sm:p-8">
+          <div className="w-full bg-white rounded-lg shadow dark:border md:mt-0 sm:max-w-md xl:p-0 dark:bg-gray-800 dark:border-gray-700">
+            <div className="p-6 space-y-4 md:space-y-6 sm:p-8">
               <form
-                class="space-y-4 md:space-y-6"
+                className="space-y-4 md:space-y-6"
                 action="#"
                 onSubmit={handleForm}
               >
                 <h2>Sign In</h2>
                 <div>
                   <label
-                    for="email"
-                    class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+                    forhtml="email"
+                    className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
                   >
                     Your email
                   </label>
@@ -89,7 +89,7 @@ function SignInPage() {
                     type="email"
                     name="email"
                     id="email"
-                    class="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                    className="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                     placeholder="name@gmail.com"
                     required
                     onChange={handleEmailChange}
@@ -97,8 +97,8 @@ function SignInPage() {
                 </div>
                 <div>
                   <label
-                    for="password"
-                    class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+                    forhtml="password"
+                    className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
                   >
                     Password
                   </label>
@@ -107,7 +107,7 @@ function SignInPage() {
                     name="password"
                     id="password"
                     placeholder="••••••••"
-                    class="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                    className="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                     value={password}
                     required="required"
                     onChange={handlePasswordChange}
@@ -136,7 +136,7 @@ function SignInPage() {
                     onClick={signInWithGoogle}
                   >
                     <svg
-                      class="mr-2 -ml-1 w-4 h-4"
+                      className="mr-2 -ml-1 w-4 h-4"
                       aria-hidden="true"
                       focusable="false"
                       data-prefix="fab"
@@ -153,11 +153,11 @@ function SignInPage() {
                     Sign in with Google<div></div>
                   </Button>
                 </div>
-                <p class="text-sm font-light  text-gray-500 dark:text-gray-400">
+                <p className="text-sm font-light  text-gray-500 dark:text-gray-400">
                   Don{''}t have an Account?
                   <a
                     href="/signup"
-                    class="font-medium text-primary-600 hover:underline dark:text-primary-500 pl-2"
+                    className="font-medium text-primary-600 hover:underline dark:text-primary-500 pl-2"
                   >
                     Sign Up Here
                   </a>
@@ -170,12 +170,11 @@ function SignInPage() {
       <div>
         {' '}
         <Image
-          isBlurred
           width={550}
           height={500}
           src="https://firebasestorage.googleapis.com/v0/b/lealvehicledirectory.appspot.com/o/SignUpPageGTR.jpg?alt=media&token=0bd51fcd-b6ab-4018-85ca-ce1e660b6dc4"
           alt="Nissan GTR"
-          className="mt-3 lg:m-5"
+          className="mt-3 lg:m-5 invisible lg:visible"
         />
       </div>
     </main>
