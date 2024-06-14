@@ -1,47 +1,85 @@
 export const manufacturers = [
-  'Acura',
-  'Alfa Romeo',
-  'Aston Martin',
-  'Audi',
-  'Bentley',
-  'BMW',
-  'Buick',
-  'Cadillac',
-  'Chevrolet',
-  'Chrysler',
-  'Citroen',
-  'Dodge',
-  'Ferrari',
-  'Fiat',
-  'Ford',
-  'GMC',
-  'Honda',
-  'Hyundai',
-  'Infiniti',
-  'Jaguar',
-  'Jeep',
-  'Kia',
-  'Lamborghini',
-  'Land Rover',
-  'Lexus',
-  'Lincoln',
-  'Maserati',
-  'Mazda',
-  'McLaren',
-  'Mercedes-Benz',
-  'MINI',
-  'Mitsubishi',
-  'Nissan',
-  'Porsche',
-  'Ram',
-  'Rolls-Royce',
-  'Subaru',
-  'Tesla',
-  'Toyota',
-  'Volkswagen',
-  'Volvo',
+  {
+    label: 'Toyota',
+    value: 'toyota',
+    description: 'A Japanese multinational automotive manufacturer',
+  },
+  {
+    label: 'Ford',
+    value: 'ford',
+    description: 'An American multinational automaker',
+  },
+  {
+    label: 'Honda',
+    value: 'honda',
+    description: 'A Japanese public multinational conglomerate',
+  },
+  {
+    label: 'Chevrolet',
+    value: 'chevrolet',
+    description:
+      'An American automobile division of the American manufacturer General Motors',
+  },
+  {
+    label: 'BMW',
+    value: 'bmw',
+    description:
+      'A German multinational company which produces luxury vehicles and motorcycles',
+  },
+  {
+    label: 'Mercedes-Benz',
+    value: 'mercedes-benz',
+    description:
+      'A German global automobile marque and a division of Daimler AG',
+  },
+  {
+    label: 'Audi',
+    value: 'audi',
+    description:
+      'A German automobile manufacturer that designs, engineers, produces, markets and distributes luxury vehicles',
+  },
+  {
+    label: 'Nissan',
+    value: 'nissan',
+    description: 'A Japanese multinational automobile manufacturer',
+  },
+  {
+    label: 'Volkswagen',
+    value: 'volkswagen',
+    description: 'A German automaker founded in 1937',
+  },
+  {
+    label: 'Hyundai',
+    value: 'hyundai',
+    description: 'A South Korean multinational automotive manufacturer',
+  },
+  {
+    label: 'Kia',
+    value: 'kia',
+    description: 'A South Korean multinational automotive manufacturer',
+  },
+  {
+    label: 'Tesla',
+    value: 'tesla',
+    description: 'An American electric vehicle and clean energy company',
+  },
+  {
+    label: 'Lexus',
+    value: 'lexus',
+    description: 'The luxury vehicle division of the Japanese automaker Toyota',
+  },
+  {
+    label: 'Subaru',
+    value: 'subaru',
+    description:
+      'The automobile manufacturing division of Japanese transportation conglomerate Subaru Corporation',
+  },
+  {
+    label: 'Mazda',
+    value: 'mazda',
+    description: 'A Japanese multinational automaker',
+  },
 ];
-
 export const yearsOfProduction = [
   { title: 'Year', value: '' },
   { title: '2015', value: '2015' },

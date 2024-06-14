@@ -1,36 +1,35 @@
 'use client';
 import React, { useState, Fragment } from 'react';
 import { SearchManufacturerProps } from '../types';
-import {
-  Combobox,
-  Transition,
-  ComboboxButton,
-  ComboboxInput,
-  ComboboxOptions,
-  ComboboxOption,
-} from '@headlessui/react';
+// import {
+//   Combobox,
+//   Transition,
+//   ComboboxButton,
+//   ComboboxInput,
+//   ComboboxOptions,
+//   ComboboxOption,
+// } from '@headlessui/react';
 import Image from 'next/image';
-
+import { Autocomplete, AutocompleteItem } from '@nextui-org/react';
 import { manufacturers } from '../constants';
-const SearchManufacturer = ({
-  manufacturer,
-  setManuFacturer,
-}: SearchManufacturerProps) => {
-  const [query, setQuery] = useState('');
-
-  const filteredManufacturers =
-    query == ''
-      ? manufacturers
-      : manufacturers.filter((item) => {
-          item
-            .toLowerCase()
-            .replace(/\s+/g, '')
-            .includes(query.toLowerCase().replace(/\s+/g, ''));
-        });
-
+const SearchManufacturer = () => {
   return (
     <div className="search-manufacturer">
-      <Combobox value={manufacturer} onChange={setManuFacturer}>
+      <Autocomplete
+        color="primary"
+        size="lg"
+        placeholder="Search an car"
+        variant="bordered"
+        defaultItems={manufacturers}
+        defaultSelectedKey="cat"
+        className="max-w-xs  text-black"
+      >
+        {(item) => (
+          <AutocompleteItem key={item.value}>{item.label}</AutocompleteItem>
+        )}
+      </Autocomplete>
+
+      {/* <Combobox value={manufacturer} onChange={setManuFacturer}>
         <div className="relative w-full">
           <ComboboxButton className="absolute top-[14px]">
             <Image
@@ -42,7 +41,7 @@ const SearchManufacturer = ({
             />
           </ComboboxButton>
 
-          {/* Input field for searching */}
+          
           <ComboboxInput
             className="search-manufacturer__input"
             displayValue={(item: string) => item}
@@ -50,7 +49,7 @@ const SearchManufacturer = ({
             placeholder="Volkswagen..."
           />
 
-          {/* Transition for displaying the options */}
+         
           <Transition
             as={Fragment} // group multiple elements without introducing an additional DOM node i.e., <></>
             leave="transition ease-in duration-100"
@@ -90,7 +89,7 @@ const SearchManufacturer = ({
                           {item}
                         </span>
 
-                        {/* Show an active blue background color if the option is selected */}
+                       
                         {selected ? (
                           <span
                             className={`absolute inset-y-0 left-0 flex items-center pl-3 ${
@@ -106,7 +105,7 @@ const SearchManufacturer = ({
             </ComboboxOptions>
           </Transition>
         </div>
-      </Combobox>
+      </Combobox> */}
     </div>
   );
 };

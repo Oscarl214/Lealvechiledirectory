@@ -83,7 +83,7 @@ const NavBar = () => {
             </Button>
           </NavbarItem>
         </NavbarContent>
-        <NavbarMenu>
+        <NavbarMenu className="bg-gray-300 opacity-95 text-black">
           {menuItems.map((item, index) => (
             <NavbarMenuItem key={`${item}-${index}`}>
               <Link
@@ -94,7 +94,7 @@ const NavBar = () => {
                     ? 'danger'
                     : 'foreground'
                 }
-                className="w-full"
+                className="w-full text-black"
                 href="#"
                 size="lg"
               >
