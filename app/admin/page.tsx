@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import NavBar from '../components/navbar';
-import { SearchBar } from '../components/index';
+import { SearchBar, CarCard } from '../components/index';
 import { fetchCars } from '@/utils';
 import { cookies } from 'next/headers';
 import { redirect } from 'next/navigation';
@@ -20,6 +20,10 @@ const AdminView = async () => {
     return redirect('/');
   }
 
+  const allCars = await fetchCars();
+
+  const isDataEmpty = !Array.isArray(allCars) || allCars.length < 1 || !allCars;
+
   return (
     <div className="bg-gray-300 h-screen w-screen flex flex-col">
       <NavBar />
@@ -27,6 +31,20 @@ const AdminView = async () => {
         <div className="flex justify-center items-center">
           <SearchBar />
         </div>
+        {!isDataEmpty ? (
+          <section>
+            <div className="">
+              {allCars?.map((car) => (
+                <CarCard car={car} />
+              ))}
+            </div>
+          </section>
+        ) : (
+          <div>
+            <h2 className="text-black text-xl font-bold">Oops, no results</h2>
+            <p>{allCars?.message}</p>
+          </div>
+        )}
       </div>
     </div>
   );
