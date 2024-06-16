@@ -1,5 +1,5 @@
 'use client';
-import React, { useState, Fragment } from 'react';
+import React, { useState, Fragment, ChangeEvent } from 'react';
 import { SearchManufacturerProps } from '../types';
 // import {
 //   Combobox,
@@ -12,11 +12,20 @@ import { SearchManufacturerProps } from '../types';
 import Image from 'next/image';
 import { Autocomplete, AutocompleteItem } from '@nextui-org/react';
 import { manufacturers } from '../constants';
-const SearchManufacturer = () => {
+const SearchManufacturer: React.FC<SearchManufacturerProps> = ({
+  manufacturer,
+  setManufacturer,
+}) => {
+  const handleChange = (event: ChangeEvent<HTMLInputElement>) => {
+    setManufacturer(event.target.value);
+  };
+
   return (
     <div className="search-manufacturer">
       <Autocomplete
         color="primary"
+        value={manufacturer}
+        onChange={handleChange}
         size="lg"
         placeholder="Search an car"
         variant="bordered"

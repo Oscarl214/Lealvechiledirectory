@@ -12,25 +12,11 @@ import {
   Button,
   Image,
 } from '@nextui-org/react';
-import { motion } from 'framer-motion';
-import { useAuthContext } from '../context/AuthContext';
 
 import logOut from '../firebase/auth/logout';
 
 const NavBar = () => {
   const [isMenuOpen, setIsMenuOpen] = React.useState(false);
-
-  const handleLogOut = async (event) => {
-    event.preventDefault();
-
-    const { result, error } = await logOut();
-
-    if (error) {
-      return console.log('Error logging user out', error);
-    }
-    console.log(result);
-    return Router.push('/');
-  };
 
   const menuItems = ['Logout', 'Profile', 'Dashboard'];
 
@@ -74,7 +60,7 @@ const NavBar = () => {
       </NavbarItem> */}
           <NavbarItem>
             <Button
-              onClick={handleLogOut}
+              onClick={logOut}
               color="primary"
               href="#"
               variant="flat"
@@ -88,8 +74,10 @@ const NavBar = () => {
           {menuItems.map((item, index) => (
             <NavbarMenuItem key={`${item}-${index}`}>
               {item === 'Logout' ? (
-                <Link onClick={handleLogOut} href="/">
-                  <div className="">{item}</div>
+                <Link href="/">
+                  <div className="" onClick={logOut}>
+                    {item}
+                  </div>
                 </Link>
               ) : (
                 <Link

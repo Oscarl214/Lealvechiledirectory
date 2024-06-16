@@ -3,6 +3,7 @@ import React from 'react';
 import { onAuthStateChanged, getAuth } from 'firebase/auth';
 import firebase_app from '../firebase/config';
 import { Spinner } from '@nextui-org/react';
+import Cookies from 'js-cookie';
 
 const auth = getAuth(firebase_app);
 
@@ -15,10 +16,13 @@ export const AuthContextProvider = ({ children }) => {
   const [loading, setLoading] = React.useState(true);
 
   React.useEffect(() => {
-    const unsubscribe = onAuthStateChanged(auth, (user) => {
+    const unsubscribe = onAuthStateChanged(auth, async (user) => {
       if (user) {
+        const token = await user.getIdToken();
+        Cookies.set('token', token, { expires: 1 });
         setUser(user);
       } else {
+        Cookies.remove('token');
         setUser(null);
       }
       setLoading(false);
