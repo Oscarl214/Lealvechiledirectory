@@ -7,6 +7,7 @@ export async function fetchCars() {
     'https://cars-by-api-ninjas.p.rapidapi.com/v1/cars?model=corolla',
     {
       headers: headers,
+      cache: 'no-cache',
     }
   );
 

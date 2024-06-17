@@ -23,10 +23,7 @@ const NavBar = () => {
   return (
     <div>
       {' '}
-      <Navbar
-        onMenuOpenChange={setIsMenuOpen}
-        className="bg-gray-300  font-popping"
-      >
+      <Navbar onMenuOpenChange={setIsMenuOpen} className=" font-popping">
         <NavbarContent>
           <NavbarMenuToggle
             aria-label={isMenuOpen ? 'Close menu' : 'Open menu'}

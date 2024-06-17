@@ -25,7 +25,7 @@ const AdminView = async () => {
   const isDataEmpty = !Array.isArray(allCars) || allCars.length < 1 || !allCars;
 
   return (
-    <div className="bg-gray-300 h-vh100 w-screen ">
+    <div className=" h-vh100 w-screen ">
       <NavBar />
       <div className="flex-1 flex flex-col items-center justify-center w-full">
         <div className="flex justify-center items-center">

@@ -6,11 +6,13 @@ import Image from 'next/image';
 interface CarCardProps {
   car: CarProps;
 }
+
+import { Button } from '@nextui-org/react';
 const CarCard = ({ car }: CarCardProps) => {
   const { city_mpg, year, make, model, transmission, drive } = car;
   return (
-    <div className="flex flex-col p-6 justify-center items-start text-black-100 bg-primary-blue-100 hover:bg-white hover:shadow-md rounded-3xl w-[500px]">
-      <div className="w-full flex flex-col justify-between items-start gap-2">
+    <div className="flex flex-col p-6 justify-center items-start text-black-100 bg-gray-200 hover:bg-white hover:shadow-md rounded-3xl w-[500px] m-5">
+      <div className="w-full flex flex-col justify-between items-start gap-3">
         <h2 className="text-[22px] leading-[26px] font-bold capitalize text-black">
           {make} {model}
         </h2>
@@ -59,6 +61,11 @@ const CarCard = ({ car }: CarCardProps) => {
               />
               <p className="text-[14px] text-gray-400">{city_mpg} MPG</p>
             </div>
+          </div>
+          <div className=" flex justify-center ml-4 pl-4">
+            <Button variant="ghost" color="primary" className="text-black">
+              Add to Profile
+            </Button>
           </div>
         </div>
       </div>
