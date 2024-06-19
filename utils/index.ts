@@ -1,4 +1,4 @@
-import { CarProps } from '@/app/types';
+// import { CarProps } from '@/app/types';
 
 export async function fetchCars() {
   const headers = {
@@ -15,23 +15,43 @@ export async function fetchCars() {
 
   const result = await response.json();
 
+  console.log(result)
   return result;
 }
 
-export const generateCarImageUrl = (car: CarProps, angle?: string) => {
-  const url = new URL(
-    'https://api.fuelapi.com/v1/xml/vehicles/?api_key=daefd14b-9f2b-4968-9e4d-9d4bb4af01d1'
-  );
+// async function fetchVehicles) {
+//   const response = await fetch(`http://localhost:3000/api/products/${postId}`, {
+//     method: 'GET',
+//   });
 
-  const { make, model, year } = car;
+//   return response.json();
+// }
 
-  // url.searchParams.append('api_key', process.env.FUEL_DEMO_API_KEY || '');
 
-  url.searchParams.append('make', `${make}`);
-  url.searchParams.append('modelFamily', model.split(' ')[0]);
-  url.searchParams.append('year', `${year}`);
+async function fetchVehicles(){
 
-  console.log(`url, ${url}`);
+ const response = await fetch(`http://localhost:3000/api`, {
+    method: 'GET',
+  });
 
-  return `${url}`;
-};
+  return response.json();
+}
+
+
+// export const generateCarImageUrl = (car: CarProps, angle?: string) => {
+//   const url = new URL(
+//     'https://api.fuelapi.com/v1/xml/vehicles/?api_key=daefd14b-9f2b-4968-9e4d-9d4bb4af01d1'
+//   );
+
+//   const { make, model, year } = car;
+
+//   // url.searchParams.append('api_key', process.env.FUEL_DEMO_API_KEY || '');
+
+//   url.searchParams.append('make', `${make}`);
+//   url.searchParams.append('modelFamily', model.split(' ')[0]);
+//   url.searchParams.append('year', `${year}`);
+
+//   console.log(`url, ${url}`);
+
+//   return `${url}`;
+// };

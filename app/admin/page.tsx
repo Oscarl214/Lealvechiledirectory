@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import NavBar from '../components/navbar';
-import { SearchBar, CarCard } from '../components/index';
+import { CarCard } from '../components/index';
 import { fetchCars } from '@/utils';
 import { cookies } from 'next/headers';
 import { redirect } from 'next/navigation';
@@ -28,9 +28,6 @@ const AdminView = async () => {
     <div className=" h-vh100 w-screen ">
       <NavBar />
       <div className="flex-1 flex flex-col items-center justify-center w-full">
-        <div className="flex justify-center items-center">
-          <SearchBar />
-        </div>
         {!isDataEmpty ? (
           <section>
             <div className="">

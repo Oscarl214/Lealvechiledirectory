@@ -1,30 +1,41 @@
-'use client';
+
 import React from 'react';
-import { useState } from 'react';
-import { CarProps } from '../types';
 import Image from 'next/image';
-import { generateCarImageUrl } from '@/utils';
-interface CarCardProps {
-  car: CarProps;
-}
+
 
 import { Button } from '@nextui-org/react';
-const CarCard = ({ car }: CarCardProps) => {
-  const { city_mpg, year, make, model, transmission, drive } = car;
+const CarCard = async () => {
+
+const getVechicles= async ()=>{
+  
+  
+  const res = await fetch ('http://localhost:3000/api')
+  return res.json()
+
+}
+
+const data= await getVechicles()
+
+console.log(data)
+
   return (
+  
     <div className="flex flex-col p-6 justify-center items-start text-black-100 bg-gray-200 hover:bg-white hover:shadow-md rounded-3xl w-[500px] m-5">
-      <div className="w-full flex flex-col justify-between items-start gap-3">
+    {data.map((vechicle)=>(   
+
+      
+      <div className="w-full flex flex-col justify-between items-start gap-3" key={vechicle.id}>
         <h2 className="text-[22px] leading-[26px] font-bold capitalize text-black">
-          {make} {model}
+         {vechicle.model}
         </h2>
         <p>
           <span className="self-start text-[24px] font-semibold text-black">
-            {year}
+          
           </span>
         </p>
         <div className="relative w-full h-40 my-3 object-contain">
           <Image
-            src={generateCarImageUrl(car)}
+            src={'/carex.png'}
             alt="car model"
             fill
             className="object-contain"
@@ -39,9 +50,9 @@ const CarCard = ({ car }: CarCardProps) => {
                 width={20}
                 height={20}
               />
-              <p className="text-[14px] text-gray-400">
+              {/* <p className="text-[14px] text-gray-400">
                 {transmission === 'a' ? 'Automatic' : 'Manual'}
-              </p>
+              </p> */}
             </div>
             <div className="flex flex-col justify-center items-center gap-2">
               <Image
@@ -50,7 +61,7 @@ const CarCard = ({ car }: CarCardProps) => {
                 width={20}
                 height={20}
               />
-              <p className="text-[14px] text-gray-400">{drive.toUpperCase()}</p>
+              <p className="text-[14px] text-gray-400"></p>
             </div>
             <div className="flex flex-col justify-center items-center gap-2">
               <Image
@@ -59,17 +70,26 @@ const CarCard = ({ car }: CarCardProps) => {
                 width={20}
                 height={20}
               />
-              <p className="text-[14px] text-gray-400">{city_mpg} MPG</p>
+              <p className="text-[14px] text-gray-400"> MPG</p>
             </div>
+            
           </div>
+          
           <div className=" flex justify-center ml-4 pl-4">
             <Button variant="ghost" color="primary" className="text-black">
               Add to Profile
             </Button>
+        
           </div>
+          
         </div>
+       
+      
       </div>
+    ))}
     </div>
+    
+   
   );
 };
 
