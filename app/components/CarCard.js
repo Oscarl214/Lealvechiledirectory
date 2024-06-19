@@ -9,7 +9,9 @@ const CarCard = async () => {
 const getVechicles= async ()=>{
   
   
-  const res = await fetch ('http://localhost:3000/api')
+  const res = await fetch ('http://localhost:3000/api', {
+    cache: 'no-cache',
+  })
   return res.json()
 
 }
@@ -19,12 +21,14 @@ const data= await getVechicles()
 console.log(data)
 
   return (
+  <div>
+ {data.map((vechicle)=>(   
   
-    <div className="flex flex-col p-6 justify-center items-start text-black-100 bg-gray-200 hover:bg-white hover:shadow-md rounded-3xl w-[500px] m-5">
-    {data.map((vechicle)=>(   
+    <div className="flex flex-col p-6 justify-center items-start text-black-100 bg-gray-200 hover:bg-white hover:shadow-md rounded-3xl w-[500px] m-5" key={vechicle.id}>
+   
 
       
-      <div className="w-full flex flex-col justify-between items-start gap-3" key={vechicle.id}>
+      <div className="w-full flex flex-col justify-between items-start gap-3" >
         <h2 className="text-[22px] leading-[26px] font-bold capitalize text-black">
          {vechicle.model}
         </h2>
@@ -86,9 +90,10 @@ console.log(data)
        
       
       </div>
-    ))}
+   
     </div>
-    
+     ))}
+    </div>
    
   );
 };
