@@ -11,6 +11,7 @@
   "dependencies": {
     "@headlessui/react": "^2.0.4",
     "@nextui-org/react": "^2.4.0",
+    "express": "^4.19.2",
     "firebase": "^10.12.2",
     "firebase-admin": "^12.1.1",
     "framer-motion": "^11.2.9",
