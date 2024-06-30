@@ -1,0 +1,35 @@
+[
+    {
+        "id": 1,
+        "make": "Chevrolet",
+        "model": "Silverado",
+        "year": 2021,
+        "fuel_type": "gas",
+        "drive": "rwd",
+        "transmission": "a",
+        "cylinders": 8,
+        "displacement": 5.3,
+        "city_mpg": 17,
+        "highway_mpg": 23,
+        "combination_mpg": 19,
+        "class": "pickup",
+        "image":"https://lealdirectory.s3.us-east-2.amazonaws.com/Chevy_Silverado-removebg-preview.png"
+      },
+      {
+        "id": 2,
+        "make": "Toyota",
+        "model": "4Runner",
+        "year": 2019,
+        "fuel_type": "gas",
+        "drive": "4wd",
+        "transmission": "a",
+        "cylinders": 6,
+        "displacement": 4.0,
+        "city_mpg": 17,
+        "highway_mpg": 20,
+        "combination_mpg": 18,
+        "class": "SUV", 
+        "image": "https://lealdirectory.s3.us-east-2.amazonaws.com/4Runner.png"
+      }
+      
+]

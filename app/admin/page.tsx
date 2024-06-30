@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from 'react';
 import NavBar from '../components/navbar';
 import { CarCard } from '../components/index';
-import { fetchCars } from '@/utils';
 import { cookies } from 'next/headers';
 import { redirect } from 'next/navigation';
+import CarData from '../vechicleData.json'
 import Link from 'next/link';
 import { verifyIdToken } from '../firebase/firebaseAdmin';
 const AdminView = async () => {
@@ -20,29 +20,21 @@ const AdminView = async () => {
     return redirect('/');
   }
 
-  const allCars = await fetchCars();
-
-  const isDataEmpty = !Array.isArray(allCars) || allCars.length < 1 || !allCars;
+  
 
   return (
     <div className=" h-vh100 w-screen ">
       <NavBar />
       <div className="flex-1 flex flex-col items-center justify-center w-full">
-        {!isDataEmpty ? (
+     
           <section>
             <div className="">
-              {allCars?.map((car) => (
-                <CarCard car={car} />
-              ))}
+              
+                <CarCard  />
+              
             </div>
           </section>
-        ) : (
-          <div>
-            <h2 className="text-black text-xl font-bold">Oops, no results</h2>
-            <p>{allCars?.message}</p>
-          </div>
-        )}
-      </div>
+        </div>
     </div>
   );
 };

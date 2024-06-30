@@ -2,29 +2,30 @@ import React from 'react';
 import Image from 'next/image';
 import { cookies } from 'next/headers';
 import { Button } from '@nextui-org/react';
+import VechicleData from '../vechicleData.json'
 const CarCard = async () => {
-  const _cookies = cookies();
+  // const _cookies = cookies();
 
-  const getVehicles = async () => {
-    try {
-      const res = await fetch('http://localhost:3000/api', {
-        cache: 'force-cache',
-      });
-      if (!res.ok) {
-        throw new Error('Network response was not ok');
-      }
+  // const getVehicles = async () => {
+  //   try {
+  //     const res = await fetch('http://localhost:3000/api', {
+  //       cache: 'force-cache',
+  //     });
+  //     if (!res.ok) {
+  //       throw new Error('Network response was not ok');
+  //     }
 
-      console.log(res);
-      return res.json();
-    } catch (error) {
-      console.error('Error fetching data:', error);
-      return []; // or handle error state
-    }
-  };
+  //     console.log(res);
+  //     return res.json();
+  //   } catch (error) {
+  //     console.error('Error fetching data:', error);
+  //     return []; // or handle error state
+  //   }
+  // };
 
-  const data = await getVehicles();
+const data = await VechicleData
 
-  console.log(data);
+  console.log(data)
 
   return (
     <div>
@@ -42,10 +43,10 @@ const CarCard = async () => {
             </p>
             <div className="relative w-full h-40 my-3 object-contain">
               <Image
-                src={'/carex.png'}
+                src={vechicle.image}
                 alt="car model"
-                fill
-                className="object-contain"
+      fill
+                className="object-contain w-fill"
               />
             </div>
             <div className="relative flex w-full mt-2">
@@ -57,9 +58,9 @@ const CarCard = async () => {
                     width={20}
                     height={20}
                   />
-                  {/* <p className="text-[14px] text-gray-400">
-                {transmission === 'a' ? 'Automatic' : 'Manual'}
-              </p> */}
+                  <p className="text-[14px] text-gray-400">
+                {vechicle.transmission === 'a' ? 'Automatic' : 'Manual'}
+              </p>
                 </div>
                 <div className="flex flex-col justify-center items-center gap-2">
                   <Image
@@ -68,7 +69,7 @@ const CarCard = async () => {
                     width={20}
                     height={20}
                   />
-                  <p className="text-[14px] text-gray-400"></p>
+                  <p className="text-[14px] text-gray-400">{vechicle.drive}</p>
                 </div>
                 <div className="flex flex-col justify-center items-center gap-2">
                   <Image
@@ -77,7 +78,7 @@ const CarCard = async () => {
                     width={20}
                     height={20}
                   />
-                  <p className="text-[14px] text-gray-400"> MPG</p>
+                  <p className="text-[14px] text-gray-400"> {vechicle.highway_mpg} MPG</p>
                 </div>
               </div>
 
