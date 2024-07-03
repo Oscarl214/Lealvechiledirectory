@@ -29,10 +29,9 @@ const AdminView = async () => {
      
           <section>
             <div className="">
-              
+          
                 <CarCard  />
-              
-            </div>
+             </div>
           </section>
         </div>
     </div>

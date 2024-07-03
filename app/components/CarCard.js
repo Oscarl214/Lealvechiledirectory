@@ -28,10 +28,13 @@ const data = await VechicleData
   console.log(data)
 
   return (
-    <div>
+
+
+ 
+    <div className='flex flex-wrap md:flex-nowrap'>
       {data.map((vechicle) => (
         <div
-          className="flex flex-col p-6 justify-center items-start text-black-100 bg-gray-200 hover:bg-white hover:shadow-md rounded-3xl w-[500px] m-5"
+          className="flex flex-col p-6 justify-center items-start text-black-100 bg-gray-200 hover:bg-white hover:shadow-md rounded-3xl w-[500px] m-5 flex-wrap"
           key={vechicle.id}
         >
           <div className="w-full flex flex-col justify-between items-start gap-3">
@@ -41,12 +44,13 @@ const data = await VechicleData
             <p>
               <span className="self-start text-[24px] font-semibold text-black"></span>
             </p>
-            <div className="relative w-full h-40 my-3 object-contain">
+            <div className="relative w-full h-40 my-3 flex items-center justify-center">
               <Image
                 src={vechicle.image}
                 alt="car model"
-      fill
-                className="object-contain w-fill"
+        height={250}
+        width={250}
+                className="object-center "
               />
             </div>
             <div className="relative flex w-full mt-2">
@@ -92,6 +96,7 @@ const data = await VechicleData
         </div>
       ))}
     </div>
+    
   );
 };
 
