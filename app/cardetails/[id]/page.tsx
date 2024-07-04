@@ -1,11 +1,15 @@
 import { cookies } from 'next/headers';
 import { redirect } from 'next/navigation';
 import { verifyIdToken } from '../../firebase/firebaseAdmin';
-
-async function getVechiclebyId(vechicleId:any) {
-  const response = await fetch(`http://localhost:3000/api/vechicles/${vechicleId}`, {
-    method: 'GET',
-  });
+import Image from 'next/image';
+import NavBar from '../../components/navbar';
+async function getVechiclebyId(vechicleId: any) {
+  const response = await fetch(
+    `http://localhost:3000/api/vechicles/${vechicleId}`,
+    {
+      method: 'GET',
+    }
+  );
 
   return response.json();
 }
@@ -29,9 +33,18 @@ export default async function VechicleID({ params }: any) {
     console.log('car details', vechicle);
 
     return (
-      <div>
-        {/* Render the car details here */}
-        UserCar: {vechicle.make}
+      <div className="  ">
+        <NavBar />
+        <div className="flex justify-center items-center h-screen ">
+          <Image
+            src={vechicle.image}
+            alt="steering wheel"
+            width={800}
+            height={800}
+            className="animate-float z-50"
+          />
+          {/* UserCar: {vechicle.make} */}
+        </div>
       </div>
     );
   } catch (error) {

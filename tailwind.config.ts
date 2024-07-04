@@ -10,38 +10,17 @@ const config: Config = {
     './node_modules/@nextui-org/theme/dist/**/*.{js,ts,jsx,tsx}',
   ],
   theme: {
-    extend: {},
-    animation: {
-      blob: 'blob 7s infinite',
-    },
-    keyframes: {
-      blob: {
-        '0%': {
-          transform: ' translate(0px,0px) scale(1)',
-        },
-        '33%': {
-          transform: ' translate(20px,-20px) scale(1.1)',
-        },
-        '66%': {
-          transform: 'translate(-20px,20px) scale(0.9)',
-        },
-        '100%': {
-          transform: 'translate(0px,0px) scale(1)',
+    extend: {
+      keyframes: {
+        float: {
+          '0%, 100%': { transform: 'translateY(0)' },
+          '50%': { transform: 'translateY(-20px)' },
         },
       },
+      animation: {
+        float: 'float 3s ease-in-out infinite',
+      },
     },
-    // colors: {
-    //   'primary-blue': {
-    //     DEFAULT: '#2B59FF',
-    //     100: '#F5F8FF',
-    //   },
-    //   'secondary-orange': '#f79761',
-    //   'light-white': {
-    //     DEFAULT: 'rgba(59,60,152,0.03)',
-    //     100: 'rgba(59,60,152,0.02)',
-    //   },
-    //   grey: '#747A88',
-    // },
   },
   plugins: [
     addDynamicIconSelectors(),
