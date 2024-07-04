@@ -3,25 +3,9 @@ import Image from 'next/image';
 import { cookies } from 'next/headers';
 import { Button } from '@nextui-org/react';
 import VechicleData from '../vechicleData.json'
+import Link from 'next/link';
 const CarCard = async () => {
-  // const _cookies = cookies();
 
-  // const getVehicles = async () => {
-  //   try {
-  //     const res = await fetch('http://localhost:3000/api', {
-  //       cache: 'force-cache',
-  //     });
-  //     if (!res.ok) {
-  //       throw new Error('Network response was not ok');
-  //     }
-
-  //     console.log(res);
-  //     return res.json();
-  //   } catch (error) {
-  //     console.error('Error fetching data:', error);
-  //     return []; // or handle error state
-  //   }
-  // };
 
 const data = await VechicleData
 
@@ -31,10 +15,10 @@ const data = await VechicleData
 
 
  
-    <div className='flex flex-wrap md:flex-nowrap'>
+    <div className='flex flex-wrap justify-center'>
       {data.map((vechicle) => (
         <div
-          className="flex flex-col p-6 justify-center items-start text-black-100 bg-gray-200 hover:bg-white hover:shadow-md rounded-3xl w-[500px] m-5 flex-wrap"
+          className="flex flex-col p-6 justify-center items-start text-black-100 bg-gray-200 hover:bg-white hover:shadow-md rounded-3xl md:w-[500px] w-[300px] m-5 flex-wrap"
           key={vechicle.id}
         >
           <div className="w-full flex flex-col justify-between items-start gap-3">
@@ -87,9 +71,11 @@ const data = await VechicleData
               </div>
 
               <div className=" flex justify-center ml-4 pl-4">
+                <Link href={`/cardetails/${vechicle.id}`}>
                 <Button variant="ghost" color="primary" className="text-black">
                   Add to Profile
                 </Button>
+                </Link>
               </div>
             </div>
           </div>
