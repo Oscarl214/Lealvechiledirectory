@@ -23,7 +23,7 @@ const NavBar = () => {
   return (
     <div>
       {' '}
-      <Navbar onMenuOpenChange={setIsMenuOpen} className=" font-popping">
+      <Navbar onMenuOpenChange={setIsMenuOpen} className=" bg-white">
         <NavbarContent>
           <NavbarMenuToggle
             aria-label={isMenuOpen ? 'Close menu' : 'Open menu'}
@@ -61,7 +61,7 @@ const NavBar = () => {
               color="primary"
               href="#"
               variant="flat"
-              className="bg-transparent text-white"
+              className="bg-transparent text-black"
             >
               Log Out
             </Button>

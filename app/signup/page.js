@@ -38,18 +38,18 @@ export default function SignUpPage() {
     setErrorMessage('');
   };
   return (
-    <main className="flex wrap-reverse lg:flex-nowrap min-h-screen flex-col lg:flex-row items-center justify-around lg:m-[5rem] m-4">
+    <main className="flex wrap-reverse lg:flex-nowrap h-screen flex-col lg:flex-row items-center bg-white justify-around">
       <section className="">
         <div className="flex flex-col items-center justify-center  lg:py-0">
           <a
             href="#"
             className="flex items-center mb-6 text-2xl font-semibold text-5xl"
           >
-            <h1 className="text-xl text-blue text-center m-5">
+            <h1 className="text-xl text-black text-center m-5">
               LEAL VEHICLE DIRECTORY
             </h1>
           </a>
-          <div className="w-full bg-white rounded-lg shadow dark:border md:mt-0 sm:max-w-md xl:p-0 dark:bg-gray-800 dark:border-gray-700">
+          <div className="w-full rounded-lg shadow dark:border md:mt-0 sm:max-w-md xl:p-0 dark:bg-gray-800 dark:border-gray-700">
             <div className="p-6 space-y-4 md:space-y-6 sm:p-8">
               <form
                 className="space-y-4 md:space-y-6"

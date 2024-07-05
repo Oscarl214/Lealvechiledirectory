@@ -53,7 +53,7 @@ function SignInPage() {
     }
   };
   return (
-    <main className="flex wrap-reverse lg:flex-nowrap min-h-screen flex-col lg:flex-row items-center justify-around lg:m-[5rem] m-4">
+    <main className="flex wrap-reverse lg:flex-nowrap h-screen w-screen flex-col lg:flex-row items-center justify-around   bg-white">
       <section className="">
         <div className="flex flex-col items-center justify-center  lg:py-0">
           <a
@@ -65,7 +65,7 @@ function SignInPage() {
               src="https://flowbite.s3.amazonaws.com/blocks/marketing-ui/logo.svg"
               alt="logo"
             /> */}
-            <h1 className="text-xl text-blue text-center m-5">
+            <h1 className="text-xl text-blue text-center m-5 text-black">
               {' '}
               LEAL VEHICLE DIRECTORY
             </h1>

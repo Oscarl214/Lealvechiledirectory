@@ -33,7 +33,7 @@ export default async function VechicleID({ params }: any) {
     console.log('car details', vechicle);
 
     return (
-      <div className="  ">
+      <div className="  bg-white">
         <NavBar />
         <div className="flex justify-center items-center h-screen ">
           <Image
