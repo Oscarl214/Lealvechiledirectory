@@ -1,5 +1,5 @@
 // import { CarProps } from '@/app/types';
-import { doc, setDoc, updateDoc, arrayUnion } from 'firebase/firestore';
+import { doc, getDoc, updateDoc, arrayUnion, setDoc } from 'firebase/firestore';
 import { db } from '../app/firebase/config';
 export async function fetchCars() {
   const headers = {
@@ -54,16 +54,51 @@ async function fetchVehicles() {
 //   return `${url}`;
 // };
 
-export const addVehicleToProfile = async (userId: any, vehicle: any) => {
+export const addVehicleToProfile = async (userId: string, vehicle: any) => {
   try {
-    const userRef = doc(db, 'users', userId);
+    const userDocRef = doc(db, 'users', userId);
+    const userDoc = await getDoc(userDocRef);
 
-    await updateDoc(userRef, {
-      vehicles: arrayUnion(vehicle),
-    });
+    if (userDoc.exists()) {
+      const userData = userDoc.data();
+      const vehicles = userData.vehicles || [];
 
-    console.log('Vehicle added successfully!');
+      // Check if the vehicle already exists in the array
+      const existingVehicle = vehicles.find((v: any) => v.id === vehicle.id);
+      if (!existingVehicle) {
+        // Add the new vehicle to the array
+        vehicles.push(vehicle);
+
+        // Update the user document with the new vehicles array
+        await setDoc(userDocRef, { ...userData, vehicles });
+      } else {
+        console.log('Vehicle already exists in user profile');
+      }
+    } else {
+      throw new Error('User document not found');
+    }
   } catch (error) {
-    console.log('Vechicle added unsuccesfully!');
+    console.error('Error adding vehicle to user profile:', error);
+    throw error; // Propagate the error to handle it further up the call stack
+  }
+};
+
+export const getUsersVehicle = async (userId: any) => {
+  try {
+    const userDocRef = doc(db, 'users', userId);
+    const docSnap = await getDoc(userDocRef);
+
+    if (docSnap.exists()) {
+      const userData = docSnap.data();
+
+      const vehicles = userData.vehicles || [];
+
+      return vehicles;
+    } else {
+      throw new Error('User document not found');
+    }
+  } catch (error) {
+    console.error('Error retrieving user vehicles:', error);
+    throw error;
   }
 };
