@@ -1,7 +1,7 @@
-import firebase_app from '../config';
+import { firebase_app, db } from '../config';
 import { createUserWithEmailAndPassword, getAuth } from 'firebase/auth';
 import Cookies from 'js-cookie';
-
+import { doc, getDoc, setDoc, getFirestore } from 'firebase/firestore';
 const auth = getAuth(firebase_app);
 
 const createUserDocument = async (user) => {

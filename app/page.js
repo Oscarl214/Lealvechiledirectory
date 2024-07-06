@@ -4,7 +4,7 @@ import logIn from './firebase/auth/login';
 import { useRouter } from 'next/navigation';
 import { Image, Button } from '@nextui-org/react';
 import { signInWithPopup, GoogleAuthProvider } from 'firebase/auth';
-import firebase_app from './firebase/config';
+import { firebase_app } from './firebase/config';
 import { onAuthStateChanged, getAuth } from 'firebase/auth';
 
 function SignInPage() {

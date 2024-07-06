@@ -3,14 +3,29 @@ import React from 'react';
 import signUp from '../firebase/auth/signup';
 import { useRouter } from 'next/navigation';
 import { Image, Button } from '@nextui-org/react';
+import { firebase_app, db } from '../firebase/config';
+import { getAuth } from 'firebase/auth';
 import Link from 'next/link';
-
+import { doc, getDoc, setDoc, getFirestore } from 'firebase/firestore';
+import { signInWithPopup, GoogleAuthProvider } from 'firebase/auth';
 export default function SignUpPage() {
   const [email, setEmail] = React.useState('');
   const [password, setPassword] = React.useState('');
   const [errorMessage, setErrorMessage] = React.useState('');
 
   const router = useRouter();
+
+  const createUserDocument = async (user) => {
+    const userDocRef = doc(db, 'users', user.uid);
+    const userDoc = await getDoc(userDocRef);
+
+    if (!userDoc.exists()) {
+      await setDoc(userDocRef, {
+        email: user.email,
+        vehicles: [],
+      });
+    }
+  };
 
   const handleForm = async (event) => {
     event.preventDefault();
@@ -37,6 +52,20 @@ export default function SignUpPage() {
     setPassword(e.target.value);
     setErrorMessage('');
   };
+  const signUpWithGoogle = async () => {
+    const auth = getAuth(firebase_app);
+    const provider = new GoogleAuthProvider();
+
+    try {
+      const result = await signInWithPopup(auth, provider);
+
+      await createUserDocument(result.user);
+      router.push('/admin');
+    } catch (error) {
+      console.log('Error signing with GoogleK', error.message);
+    }
+  };
+
   return (
     <main className="flex wrap-reverse lg:flex-nowrap h-screen flex-col lg:flex-row items-center bg-white justify-around">
       <section className="">
@@ -118,6 +147,32 @@ export default function SignUpPage() {
                   </a>
                 </p>
               </form>
+              <p>or</p>
+              <div className=" max-w-sm text-start">
+                <Button
+                  type="button"
+                  className="text-white w-full  bg-transparent hover:bg-[#4285F4]/90 focus:ring-4 focus:outline-none focus:ring-[#4285F4]/50 font-medium rounded-lg text-sm px-5 py-2.5 text-start inline-flex items-start justify-between mr-2 mb-2"
+                  variant="bordered"
+                  onClick={signUpWithGoogle}
+                >
+                  <svg
+                    className="mr-2 -ml-1 w-4 h-4"
+                    aria-hidden="true"
+                    focusable="false"
+                    data-prefix="fab"
+                    data-icon="google"
+                    role="img"
+                    xmlns="http://www.w3.org/2000/svg"
+                    viewBox="0 0 488 512"
+                  >
+                    <path
+                      fill="currentColor"
+                      d="M488 261.8C488 403.3 391.1 504 248 504 110.8 504 0 393.2 0 256S110.8 8 248 8c66.8 0 123 24.5 166.3 64.9l-67.5 64.9C258.5 52.6 94.3 116.6 94.3 256c0 86.5 69.1 156.6 153.7 156.6 98.2 0 135-70.4 140.8-106.9H248v-85.3h236.1c2.3 12.7 3.9 24.9 3.9 41.4z"
+                    ></path>
+                  </svg>
+                  Sign Up with Google<div></div>
+                </Button>
+              </div>
             </div>
           </div>
         </div>
