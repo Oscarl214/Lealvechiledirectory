@@ -18,12 +18,15 @@ import logOut from '../firebase/auth/logout';
 const NavBar = () => {
   const [isMenuOpen, setIsMenuOpen] = React.useState(false);
 
-  const menuItems = ['Logout', 'Profile', 'Dashboard'];
+  const menuItems = ['Logout', 'Profile', 'Car Selection'];
 
   return (
     <div>
       {' '}
-      <Navbar onMenuOpenChange={setIsMenuOpen} className=" bg-white">
+      <Navbar
+        onMenuOpenChange={setIsMenuOpen}
+        className=" bg-black shadow-xl text-white"
+      >
         <NavbarContent>
           <NavbarMenuToggle
             aria-label={isMenuOpen ? 'Close menu' : 'Open menu'}
@@ -34,23 +37,23 @@ const NavBar = () => {
           </NavbarBrand>
         </NavbarContent>
 
-        {/* <NavbarContent className="hidden sm:flex gap-4" justify="center">
-      <NavbarItem>
-        <Link color="foreground" href="#">
-          Features
-        </Link>
-      </NavbarItem>
-      <NavbarItem isActive>
-        <Link href="#" aria-current="page">
-          Customers
-        </Link>
-      </NavbarItem>
-      <NavbarItem>
-        <Link color="foreground" href="#">
-          Integrations
-        </Link>
-      </NavbarItem>
-    </NavbarContent> */}
+        <NavbarContent className="hidden sm:flex gap-4" justify="center">
+          <NavbarItem>
+            <Link className="text-white" href="/admin">
+              Vehicle Selection
+            </Link>
+          </NavbarItem>
+          {/* <NavbarItem isActive>
+            <Link href="#" aria-current="page">
+              Customers
+            </Link>
+          </NavbarItem>
+          <NavbarItem>
+            <Link color="foreground" href="#">
+              Integrations
+            </Link>
+          </NavbarItem> */}
+        </NavbarContent>
         <NavbarContent justify="end">
           {/* <NavbarItem className="hidden lg:flex">
         <Link href="#">Login</Link>
@@ -61,18 +64,18 @@ const NavBar = () => {
               color="primary"
               href="#"
               variant="flat"
-              className="bg-transparent text-black"
+              className="bg-transparent text-white"
             >
               Log Out
             </Button>
           </NavbarItem>
         </NavbarContent>
-        <NavbarMenu className="bg-gray-300 opacity-95 text-black">
+        <NavbarMenu className=" opacity-55 text-white bg-gray-800">
           {menuItems.map((item, index) => (
             <NavbarMenuItem key={`${item}-${index}`}>
               {item === 'Logout' ? (
                 <Link href="/">
-                  <div className="" onClick={logOut}>
+                  <div className="text-white" onClick={logOut}>
                     {item}
                   </div>
                 </Link>
@@ -85,7 +88,7 @@ const NavBar = () => {
                       ? 'danger'
                       : 'foreground'
                   }
-                  className="w-full text-black"
+                  className="w-full text-white"
                   href="#"
                   size="lg"
                 >
