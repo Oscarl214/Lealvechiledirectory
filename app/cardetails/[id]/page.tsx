@@ -3,7 +3,25 @@ import { redirect } from 'next/navigation';
 import { verifyIdToken } from '../../firebase/firebaseAdmin';
 import Image from 'next/image';
 import NavBar from '../../components/navbar';
-async function getVechiclebyId(vechicleId: any) {
+
+interface Vechicle {
+  id: string;
+  make: string;
+  model: string;
+  year: number;
+  fuel_type: string;
+  drive: string;
+  transmission: string;
+  cylinders: number;
+  displacement: number;
+  highway_mpg: number;
+  combination_mpg: number;
+  city_mpg: number;
+  class: string;
+  image: string;
+}
+
+async function getVechiclebyId(vechicleId: string): Promise<Vechicle> {
   const response = await fetch(
     `http://localhost:3000/api/vechicles/${vechicleId}`,
     {
@@ -11,10 +29,18 @@ async function getVechiclebyId(vechicleId: any) {
     }
   );
 
+  if (!response.ok) {
+    throw new Error(`Failed to fetch vehicle data: ${response.statusText}`);
+  }
+
   return response.json();
 }
 
-export default async function VechicleID({ params }: any) {
+export default async function VechicleID({
+  params,
+}: {
+  params: { id: string };
+}) {
   const cookieStore = cookies();
   const token = cookieStore.get('token')?.value;
 
@@ -30,7 +56,6 @@ export default async function VechicleID({ params }: any) {
     }
 
     const { vechicle } = await getVechiclebyId(params.id);
-    console.log('car details', vechicle);
 
     return (
       <div className="  bg-white">
@@ -38,7 +63,7 @@ export default async function VechicleID({ params }: any) {
         <div className="flex justify-center items-center h-screen ">
           <Image
             src={vechicle.image}
-            alt="steering wheel"
+            alt={vechicle.make}
             width={800}
             height={800}
             className="animate-float z-50"

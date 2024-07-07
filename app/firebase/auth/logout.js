@@ -1,5 +1,5 @@
 import { getAuth, signOut } from 'firebase/auth';
-import firebase_app from '../config';
+import { firebase_app } from '../config';
 import Cookies from 'js-cookie';
 
 const auth = getAuth(firebase_app);
