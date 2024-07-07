@@ -12,8 +12,8 @@ const CarCard = () => {
   const data = VechicleData;
   const auth = getAuth(firebase_app);
   const user = auth.currentUser;
-  console.log(data);
 
+    console.log("this is the user that is logged in", user)
   const handleAddVehicle = async (vehicle) => {
     if (user) {
       await addVehicleToProfile(user.uid, vehicle);

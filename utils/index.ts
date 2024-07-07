@@ -20,13 +20,7 @@ export async function fetchCars() {
   return result;
 }
 
-// async function fetchVehicles) {
-//   const response = await fetch(`http://localhost:3000/api/products/${postId}`, {
-//     method: 'GET',
-//   });
 
-//   return response.json();
-// }
 
 async function fetchVehicles() {
   const response = await fetch(`http://localhost:3000/api`, {
@@ -36,52 +30,48 @@ async function fetchVehicles() {
   return response.json();
 }
 
-// export const generateCarImageUrl = (car: CarProps, angle?: string) => {
-//   const url = new URL(
-//     'https://api.fuelapi.com/v1/xml/vehicles/?api_key=daefd14b-9f2b-4968-9e4d-9d4bb4af01d1'
-//   );
+export const addVehicleToProfile = async (userId:any, vehicle:any) => {
+  const userDocRef = doc(db, 'users', userId);
 
-//   const { make, model, year } = car;
-
-//   // url.searchParams.append('api_key', process.env.FUEL_DEMO_API_KEY || '');
-
-//   url.searchParams.append('make', `${make}`);
-//   url.searchParams.append('modelFamily', model.split(' ')[0]);
-//   url.searchParams.append('year', `${year}`);
-
-//   console.log(`url, ${url}`);
-
-//   return `${url}`;
-// };
-
-export const addVehicleToProfile = async (userId: string, vehicle: any) => {
   try {
-    const userDocRef = doc(db, 'users', userId);
-    const userDoc = await getDoc(userDocRef);
-
-    if (userDoc.exists()) {
-      const userData = userDoc.data();
-      const vehicles = userData.vehicles || [];
-
-      // Check if the vehicle already exists in the array
-      const existingVehicle = vehicles.find((v: any) => v.id === vehicle.id);
-      if (!existingVehicle) {
-        // Add the new vehicle to the array
-        vehicles.push(vehicle);
-
-        // Update the user document with the new vehicles array
-        await setDoc(userDocRef, { ...userData, vehicles });
-      } else {
-        console.log('Vehicle already exists in user profile');
-      }
-    } else {
-      throw new Error('User document not found');
-    }
+    await updateDoc(userDocRef, {
+      vehicles: arrayUnion(vehicle),
+    });
+    console.log('Vehicle added successfully');
   } catch (error) {
-    console.error('Error adding vehicle to user profile:', error);
-    throw error; // Propagate the error to handle it further up the call stack
+    console.error('Error adding vehicle: ', error);
   }
 };
+
+
+// export const addVehicleToProfile = async (userId: string, vehicle: any) => {
+//   try {
+//     const userDocRef = doc(db, 'users', userId);
+//     const userDoc = await getDoc(userDocRef);
+
+//     if (userDoc.exists()) {
+//       const userData = userDoc.data();
+//       const vehicles = userData.vehicles || [];
+
+//       // Check if the vehicle already exists in the array
+//       const existingVehicle = vehicles.find((v: any) => v.id === vehicle.id);
+//       if (!existingVehicle) {
+//         // Add the new vehicle to the array
+//         vehicles.push(vehicle);
+
+//         // Update the user document with the new vehicles array
+//         await setDoc(userDocRef, { ...userData, vehicles });
+//       } else {
+//         console.log('Vehicle already exists in user profile');
+//       }
+//     } else {
+//       throw new Error('User document not found');
+//     }
+//   } catch (error) {
+//     console.error('Error adding vehicle to user profile:', error);
+//     throw error; // Propagate the error to handle it further up the call stack
+//   }
+// };
 
 export const getUsersVehicle = async (userId: any) => {
   try {

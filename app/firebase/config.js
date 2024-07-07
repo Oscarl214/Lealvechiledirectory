@@ -16,9 +16,6 @@ const firebaseConfig = {
 let firebase_app =
   getApps().length === 0 ? initializeApp(firebaseConfig) : getApps()[0];
 
-const db = getFirestore(firebase_app, {
-  experimentalForceLongPolling: true,
-  useFetchStreams: false,
-});
+const db = getFirestore(firebase_app);
 
 export { firebase_app, db };
