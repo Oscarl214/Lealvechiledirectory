@@ -4,24 +4,7 @@ import { verifyIdToken } from '../../firebase/firebaseAdmin';
 import Image from 'next/image';
 import NavBar from '../../components/navbar';
 
-interface Vechicle {
-  id: string;
-  make: string;
-  model: string;
-  year: number;
-  fuel_type: string;
-  drive: string;
-  transmission: string;
-  cylinders: number;
-  displacement: number;
-  highway_mpg: number;
-  combination_mpg: number;
-  city_mpg: number;
-  class: string;
-  image: string;
-}
-
-async function getVechiclebyId(vechicleId: string): Promise<Vechicle> {
+async function getVechiclebyId(vechicleId: string) {
   const response = await fetch(
     `http://localhost:3000/api/vechicles/${vechicleId}`,
     {
@@ -33,59 +16,40 @@ async function getVechiclebyId(vechicleId: string): Promise<Vechicle> {
     throw new Error(`Failed to fetch vehicle data: ${response.statusText}`);
   }
 
-  return response.json();
+  const data = await response.json();
+
+  return data;
 }
 
-export default async function VechicleID({
-  params,
-}: {
-  params: { id: string };
-}) {
-  const cookieStore = cookies();
-  const token = cookieStore.get('token')?.value;
+export default async function VechicleID({ params }: any) {
+  const { vechicle } = await getVechiclebyId(params.id);
 
-  if (!token) {
-    return redirect('/');
-  }
-
-  try {
-    const decodedToken = await verifyIdToken(token);
-
-    if (!decodedToken) {
-      return redirect('/');
-    }
-
-    const { vechicle } = await getVechiclebyId(params.id);
-
-    return (
-      <div className="  bg-[#D3D3D3]">
-        <NavBar />
-        <div className="flex flex-col justify-center items-center ] ">
-          <h1 className="text-black m-5 text-4xl font-bold">
-            {vechicle.make} {vechicle.model} {vechicle.year}
-          </h1>
-          <Image
-            src={vechicle.image}
-            alt={vechicle.make}
-            width={800}
-            height={800}
-            className="animate-float z-50"
-          />
-        </div>
-        <div className="flex flex-row justify-center text-gray-700 ">
-          <span className="icon-[ph--line-vertical-thin] text-black"></span>
-          <ul className="flex flex-row justify-around gap-5 text-xl">
-            <li className="">MPG: {vechicle.city_mpg}</li>
-
-            <li>Drive: {vechicle.drive} </li>
-            <li>Transmission: {vechicle.transmission}</li>
-          </ul>
-        </div>
-        <div></div>
+  console.log(vechicle);
+  return (
+    <div className="  bg-[#D3D3D3]">
+      <NavBar />
+      <div className="flex flex-col justify-center items-center ] ">
+        <h1 className="text-black m-5 text-4xl font-bold">
+          {vechicle.make} {vechicle.model} {vechicle.year}
+        </h1>
+        <Image
+          src={vechicle.image}
+          alt={vechicle.make}
+          width={800}
+          height={800}
+          className="animate-float z-50"
+        />
       </div>
-    );
-  } catch (error) {
-    console.error('Error verifying token:', error);
-    return redirect('/');
-  }
+      <div className="flex flex-row justify-center text-gray-700 ">
+        <span className="icon-[ph--line-vertical-thin] text-black"></span>
+        <ul className="flex flex-row justify-around gap-5 text-xl">
+          <li className="">MPG: {vechicle.city_mpg}</li>
+
+          <li>Drive: {vechicle.drive} </li>
+          <li>Transmission: {vechicle.transmission}</li>
+        </ul>
+      </div>
+      <div></div>
+    </div>
+  );
 }
