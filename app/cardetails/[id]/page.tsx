@@ -61,7 +61,9 @@ export default async function VechicleID({
       <div className="  bg-[#D3D3D3]">
         <NavBar />
         <div className="flex flex-col justify-center items-center ] ">
-          <h1 className='text-black m-5 text-4xl font-bold'>{vechicle.make} {vechicle.model} {vechicle.year}</h1>
+          <h1 className="text-black m-5 text-4xl font-bold">
+            {vechicle.make} {vechicle.model} {vechicle.year}
+          </h1>
           <Image
             src={vechicle.image}
             alt={vechicle.make}
@@ -70,18 +72,16 @@ export default async function VechicleID({
             className="animate-float z-50"
           />
         </div>
-        <div className='flex flex-row justify-center text-gray-700 '>
+        <div className="flex flex-row justify-center text-gray-700 ">
           <span className="icon-[ph--line-vertical-thin] text-black"></span>
-           <ul className='flex flex-row justify-around gap-5 text-xl'>
-             <li className=''>MPG:  {vechicle.city_mpg}</li>
-             
-             <li>Drive: {vechicle.drive} </li>
-             <li>Transmission: {vechicle.transmission}</li>
-           </ul>
-          </div>
-        <div>
-       
+          <ul className="flex flex-row justify-around gap-5 text-xl">
+            <li className="">MPG: {vechicle.city_mpg}</li>
+
+            <li>Drive: {vechicle.drive} </li>
+            <li>Transmission: {vechicle.transmission}</li>
+          </ul>
         </div>
+        <div></div>
       </div>
     );
   } catch (error) {

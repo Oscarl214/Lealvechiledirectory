@@ -43,11 +43,12 @@ const NavBar = () => {
               Vehicle Selection
             </Link>
           </NavbarItem>
-          {/* <NavbarItem isActive>
-            <Link href="#" aria-current="page">
-              Customers
+          <NavbarItem isActive>
+            <Link href="/uservechicles" aria-current="page">
+              Users Cars
             </Link>
           </NavbarItem>
+          {/*
           <NavbarItem>
             <Link color="foreground" href="#">
               Integrations
