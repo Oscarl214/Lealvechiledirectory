@@ -1,23 +1,39 @@
 'use client';
-import React from 'react';
+
+import React, { useEffect, useState } from 'react';
 import Image from 'next/image';
 import { Button } from '@nextui-org/react';
-import VechicleData from '../vechicleData.json';
 import Link from 'next/link';
 import { getAuth } from 'firebase/auth';
-// import { addVehicleToProfile } from '@/utils';
 import { getFunctions, httpsCallable } from 'firebase/functions';
 import { firebase_app } from '../firebase/config';
+import {Vehicle, GetVehiclesResponse, AddVechicleResponse} from '../types/index'
 const CarCard = () => {
-  const data = VechicleData;
+  const [vehicleData, setVehicleData] = useState<Vehicle[]>([]);
   const auth = getAuth(firebase_app);
   const user = auth.currentUser;
   const functions = getFunctions(firebase_app);
   const addVehicleToProfile = httpsCallable(functions, 'addVehicleToProfile');
+  const getVehicles = httpsCallable<{}, { data: GetVehiclesResponse }>(
+    functions,
+    'getVehicles'
+  );
 
-  console.log('this is the user that is logged in', user);
 
-  const handleAddVehicle = async (vehicle) => {
+  useEffect(() => {
+    const fetchVehicleData = async () => {
+      try {
+        const response = await getVehicles();
+        const vehicles = response.data.vehicles;
+        setVehicleData(vehicles);
+      } catch (error) {
+        console.error('Error fetching vehicle data', error);
+      }
+    };
+    fetchVehicleData();
+  }, []);
+
+  const handleAddVehicle = async (vehicle: any) => {
     if (user) {
       try {
         const response = await addVehicleToProfile({
@@ -32,9 +48,10 @@ const CarCard = () => {
       console.log('User not authenticated');
     }
   };
+
   return (
     <div className="flex flex-wrap justify-center">
-      {data.map((vehicle) => (
+      {vehicleData.map((vehicle) => (
         <div
           className="flex flex-col p-6 justify-center items-start text-black-100 bg-gray-200 hover:bg-white hover:shadow-md rounded-3xl md:w-[500px] w-[300px] m-5 flex-wrap"
           key={vehicle.id}
@@ -87,13 +104,12 @@ const CarCard = () => {
                     height={20}
                   />
                   <p className="text-[14px] text-gray-700 mt-3">
-                    {' '}
                     {vehicle.highway_mpg} MPG
                   </p>
                 </div>
               </div>
 
-              <div className=" lg:flex-row flex-col lg:justify-center lg:ml-4 lg:pl-4   items-start mt-4">
+              <div className=" lg:flex-row flex-col lg:justify-center lg:ml-4 lg:pl-4 items-start mt-4">
                 <Link href={`/cardetails/${vehicle.id}`}>
                   <Button
                     className="text-black hover:bg-black hover:text-white"

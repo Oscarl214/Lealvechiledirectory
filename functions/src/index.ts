@@ -8,20 +8,55 @@
  */
 
 import * as functions from 'firebase-functions';
-
+import { QueryDocumentSnapshot } from 'firebase-admin/firestore';
 const admin = require('firebase-admin');
 admin.initializeApp();
 const db = admin.firestore();
 
-export const createUserDocument = functions.auth.user().onCreate((user) => {
+export const createUserDocument = functions.auth.user().onCreate((user:any) => {
   return db.collection('users').doc(user.uid).set({
     email: user.email,
     vehicles: [],
   });
 });
 
+
+export const getVehicles = functions.https.onCall(async (data: any, context: any) => {
+  if (!context.auth) {
+    throw new functions.https.HttpsError(
+      'unauthenticated',
+      'User is not authenticated'
+    );
+  }
+
+  try {
+    const vehicleDocRef = db.collection('vehicles');
+    const snapshot = await vehicleDocRef.get();
+
+    if (snapshot.empty) {
+      return { vehicles: [] };
+    }
+
+    const vehicles: any[] = [];
+    snapshot.forEach((doc: QueryDocumentSnapshot) => {
+      vehicles.push({ id: doc.id, ...doc.data() });
+    });
+
+    return { vehicles };
+  } catch (error) {
+    throw new functions.https.HttpsError(
+      'unknown',
+      'Failed to fetch vehicle data',
+      error
+    );
+  }
+});
+
+
+
+
 export const addVehicleToProfile = functions.https.onCall(
-  async (data, context) => {
+  async (data:any, context:any) => {
     if (!context) {
       throw new functions.https.HttpsError(
         'unauthenticated',
