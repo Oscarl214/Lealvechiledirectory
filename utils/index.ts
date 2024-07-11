@@ -20,8 +20,6 @@ export async function fetchCars() {
   return result;
 }
 
-
-
 async function fetchVehicles() {
   const response = await fetch(`http://localhost:3000/api`, {
     method: 'GET',
@@ -30,7 +28,7 @@ async function fetchVehicles() {
   return response.json();
 }
 
-export const addVehicleToProfile = async (userId:any, vehicle:any) => {
+export const addVehicleToProfile = async (userId: any, vehicle: any) => {
   const userDocRef = doc(db, 'users', userId);
 
   try {
@@ -42,7 +40,6 @@ export const addVehicleToProfile = async (userId:any, vehicle:any) => {
     console.error('Error adding vehicle: ', error);
   }
 };
-
 
 // export const addVehicleToProfile = async (userId: string, vehicle: any) => {
 //   try {

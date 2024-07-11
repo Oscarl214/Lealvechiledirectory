@@ -8,24 +8,13 @@ import { getAuth } from 'firebase/auth';
 import Link from 'next/link';
 import { doc, getDoc, setDoc, getFirestore } from 'firebase/firestore';
 import { signInWithPopup, GoogleAuthProvider } from 'firebase/auth';
+
 export default function SignUpPage() {
   const [email, setEmail] = React.useState('');
   const [password, setPassword] = React.useState('');
   const [errorMessage, setErrorMessage] = React.useState('');
 
   const router = useRouter();
-
-  const createUserDocument = async (user) => {
-    const userDocRef = doc(db, 'users', user.uid);
-    const userDoc = await getDoc(userDocRef);
-
-    if (!userDoc.exists()) {
-      await setDoc(userDocRef, {
-        email: user.email,
-        vehicles: [],
-      });
-    }
-  };
 
   const handleForm = async (event) => {
     event.preventDefault();
@@ -48,10 +37,12 @@ export default function SignUpPage() {
     setEmail(e.target.value);
     setErrorMessage('');
   };
+
   const handlePasswordChange = (e) => {
     setPassword(e.target.value);
     setErrorMessage('');
   };
+
   const signUpWithGoogle = async () => {
     const auth = getAuth(firebase_app);
     const provider = new GoogleAuthProvider();
@@ -59,17 +50,17 @@ export default function SignUpPage() {
     try {
       const result = await signInWithPopup(auth, provider);
 
-      await createUserDocument(result.user);
+      // Firebase function will handle user document creation
       router.push('/admin');
     } catch (error) {
-      console.log('Error signing with GoogleK', error.message);
+      console.log('Error signing with Google', error.message);
     }
   };
 
   return (
     <main className="flex wrap-reverse lg:flex-nowrap h-screen flex-col lg:flex-row items-center bg-white justify-around">
-      <section className="">
-        <div className="flex flex-col items-center justify-center  lg:py-0">
+      <section>
+        <div className="flex flex-col items-center justify-center lg:py-0">
           <a
             href="#"
             className="flex items-center mb-6 text-2xl font-semibold text-5xl"
@@ -80,15 +71,11 @@ export default function SignUpPage() {
           </a>
           <div className="w-full rounded-lg shadow dark:border md:mt-0 sm:max-w-md xl:p-0 dark:bg-gray-800 dark:border-gray-700">
             <div className="p-6 space-y-4 md:space-y-6 sm:p-8">
-              <form
-                className="space-y-4 md:space-y-6"
-                action="#"
-                onSubmit={handleForm}
-              >
+              <form className="space-y-4 md:space-y-6" onSubmit={handleForm}>
                 <h2>Sign Up</h2>
                 <div>
                   <label
-                    forhtml="email"
+                    htmlFor="email"
                     className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
                   >
                     Your email
@@ -100,13 +87,13 @@ export default function SignUpPage() {
                     value={email}
                     className="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                     placeholder="name@gmail.com"
-                    required=""
+                    required
                     onChange={handleEmailChange}
                   />
                 </div>
                 <div>
                   <label
-                    forhtml="password"
+                    htmlFor="password"
                     className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
                   >
                     Password
@@ -117,12 +104,11 @@ export default function SignUpPage() {
                     id="password"
                     placeholder="••••••••"
                     className="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                    required=""
+                    required
                     value={password}
                     onChange={handlePasswordChange}
                   />
                 </div>
-
                 <Button
                   color="primary"
                   variant="bordered"
@@ -131,13 +117,12 @@ export default function SignUpPage() {
                 >
                   Sign Up
                 </Button>
-                {setErrorMessage && (
+                {errorMessage && (
                   <div className="text-red-500 text-sm mt-2">
                     {errorMessage}
                   </div>
                 )}
-
-                <p className="text-sm font-light  text-gray-500 dark:text-gray-400">
+                <p className="text-sm font-light text-gray-500 dark:text-gray-400">
                   Already have an Account?
                   <a
                     href="/"
@@ -148,10 +133,10 @@ export default function SignUpPage() {
                 </p>
               </form>
               <p>or</p>
-              <div className=" max-w-sm text-start">
+              <div className="max-w-sm text-start">
                 <Button
                   type="button"
-                  className="text-white w-full  bg-transparent hover:bg-[#4285F4]/90 focus:ring-4 focus:outline-none focus:ring-[#4285F4]/50 font-medium rounded-lg text-sm px-5 py-2.5 text-start inline-flex items-start justify-between mr-2 mb-2"
+                  className="text-white w-full bg-transparent hover:bg-[#4285F4]/90 focus:ring-4 focus:outline-none focus:ring-[#4285F4]/50 font-medium rounded-lg text-sm px-5 py-2.5 text-start inline-flex items-start justify-between mr-2 mb-2"
                   variant="bordered"
                   onClick={signUpWithGoogle}
                 >
@@ -178,13 +163,12 @@ export default function SignUpPage() {
         </div>
       </section>
       <div>
-        {' '}
         <Image
           width={550}
           height={500}
           src="https://firebasestorage.googleapis.com/v0/b/lealvehicledirectory.appspot.com/o/SignInTruck.jpg?alt=media&token=f1cb4d7f-c922-458c-9837-2451f523142d"
           alt="Nissan GTR"
-          className="lg:m-5 mt-3  invisible lg:visible"
+          className="lg:m-5 mt-3 invisible lg:visible"
         />
       </div>
     </main>

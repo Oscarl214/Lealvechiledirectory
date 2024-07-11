@@ -5,18 +5,29 @@ import { Button } from '@nextui-org/react';
 import VechicleData from '../vechicleData.json';
 import Link from 'next/link';
 import { getAuth } from 'firebase/auth';
-import { addVehicleToProfile } from '@/utils';
-
+// import { addVehicleToProfile } from '@/utils';
+import { getFunctions, httpsCallable } from 'firebase/functions';
 import { firebase_app } from '../firebase/config';
 const CarCard = () => {
   const data = VechicleData;
   const auth = getAuth(firebase_app);
   const user = auth.currentUser;
+  const functions = getFunctions(firebase_app);
+  const addVehicleToProfile = httpsCallable(functions, 'addVehicleToProfile');
 
-    console.log("this is the user that is logged in", user)
+  console.log('this is the user that is logged in', user);
+
   const handleAddVehicle = async (vehicle) => {
     if (user) {
-      await addVehicleToProfile(user.uid, vehicle);
+      try {
+        const response = await addVehicleToProfile({
+          userId: user.uid,
+          vehicle,
+        });
+        console.log(response.data.message);
+      } catch (error) {
+        console.log('Error adding vehicle', error);
+      }
     } else {
       console.log('User not authenticated');
     }
