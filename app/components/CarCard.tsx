@@ -68,7 +68,8 @@ const CarCard = () => {
                 src={vehicle.image}
                 alt="car model"
                 height={250}
-                width={250}
+                width={270}
+                priority
                 className="object-center "
               />
             </div>
@@ -96,12 +97,12 @@ const CarCard = () => {
                     {vehicle.drive}
                   </p>
                 </div>
-                <div className="flex flex-col justify-center items-center gap-2">
+                <div className="flex flex-col justify-center items-center gap-2 ">
                   <Image
                     src="/gas.svg"
                     alt="steering wheel"
-                    width={20}
-                    height={20}
+                    width={22}
+                    height={21}
                   />
                   <p className="text-[14px] text-gray-700 mt-3">
                     {vehicle.highway_mpg} MPG
