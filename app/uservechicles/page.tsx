@@ -43,7 +43,7 @@ const UsersCars = () => {
 
   useEffect(() => {
     handleGetCars(), [user];
-  });
+  }, []);
 
   return (
     <div>
