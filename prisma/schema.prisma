@@ -1,0 +1,49 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mongodb"
+  url      = env("DATABASE_URL")
+}
+
+
+model User {
+  id            String    @id @default(auto()) @map("_id") @db.ObjectId
+  name          String?
+  email         String?   @unique
+  password      String?
+  emailVerified DateTime?
+  image         String?
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+  vehicles      Vehicle[] @relation("UserVehicles") // Consistent relation name
+}
+
+model Vehicle {
+  id             String   @id @default(auto()) @map("_id") @db.ObjectId
+  make           String
+  model          String
+  year           Int
+  fuel_type      String
+  drive          String
+  transmission   String
+  cylinders      Int
+  displacement   Float
+  city_mpg       Int
+  highway_mpg    Int
+  combination_mpg Int
+  class          String
+  image          String
+  userId         String     @map("userId") @db.ObjectId
+  user           User       @relation("UserVehicles", fields: [userId], references: [id], onDelete: Cascade) // Consistent relation name
+}
+
+
+
