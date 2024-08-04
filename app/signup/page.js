@@ -1,14 +1,9 @@
 'use client';
 import React from 'react';
-import signUp from '../firebase/auth/signup';
 import { useRouter } from 'next/navigation';
 import { Image, Button } from '@nextui-org/react';
-import { firebase_app, db } from '../firebase/config';
-import { getAuth } from 'firebase/auth';
 import Link from 'next/link';
-import { doc, getDoc, setDoc, getFirestore } from 'firebase/firestore';
-import { signInWithPopup, GoogleAuthProvider } from 'firebase/auth';
-
+import { toast } from 'react-hot-toast';
 export default function SignUpPage() {
   const [email, setEmail] = React.useState('');
   const [password, setPassword] = React.useState('');
@@ -19,18 +14,44 @@ export default function SignUpPage() {
   const handleForm = async (event) => {
     event.preventDefault();
 
-    const { result, error } = await signUp(email, password);
+    setErrorMessage('');
 
-    if (error) {
-      setErrorMessage('Email is already in use, please Sign In');
-      setEmail('');
-      setPassword('');
-      return console.log(error);
+    if (!email) {
+      setErrorMessage('Please enter your email');
+      toast.error('Please enter your email');
     }
 
-    // else successful
-    console.log('ADDED TO FIREBASE', result);
-    return router.push('/admin');
+    if (!password) {
+      setErrorMessage('Please enter a password');
+      toast.error('Please enter a password');
+    }
+
+    try {
+      const response = await fetch('/api/user', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          email,
+          password,
+        }),
+      });
+
+      const data = await response.json();
+      console.log('Response Data:', data);
+
+      if (response.ok) {
+        router.push('/admin');
+      } else {
+        setErrorMessage(data.error || 'An error occurred. Please try again');
+        toast.error(data.error || 'An error occurred. Please try again');
+      }
+    } catch (error) {
+      console.error('Error:', error);
+      setErrorMessage('An unexpected error occurred. Please try again');
+      toast.error('An unexpected error occurred. Please try again');
+    }
   };
 
   const handleEmailChange = (e) => {
@@ -41,20 +62,6 @@ export default function SignUpPage() {
   const handlePasswordChange = (e) => {
     setPassword(e.target.value);
     setErrorMessage('');
-  };
-
-  const signUpWithGoogle = async () => {
-    const auth = getAuth(firebase_app);
-    const provider = new GoogleAuthProvider();
-
-    try {
-      const result = await signInWithPopup(auth, provider);
-
-      // Firebase function will handle user document creation
-      router.push('/admin');
-    } catch (error) {
-      console.log('Error signing with Google', error.message);
-    }
   };
 
   return (
@@ -138,7 +145,7 @@ export default function SignUpPage() {
                   type="button"
                   className="text-white w-full bg-transparent hover:bg-[#4285F4]/90 focus:ring-4 focus:outline-none focus:ring-[#4285F4]/50 font-medium rounded-lg text-sm px-5 py-2.5 text-start inline-flex items-start justify-between mr-2 mb-2"
                   variant="bordered"
-                  onClick={signUpWithGoogle}
+                  onClick={() => console.log('Sign Up with Google')}
                 >
                   <svg
                     className="mr-2 -ml-1 w-4 h-4"

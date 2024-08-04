@@ -13,8 +13,6 @@ import {
   Image,
 } from '@nextui-org/react';
 
-import logOut from '../firebase/auth/logout';
-
 const NavBar = () => {
   const [isMenuOpen, setIsMenuOpen] = React.useState(false);
 
@@ -61,7 +59,7 @@ const NavBar = () => {
       </NavbarItem> */}
           <NavbarItem>
             <Button
-              onClick={logOut}
+              onClick={() => console.log('logOut')}
               color="primary"
               href="#"
               variant="flat"
@@ -76,7 +74,10 @@ const NavBar = () => {
             <NavbarMenuItem key={`${item}-${index}`}>
               {item === 'Logout' ? (
                 <Link href="/">
-                  <div className="text-white" onClick={logOut}>
+                  <div
+                    className="text-white"
+                    onClick={() => console.log('logOut')}
+                  >
                     {item}
                   </div>
                 </Link>

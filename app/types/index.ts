@@ -18,9 +18,8 @@ export interface CarProps {
   model: string;
   transmission: string;
   year: number;
-  image: string
+  image: string;
 }
-
 
 export interface Vehicle {
   city_mpg: number;
@@ -35,7 +34,7 @@ export interface Vehicle {
   model: string;
   transmission: string;
   year: number;
-  image: string
+  image: string;
 }
 
 export interface GetVehiclesResponse {
@@ -49,4 +48,3 @@ export interface AddVehicleResponse {
     message: string;
   };
 }
-

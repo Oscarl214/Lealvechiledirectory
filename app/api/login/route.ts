@@ -6,41 +6,34 @@ export async function POST(request: Request) {
   try {
     const { email, password } = await request.json();
 
-    // Check if the user already exists
-    let user = await prisma.user.findUnique({
+    const user = await prisma.user.findUnique({
       where: { email },
-    });
-
-    // Validate password length
-    if (password.length < 6) {
-      return NextResponse.json(
-        { error: 'Password length must be more than 6 characters' },
-        { status: 400 }
-      );
-    }
-
-    // If user already exists, return an error
-    if (user) {
-      return NextResponse.json(
-        { error: 'User already exists. Please log in.' },
-        { status: 400 }
-      );
-    }
-
-    // Hash the password
-    const hashedPassword = await bcrypt.hash(password, 10);
-
-    // Create the user
-    user = await prisma.user.create({
-      data: {
-        email,
-        password: hashedPassword,
+      select: {
+        id: true,
+        email: true,
+        password: true,
       },
     });
 
+    if (!user || !user.password) {
+      return NextResponse.json(
+        { error: 'Invalid email or password' },
+        { status: 400 }
+      );
+    }
+
+    const isPasswordValid = await bcrypt.compare(password, user.password);
+
+    if (!isPasswordValid) {
+      return NextResponse.json(
+        { error: 'Invalid email or password' },
+        { status: 400 }
+      );
+    }
+
     return NextResponse.json({
+      message: 'Login successful',
       userId: user.id,
-      message: 'User created successfully',
     });
   } catch (error) {
     console.log('error', error);

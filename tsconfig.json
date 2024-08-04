@@ -21,6 +21,14 @@
       "@/*": ["./*"]
     }
   },
-  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", ".next/types/**/*.ts", "app/api/vechicles/[id]/route.tsx", "app/components/CarCard.tsx"],
+  "include": [
+    "next-env.d.ts",
+    "**/*.ts",
+    "**/*.tsx",
+    ".next/types/**/*.ts",
+    "app/api/vechicles/[id]/route.tsx",
+    "app/components/CarCard.tsx",
+    "app/api/auth/[...nextAuth]route.ts"
+  ],
   "exclude": ["node_modules"]
 }

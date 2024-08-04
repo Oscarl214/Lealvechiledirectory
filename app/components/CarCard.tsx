@@ -5,15 +5,9 @@ import Link from 'next/link';
 import { getAuth } from 'firebase/auth';
 import { Button } from '@nextui-org/react';
 import { getFunctions, httpsCallable } from 'firebase/functions';
-import { firebase_app } from '../firebase/config';
 
 const CarCard = () => {
   const [vehicles, setVehicles] = useState([]);
-  const auth = getAuth(firebase_app);
-  const user = auth.currentUser;
-  const functions = getFunctions(firebase_app);
-  const addVehicleToProfile = httpsCallable(functions, 'addVehicleToProfile');
-  const getAllCarsData = httpsCallable(functions, 'getAllCarsData');
 
   useEffect(() => {
     const fetchCarsData = async () => {
