@@ -13,10 +13,16 @@ import {
   Image,
 } from '@nextui-org/react';
 
+import { signOut } from 'next-auth/react';
+import Router from 'next/router';
 const NavBar = () => {
   const [isMenuOpen, setIsMenuOpen] = React.useState(false);
 
   const menuItems = ['Logout', 'Profile', 'Car Selection'];
+
+  const handleSignOut = async () => {
+    signOut({ callbackUrl: '/' });
+  };
 
   return (
     <div>
@@ -59,7 +65,7 @@ const NavBar = () => {
       </NavbarItem> */}
           <NavbarItem>
             <Button
-              onClick={() => console.log('logOut')}
+              onClick={() => handleSignOut()}
               color="primary"
               href="#"
               variant="flat"
@@ -74,10 +80,7 @@ const NavBar = () => {
             <NavbarMenuItem key={`${item}-${index}`}>
               {item === 'Logout' ? (
                 <Link href="/">
-                  <div
-                    className="text-white"
-                    onClick={() => console.log('logOut')}
-                  >
+                  <div className="text-white" onClick={() => handleSignOut()}>
                     {item}
                   </div>
                 </Link>
