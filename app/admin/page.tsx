@@ -2,6 +2,7 @@
 
 import { useSession } from 'next-auth/react';
 import NavBar from '../components/navbar';
+import AdminHero from '../components/adminpagecomponents/hero';
 const AdminPage = () => {
   const { data: session } = useSession();
 
@@ -12,7 +13,10 @@ const AdminPage = () => {
   return (
     <div className="">
       <NavBar />
-      <p>Welcome to the Admin Page</p>;{' '}
+      <div className="hero-section">
+        <AdminHero />
+      </div>
+      <div className="section"></div>
     </div>
   );
 };

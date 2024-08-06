@@ -25,7 +25,7 @@ const NavBar = () => {
   };
 
   return (
-    <div>
+    <div className="fixed z-5">
       {' '}
       <Navbar
         onMenuOpenChange={setIsMenuOpen}

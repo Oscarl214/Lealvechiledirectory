@@ -59,6 +59,10 @@ const handler = NextAuth({
     signOut: '/auth/signout',
   },
   secret: process.env.NEXTAUTH_SECRET,
+  session: {
+    maxAge: 3600,
+    updateAge: 600,
+  },
 });
 
 export { handler as GET, handler as POST };
