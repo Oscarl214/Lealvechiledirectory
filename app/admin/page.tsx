@@ -18,7 +18,6 @@ const AdminPage = () => {
         <AdminHero />
       </div>
       <div className="section">
-      
         <Features />
       </div>
     </div>

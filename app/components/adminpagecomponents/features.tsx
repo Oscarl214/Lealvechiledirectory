@@ -13,10 +13,10 @@ import FeaturesData from './featuresData.json';
 const Features = () => {
   return (
     <div className="div-feature ">
-      <div className="flex flex-row justify-center gap-8 lg:flex-nowrap md:flex-nowrap flex-wrap">
+      <div className="flex flex-row justify-center gap-8 lg:flex-nowrap md:flex-wrap flex-wrap lg:m-0 md:m-0 mt-[60px]">
         {FeaturesData.map((feature) => (
           <Card
-            className="w-[400px] h-[600px] bg-transparent border-2 border-blue-500"
+            className="lg:w-[400px] md:w-[400px] h-[250px] w-auto  bg-transparent border-2 border-blue-500"
             key={feature.id}
           >
             <CardHeader className="flex flex-col gap-3">
@@ -25,23 +25,25 @@ const Features = () => {
                   {feature.title}
                 </h3>
               </div>
-              <span className={feature.svg} />
             </CardHeader>
             <Divider className="bg-white" />
-            <CardBody className="overflow-hidden">
+            <CardBody className="overflow-hidden ">
               <p className="lg:text-xl md:text-md text-lg">
                 {feature.description}
               </p>
-              <div className="flex justify-center items-center m-2">
+              {/* <div className="flex justify-center items-center m-2">
                 <Image
                   isBlurred
                   src="https://images.pexels.com/photos/1454253/pexels-photo-1454253.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1"
                   alt="NextUI Album Cover"
                   className=""
                 />
-              </div>
+              </div> */}
             </CardBody>
-            <Divider />
+            <Divider className="bg-white" />
+            <CardFooter className="flex justify-center">
+              <span className={feature.svg} />
+            </CardFooter>
           </Card>
         ))}
       </div>

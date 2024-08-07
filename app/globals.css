@@ -54,6 +54,7 @@ body {
 }
 .feature-cards{
   display: flex;
+  justify-content: center;
   gap: 30px;
   flex-wrap: wrap;
   margin-top: 40px;
@@ -90,3 +91,20 @@ html {
   scroll-snap-align: start;
 }
 
+
+.button{
+  border: 2px solid rgb(0, 140, 255);
+  background-color: transparent;
+  color: white;
+  margin-top: 10px;
+  scale: 1px;
+}
+
+.button:hover{
+  border: 2px solid rgb(218, 173, 83);
+  scale: 2px;
+}
+
+.button:click{
+  border: 2px solid rgb(218, 173, 83);
+}

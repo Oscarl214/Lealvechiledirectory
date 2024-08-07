@@ -20,12 +20,7 @@ const AdminHero = () => {
           A dedicated digital space for documenting all our vehicle maintenance.
         </p>
 
-        <Button
-          className="bg-blue-500 text-white text-start m-4"
-          variant="shadow"
-        >
-          Browse Vehicles
-        </Button>
+        <Button className="button">Browse Vehicles</Button>
       </div>
     </div>
   );
