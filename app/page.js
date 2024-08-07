@@ -167,10 +167,10 @@ function SignInPage() {
       <div>
         <Image
           width={550}
-          height={500}
+          height={300}
           src="https://firebasestorage.googleapis.com/v0/b/lealvehicledirectory.appspot.com/o/SignUpPageGTR.jpg?alt=media&token=0bd51fcd-b6ab-4018-85ca-ce1e660b6dc4"
           alt="Nissan GTR"
-          className="mt-3 lg:m-5 invisible lg:visible"
+          className="mt-3 lg:m-5 rounded-sm"
         />
       </div>
     </main>

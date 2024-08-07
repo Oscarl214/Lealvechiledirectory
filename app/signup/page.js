@@ -175,7 +175,7 @@ export default function SignUpPage() {
           height={500}
           src="https://firebasestorage.googleapis.com/v0/b/lealvehicledirectory.appspot.com/o/SignInTruck.jpg?alt=media&token=f1cb4d7f-c922-458c-9837-2451f523142d"
           alt="Nissan GTR"
-          className="lg:m-5 mt-3 invisible lg:visible"
+          className="lg:m-5 mt-3"
         />
       </div>
     </main>

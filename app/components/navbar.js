@@ -75,7 +75,7 @@ const NavBar = () => {
             </Button>
           </NavbarItem>
         </NavbarContent>
-        <NavbarMenu className=" opacity-55 text-white bg-gray-800">
+        <NavbarMenu className=" text-white bg-gray-200 bg-opacity-10">
           {menuItems.map((item, index) => (
             <NavbarMenuItem key={`${item}-${index}`}>
               {item === 'Logout' ? (
