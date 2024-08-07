@@ -1,5 +1,5 @@
 import React from 'react';
-
+import { Button } from '@nextui-org/react';
 const AdminHero = () => {
   return (
     <div
@@ -12,13 +12,20 @@ const AdminHero = () => {
         backgroundRepeat: 'no-repeat',
       }}
     >
-      <div className="div-center m-3">
+      <div className="div-center m-3 pt-4">
         <h1 className="font-bold text-4xl md:text-5xl lg:text-6xl leading-tight">
-          Family Vehicle Maintenance Hub
+          Leal Vehicle Maintenance Hub
         </h1>
-        <p className=" text-2xl md:text-3xl lg:text-2xl leading-tight pt-4">
+        <p className="text-2xl md:text-3xl lg:text-2xl leading-tight pt-4">
           A dedicated digital space for documenting all our vehicle maintenance.
         </p>
+
+        <Button
+          className="bg-blue-500 text-white text-start m-4"
+          variant="shadow"
+        >
+          Browse Vehicles
+        </Button>
       </div>
     </div>
   );

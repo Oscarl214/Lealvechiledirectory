@@ -29,7 +29,7 @@ const NavBar = () => {
       {' '}
       <Navbar
         onMenuOpenChange={setIsMenuOpen}
-        className=" bg-black shadow-xl text-white"
+        className=" bg-transparent shadow-xl text-white"
       >
         <NavbarContent>
           <NavbarMenuToggle

@@ -30,7 +30,9 @@
     "react-hot-toast": "^2.4.1"
   },
   "devDependencies": {
-    "@iconify/tailwind": "^1.1.1",
+    "@iconify/json": "^2.2.234",
+    "@iconify/react": "^5.0.2",
+    "@iconify/tailwind": "^1.1.2",
     "@types/bcryptjs": "^2.4.6",
     "@types/crypto-js": "^4.2.2",
     "@types/node": "^20",

@@ -3,6 +3,7 @@
 import { useSession } from 'next-auth/react';
 import NavBar from '../components/navbar';
 import AdminHero from '../components/adminpagecomponents/hero';
+import Features from '../components/adminpagecomponents/features';
 const AdminPage = () => {
   const { data: session } = useSession();
 
@@ -16,7 +17,10 @@ const AdminPage = () => {
       <div className="hero-section">
         <AdminHero />
       </div>
-      <div className="section"></div>
+      <div className="section">
+      
+        <Features />
+      </div>
     </div>
   );
 };

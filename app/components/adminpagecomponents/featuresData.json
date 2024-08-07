@@ -1,0 +1,20 @@
+[
+  {
+    "id": 1,
+    "title": "Profile Creation",
+    "svg": "icon-[fluent-mdl2--group] text-blue-500 text-6xl",
+    "description": "This application is reserved for those within the Leal HouseHold."
+  },
+  {
+    "id": 2,
+    "title": "View & Select Vehicle",
+    "svg": "icon-[mdi--car] text-blue-500 text-6xl",
+    "description": "Select your vehicle to add to your profile.View details on the make,model,year, etc. "
+  },
+  {
+    "id": 3,
+    "title": "Input Last Maintenance",
+    "svg": "icon-[iconoir--tools] text-blue-500 text-6xl",
+    "description": "Select the type of work you have done in your vehicle and the date of. Information will be showcased and available upon login."
+  }
+]
