@@ -13,10 +13,10 @@ import FeaturesData from './featuresData.json';
 const Features = () => {
   return (
     <div className="div-feature ">
-      <div className="flex flex-row justify-center gap-8 lg:flex-nowrap md:flex-wrap flex-wrap lg:m-0 md:m-0 mt-[60px]">
+      <div className="flex flex-row justify-center lg:gap-8 md:gap-8 gap-3 lg:flex-nowrap md:flex-wrap flex-wrap lg:m-0 md:m-0 mt-[60px]">
         {FeaturesData.map((feature) => (
           <Card
-            className="lg:w-[400px] md:w-[400px] h-[250px] w-auto  bg-transparent border-2 border-blue-500"
+            className="lg:w-[400px] md:w-[400px] lg:h-[300px] md:h-[300px] h-[250px] w-auto  bg-transparent border-2 border-blue-500 m-3"
             key={feature.id}
           >
             <CardHeader className="flex flex-col gap-3">
@@ -26,9 +26,9 @@ const Features = () => {
                 </h3>
               </div>
             </CardHeader>
-            <Divider className="bg-white" />
-            <CardBody className="overflow-hidden ">
-              <p className="lg:text-xl md:text-md text-lg">
+            <Divider className="bg-blue-500" />
+            <CardBody className="overflow-hidden bg-white text-black">
+              <p className="lg:text-xl md:text-md text-md text-black">
                 {feature.description}
               </p>
               {/* <div className="flex justify-center items-center m-2">
@@ -40,9 +40,9 @@ const Features = () => {
                 />
               </div> */}
             </CardBody>
-            <Divider className="bg-white" />
+            <Divider className="bg-blue-500" />
             <CardFooter className="flex justify-center">
-              <span className={feature.svg} />
+              <span className="icon-[iconoir--tools] text-blue-500 text-6xl" />
             </CardFooter>
           </Card>
         ))}
