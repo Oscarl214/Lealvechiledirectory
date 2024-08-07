@@ -13,10 +13,10 @@ import FeaturesData from './featuresData.json';
 const Features = () => {
   return (
     <div className="div-feature ">
-      <div className="flex flex-row justify-center lg:gap-8 md:gap-8 gap-3 lg:flex-nowrap md:flex-wrap flex-wrap lg:m-0 md:m-0 mt-[60px]">
+      <div className="flex flex-row justify-center lg:gap-8 md:gap-8 gap-3 lg:flex-nowrap md:flex-wrap flex-wrap lg:m-0 md:m-0 mt-[60px] mb-[90px]">
         {FeaturesData.map((feature) => (
           <Card
-            className="lg:w-[400px] md:w-[400px] lg:h-[300px] md:h-[300px] h-[250px] w-auto  bg-transparent border-2 border-blue-500 m-3"
+            className="lg:w-[400px] md:w-[400px] lg:h-[300px] md:h-[300px] h-[225px] w-auto  bg-transparent border-2 border-blue-500 m-3"
             key={feature.id}
           >
             <CardHeader className="flex flex-col gap-3">

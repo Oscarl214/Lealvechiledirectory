@@ -4,6 +4,7 @@ import { useSession } from 'next-auth/react';
 import NavBar from '../components/navbar';
 import AdminHero from '../components/adminpagecomponents/hero';
 import Features from '../components/adminpagecomponents/features';
+import Footer from '../components/footer';
 const AdminPage = () => {
   const { data: session } = useSession();
 
@@ -20,6 +21,8 @@ const AdminPage = () => {
       <div className="section">
         <Features />
       </div>
+
+      <Footer />
     </div>
   );
 };
