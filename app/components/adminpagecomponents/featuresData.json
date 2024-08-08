@@ -3,18 +3,21 @@
     "id": 1,
     "title": "Profile Creation",
     "svg": "icon-[fluent-mdl2--group] text-blue-500 text-6xl",
+    "image": "https://images.pexels.com/photos/315938/pexels-photo-315938.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1",
     "description": "This application is reserved for those within the Leal HouseHold."
   },
   {
     "id": 2,
     "title": "View & Select Vehicle",
     "svg": "icon-[mdi--car] text-blue-500 text-6xl",
+    "image": "https://images.pexels.com/photos/63294/autos-technology-vw-multi-storey-car-park-63294.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1",
     "description": "Select your vehicle to add to your profile.View details on the make,model,year, etc. "
   },
   {
     "id": 3,
     "title": "Input Last Maintenance",
     "svg": "icon-[iconoir--tools] text-blue-500 text-6xl",
+    "image": "https://images.pexels.com/photos/162553/keys-workshop-mechanic-tools-162553.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1",
     "description": "Select the type of work you have done in your vehicle and the date of. Information will be showcased and available upon login."
   }
 ]

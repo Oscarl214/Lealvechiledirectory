@@ -1,5 +1,6 @@
 import React from 'react';
 import { Button } from '@nextui-org/react';
+import Link from 'next/link';
 const AdminHero = () => {
   return (
     <div
@@ -12,15 +13,16 @@ const AdminHero = () => {
         backgroundRepeat: 'no-repeat',
       }}
     >
-      <div className="div-center m-3 pt-4">
+      <div className="div-center ml-2 pt-4">
         <h1 className="font-bold text-4xl md:text-5xl lg:text-6xl leading-tight">
           Leal Vehicle Maintenance Hub
         </h1>
         <p className="text-2xl md:text-3xl lg:text-2xl leading-tight pt-4">
           A dedicated digital space for documenting all our vehicle maintenance.
         </p>
-
-        <Button className="button">Browse Vehicles</Button>
+        <Link href={'/vehicleselection'}>
+          <Button className="button">Browse Vehicles</Button>
+        </Link>
       </div>
     </div>
   );

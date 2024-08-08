@@ -103,8 +103,18 @@ html {
 .button:hover{
   border: 2px solid rgb(218, 173, 83);
   scale: 2px;
+  color: orange;
 }
 
 .button:click{
   border: 2px solid rgb(218, 173, 83);
+}
+
+@media (max-width: 640px) {
+  html {
+    scroll-snap-type: none;
+  }
+  .section {
+    scroll-snap-align: none;
+  }
 }

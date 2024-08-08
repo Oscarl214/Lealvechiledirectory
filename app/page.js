@@ -60,14 +60,14 @@ function SignInPage() {
   };
 
   return (
-    <main className="flex wrap-reverse lg:flex-nowrap h-screen w-screen flex-col lg:flex-row items-center justify-around bg-white">
+    <main className="flex wrap-reverse lg:flex-nowrap h-screen w-screen flex-col lg:flex-row items-center justify-around bg-black mt-[130px]">
       <section>
         <div className="flex flex-col items-center justify-center lg:py-0">
           <a
             href="#"
             className="flex items-center mb-6 text-2xl font-semibold text-5xl"
           >
-            <h1 className="text-xl text-blue text-center m-5 text-black">
+            <h1 className="text-xl text-blue text-center  text-white m-2">
               LEAL VEHICLE DIRECTORY
             </h1>
           </a>

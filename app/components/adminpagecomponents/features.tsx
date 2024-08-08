@@ -1,50 +1,32 @@
 import React from 'react';
-import {
-  Card,
-  CardHeader,
-  CardBody,
-  CardFooter,
-  Image,
-  Button,
-  Divider,
-  Link,
-} from '@nextui-org/react';
+import { Card, Image, Button } from '@nextui-org/react';
 import FeaturesData from './featuresData.json';
+import Link from 'next/link';
+
 const Features = () => {
   return (
-    <div className="div-feature ">
-      <div className="flex flex-row justify-center lg:gap-8 md:gap-8 gap-3 lg:flex-nowrap md:flex-wrap flex-wrap lg:m-0 md:m-0 mt-[60px] mb-[90px]">
+    <div className="div-feature mb-[80px]">
+      <div className="flex flex-wrap justify-center gap-3 lg:gap-8 m-3">
         {FeaturesData.map((feature) => (
-          <Card
-            className="lg:w-[400px] md:w-[400px] lg:h-[300px] md:h-[300px] h-[225px] w-auto  bg-transparent border-2 border-blue-500 m-3"
+          <div
+            className="w-full sm:w-1/2 md:w-1/3 lg:w-1/4 bg-white border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700"
             key={feature.id}
           >
-            <CardHeader className="flex flex-col gap-3">
-              <div className="flex flex-col">
-                <h3 className="text-white font-bold text-lg md:text-xl lg:text-3xl leading-tight">
-                  {feature.title}
-                </h3>
-              </div>
-            </CardHeader>
-            <Divider className="bg-blue-500" />
-            <CardBody className="overflow-hidden bg-white text-black">
-              <p className="lg:text-xl md:text-md text-md text-black">
+            <Image className="rounded-t-lg" src={feature.image} alt="" />
+
+            <div className="p-5">
+              <h5 className="mb-2 text-xl sm:text-2xl font-bold tracking-tight text-gray-900 dark:text-white">
+                {feature.title}
+              </h5>
+
+              <p className="mb-3 font-normal text-gray-700 dark:text-gray-400">
                 {feature.description}
               </p>
-              {/* <div className="flex justify-center items-center m-2">
-                <Image
-                  isBlurred
-                  src="https://images.pexels.com/photos/1454253/pexels-photo-1454253.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1"
-                  alt="NextUI Album Cover"
-                  className=""
-                />
-              </div> */}
-            </CardBody>
-            <Divider className="bg-blue-500" />
-            <CardFooter className="flex justify-center">
-              <span className="icon-[iconoir--tools] text-blue-500 text-6xl" />
-            </CardFooter>
-          </Card>
+              <Link href={'/vehicleselection'}>
+                <Button className="button">Browse Vehicles</Button>
+              </Link>
+            </div>
+          </div>
         ))}
       </div>
     </div>

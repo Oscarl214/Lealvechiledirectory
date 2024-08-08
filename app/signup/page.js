@@ -65,14 +65,14 @@ export default function SignUpPage() {
   };
 
   return (
-    <main className="flex wrap-reverse lg:flex-nowrap h-screen flex-col lg:flex-row items-center bg-white justify-around">
+    <main className="flex wrap-reverse lg:flex-nowrap h-screen flex-col lg:flex-row items-center bg-black justify-around  mt-[130px]">
       <section>
         <div className="flex flex-col items-center justify-center lg:py-0">
           <a
             href="#"
             className="flex items-center mb-6 text-2xl font-semibold text-5xl"
           >
-            <h1 className="text-xl text-black text-center m-5">
+            <h1 className="text-xl text-white text-center m-2">
               LEAL VEHICLE DIRECTORY
             </h1>
           </a>
@@ -175,7 +175,7 @@ export default function SignUpPage() {
           height={500}
           src="https://firebasestorage.googleapis.com/v0/b/lealvehicledirectory.appspot.com/o/SignInTruck.jpg?alt=media&token=f1cb4d7f-c922-458c-9837-2451f523142d"
           alt="Nissan GTR"
-          className="lg:m-5 mt-3"
+          className="mt-3 lg:m-5 rounded-sm"
         />
       </div>
     </main>
