@@ -3,6 +3,7 @@ import React from 'react';
 import NavBar from '../components/navbar';
 import { Session } from 'next-auth';
 import { useSession } from 'next-auth/react';
+import { CarCard } from '../components';
 const VehicleSelection = () => {
   const { data: session } = useSession();
   if (!session) {
@@ -12,7 +13,7 @@ const VehicleSelection = () => {
     <div>
       <NavBar />
       <div className="pt-[80px]">
-        <p>Car Cards will go here</p>
+        <CarCard/>
       </div>
     </div>
   );

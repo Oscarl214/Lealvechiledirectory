@@ -18,7 +18,7 @@ import Router from 'next/router';
 const NavBar = () => {
   const [isMenuOpen, setIsMenuOpen] = React.useState(false);
 
-  const menuItems = ['Logout', 'Profile', 'Car Selection'];
+  const menuItems = ['Logout', 'Profile', 'Vehicle Selection'];
 
   const handleSignOut = async () => {
     signOut({ callbackUrl: '/' });
@@ -37,13 +37,16 @@ const NavBar = () => {
             className="sm:hidden"
           />
           <NavbarBrand>
+            <Link href='/admin'>
             <Image width={50} alt="NextUI hero Image" src="./favicon.png" />
+            </Link>
+            
           </NavbarBrand>
         </NavbarContent>
 
         <NavbarContent className="hidden sm:flex gap-4" justify="center">
           <NavbarItem>
-            <Link className="text-white" href="/admin">
+            <Link className="text-white" href="/vehicleselection">
               Vehicle Selection
             </Link>
           </NavbarItem>

@@ -5,43 +5,8 @@ export interface SearchManufacturerProps {
   setManufacturer: (manufacturer: string) => void;
 }
 
-export interface CarProps {
-  city_mpg: number;
-  class: string;
-  combination_mpg: number;
-  cylinders: number;
-  displacement: number;
-  drive: string;
-  fuel_type: string;
-  highway_mpg: number;
-  make: string;
-  model: string;
-  transmission: string;
-  year: number;
-  image: string;
-}
 
-export interface Vehicle {
-  city_mpg: number;
-  class: string;
-  combination_mpg: number;
-  cylinders: number;
-  displacement: number;
-  drive: string;
-  fuel_type: string;
-  highway_mpg: number;
-  make: string;
-  model: string;
-  transmission: string;
-  year: number;
-  image: string;
-}
 
-export interface GetVehiclesResponse {
-  data: {
-    vehicles: Vehicle[];
-  };
-}
 
 export interface AddVehicleResponse {
   data: {
