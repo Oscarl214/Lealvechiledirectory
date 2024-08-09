@@ -23,7 +23,7 @@ const Features = () => {
                 {feature.description}
               </p>
               <Link href={'/vehicleselection'}>
-                <Button className="button">Browse Vehicles</Button>
+                <Button className="button">My Vehicles</Button>
               </Link>
             </div>
           </div>

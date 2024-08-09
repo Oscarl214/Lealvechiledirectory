@@ -36,9 +36,9 @@ model Vehicle {
   transmission   String
   cylinders      Int
   displacement   Float
-  city_mpg       Int
-  highway_mpg    Int
-  combination_mpg Int
+  city_mpg       Int?
+  highway_mpg    Int?
+  combination_mpg Int?
   class          String
   image          String
   userId         String     @map("userId") @db.ObjectId

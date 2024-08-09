@@ -5,7 +5,7 @@ import Image from 'next/image';
 import { Button } from '@nextui-org/react';
 
 interface Vehicle {
-  id: string; 
+  id: string;
   make: string;
   model: string;
   year: number;
@@ -19,6 +19,8 @@ interface Vehicle {
   combination_mpg: number | null;
   class: string;
   image: string;
+  userId: string | null;
+  user: string | null;
 }
 
 const CarCard = () => {
@@ -29,6 +31,8 @@ const CarCard = () => {
       try {
         const response = await fetch('/api/vehicles');
         const data = await response.json();
+
+        console.log('All Vehicle Data', data);
         setVehicles(data.CarData);
       } catch (error) {
         console.error('Error fetching car data', error);
@@ -42,10 +46,10 @@ const CarCard = () => {
       {vehicles.map((vehicle) => (
         <div
           key={vehicle.id}
-          className="flex flex-col p-6 justify-center items-start text-black-100 bg-gray-200 hover:bg-white hover:shadow-md rounded-3xl md:w-[500px] w-[300px] m-5 flex-wrap"
+          className="flex flex-col p-6 justify-center items-start text-black-100 bg-gray-500 hover:bg-white hover:shadow-md rounded-xl md:w-[500px] w-[300px] m-5 flex-wrap"
         >
           <div className="w-full flex flex-col justify-between items-start gap-3">
-            <h2 className="text-[22px] leading-[26px] font-bold capitalize text-black">
+            <h2 className="text-[22px] leading-[26px] font-bold capitalize text-white">
               {vehicle.model}
             </h2>
             <p>
@@ -54,14 +58,20 @@ const CarCard = () => {
               </span>
             </p>
             <div className="relative w-full h-40 my-3 flex items-center justify-center">
-              <Image
-                src={vehicle.image}
-                alt="car model"
-                height={250}
-                width={270}
-                priority
-                className="object-center"
-              />
+              {vehicle.image ? (
+                <Image
+                  src={vehicle.image}
+                  alt="car model"
+                  height={250}
+                  width={270}
+                  priority
+                  className="object-center"
+                />
+              ) : (
+                <div className="flex items-center justify-center w-full h-full bg-gray-300">
+                  <p>No image available</p>
+                </div>
+              )}
             </div>
             <div className="relative flex lg:flex-row w-full mt-2 flex-col">
               <div className="flex group-hover:invisible w-full justify-between text-gray ">
@@ -101,9 +111,7 @@ const CarCard = () => {
               </div>
 
               <div className=" lg:flex-row flex-col lg:justify-center lg:ml-4 lg:pl-4 items-start mt-4">
-                <Button className="text-black hover:bg-black hover:text-white">
-                  Add to Profile
-                </Button>
+                <Button className="button">My Vehicles</Button>
               </div>
             </div>
           </div>

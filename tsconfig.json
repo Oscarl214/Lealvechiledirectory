@@ -26,7 +26,7 @@
     "**/*.ts",
     "**/*.tsx",
     ".next/types/**/*.ts",
-    "app/api/vechicles/[id]/route.tsx",
+    "app/api/vehicles/[id]/route.tsx",
     "app/components/CarCard.tsx",
     "app/api/auth/[...nextAuth]route.ts"
   ],
