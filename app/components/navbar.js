@@ -13,19 +13,23 @@ import {
   Image,
 } from '@nextui-org/react';
 
-import logOut from '../firebase/auth/logout';
-
+import { signOut } from 'next-auth/react';
+import Router from 'next/router';
 const NavBar = () => {
   const [isMenuOpen, setIsMenuOpen] = React.useState(false);
 
-  const menuItems = ['Logout', 'Profile', 'Car Selection'];
+  const menuItems = ['Logout', 'Profile', 'Vehicle Selection'];
+
+  const handleSignOut = async () => {
+    signOut({ callbackUrl: '/' });
+  };
 
   return (
-    <div>
+    <div className="fixed z-5">
       {' '}
       <Navbar
         onMenuOpenChange={setIsMenuOpen}
-        className=" bg-black shadow-xl text-white"
+        className=" bg-transparent shadow-xl text-white"
       >
         <NavbarContent>
           <NavbarMenuToggle
@@ -33,13 +37,16 @@ const NavBar = () => {
             className="sm:hidden"
           />
           <NavbarBrand>
+            <Link href='/admin'>
             <Image width={50} alt="NextUI hero Image" src="./favicon.png" />
+            </Link>
+            
           </NavbarBrand>
         </NavbarContent>
 
         <NavbarContent className="hidden sm:flex gap-4" justify="center">
           <NavbarItem>
-            <Link className="text-white" href="/admin">
+            <Link className="text-white" href="/vehicleselection">
               Vehicle Selection
             </Link>
           </NavbarItem>
@@ -61,7 +68,7 @@ const NavBar = () => {
       </NavbarItem> */}
           <NavbarItem>
             <Button
-              onClick={logOut}
+              onClick={() => handleSignOut()}
               color="primary"
               href="#"
               variant="flat"
@@ -71,12 +78,12 @@ const NavBar = () => {
             </Button>
           </NavbarItem>
         </NavbarContent>
-        <NavbarMenu className=" opacity-55 text-white bg-gray-800">
+        <NavbarMenu className=" text-white bg-gray-200 bg-opacity-10">
           {menuItems.map((item, index) => (
             <NavbarMenuItem key={`${item}-${index}`}>
               {item === 'Logout' ? (
                 <Link href="/">
-                  <div className="text-white" onClick={logOut}>
+                  <div className="text-white" onClick={() => handleSignOut()}>
                     {item}
                   </div>
                 </Link>

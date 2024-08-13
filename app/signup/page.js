@@ -1,14 +1,9 @@
 'use client';
 import React from 'react';
-import signUp from '../firebase/auth/signup';
 import { useRouter } from 'next/navigation';
 import { Image, Button } from '@nextui-org/react';
-import { firebase_app, db } from '../firebase/config';
-import { getAuth } from 'firebase/auth';
 import Link from 'next/link';
-import { doc, getDoc, setDoc, getFirestore } from 'firebase/firestore';
-import { signInWithPopup, GoogleAuthProvider } from 'firebase/auth';
-
+import { toast } from 'react-hot-toast';
 export default function SignUpPage() {
   const [email, setEmail] = React.useState('');
   const [password, setPassword] = React.useState('');
@@ -19,18 +14,44 @@ export default function SignUpPage() {
   const handleForm = async (event) => {
     event.preventDefault();
 
-    const { result, error } = await signUp(email, password);
+    setErrorMessage('');
 
-    if (error) {
-      setErrorMessage('Email is already in use, please Sign In');
-      setEmail('');
-      setPassword('');
-      return console.log(error);
+    if (!email) {
+      setErrorMessage('Please enter your email');
+      toast.error('Please enter your email');
     }
 
-    // else successful
-    console.log('ADDED TO FIREBASE', result);
-    return router.push('/admin');
+    if (!password) {
+      setErrorMessage('Please enter a password');
+      toast.error('Please enter a password');
+    }
+
+    try {
+      const response = await fetch('/api/user', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          email,
+          password,
+        }),
+      });
+
+      const data = await response.json();
+      console.log('Response Data:', data);
+
+      if (response.ok) {
+        router.push('/admin');
+      } else {
+        setErrorMessage(data.error || 'An error occurred. Please try again');
+        toast.error(data.error || 'An error occurred. Please try again');
+      }
+    } catch (error) {
+      console.error('Error:', error);
+      setErrorMessage('An unexpected error occurred. Please try again');
+      toast.error('An unexpected error occurred. Please try again');
+    }
   };
 
   const handleEmailChange = (e) => {
@@ -43,29 +64,15 @@ export default function SignUpPage() {
     setErrorMessage('');
   };
 
-  const signUpWithGoogle = async () => {
-    const auth = getAuth(firebase_app);
-    const provider = new GoogleAuthProvider();
-
-    try {
-      const result = await signInWithPopup(auth, provider);
-
-      // Firebase function will handle user document creation
-      router.push('/admin');
-    } catch (error) {
-      console.log('Error signing with Google', error.message);
-    }
-  };
-
   return (
-    <main className="flex wrap-reverse lg:flex-nowrap h-screen flex-col lg:flex-row items-center bg-white justify-around">
+    <main className="flex wrap-reverse lg:flex-nowrap h-screen flex-col lg:flex-row items-center bg-black justify-around  mt-[130px]">
       <section>
         <div className="flex flex-col items-center justify-center lg:py-0">
           <a
             href="#"
             className="flex items-center mb-6 text-2xl font-semibold text-5xl"
           >
-            <h1 className="text-xl text-black text-center m-5">
+            <h1 className="text-xl text-white text-center m-2">
               LEAL VEHICLE DIRECTORY
             </h1>
           </a>
@@ -138,7 +145,7 @@ export default function SignUpPage() {
                   type="button"
                   className="text-white w-full bg-transparent hover:bg-[#4285F4]/90 focus:ring-4 focus:outline-none focus:ring-[#4285F4]/50 font-medium rounded-lg text-sm px-5 py-2.5 text-start inline-flex items-start justify-between mr-2 mb-2"
                   variant="bordered"
-                  onClick={signUpWithGoogle}
+                  onClick={() => console.log('Sign Up with Google')}
                 >
                   <svg
                     className="mr-2 -ml-1 w-4 h-4"
@@ -165,10 +172,10 @@ export default function SignUpPage() {
       <div>
         <Image
           width={550}
-          height={500}
+          // height={500}
           src="https://firebasestorage.googleapis.com/v0/b/lealvehicledirectory.appspot.com/o/SignInTruck.jpg?alt=media&token=f1cb4d7f-c922-458c-9837-2451f523142d"
           alt="Nissan GTR"
-          className="lg:m-5 mt-3 invisible lg:visible"
+          className="mt-3 lg:m-5 rounded-sm lg:h-[850] h-[550]"
         />
       </div>
     </main>

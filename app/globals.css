@@ -13,7 +13,8 @@
 :root {
   --foreground-rgb: 0, 0, 0;
   --background-start-rgb: 214, 219, 220;
-  --background-end-rgb: 255, 255, 255;
+  --background-end-rgb: 255, 255, 255
+  --h1: bold max(36px, 4vw)/max(48px, 5vw) ;
 }
 
 @media (prefers-color-scheme: dark) {
@@ -34,38 +35,86 @@ body {
     rgb(var(--background-start-rgb));
 }
 
-/* @layer utilities {
-  .text-balance {
-    text-wrap: balance;
+
+.div-center{
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  height: 100%;
+}
+
+.div-feature{
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: center;
+  height: 100%;
+}
+.feature-cards{
+  display: flex;
+  justify-content: center;
+  gap: 30px;
+  flex-wrap: wrap;
+  margin-top: 40px;
+}
+
+.feature-card> * {
+  flex:1;
+  min-width: 200px;
+}
+
+
+.min-h-screen-main {
+  min-height: 70vh;
+}
+
+html {
+  scroll-snap-type: y mandatory;
+}
+
+.hero {
+  margin-top: 0;
+}
+
+.section {
+  margin: 0px auto;
+  max-width: 1080px;
+  height: 100vh;
+  scroll-snap-align: start;
+}
+
+.hero-section {
+  margin: 0px auto;
+  height: 100vh;
+  scroll-snap-align: start;
+}
+
+
+.button{
+  border: 2px solid rgb(0, 140, 255);
+  background-color: transparent;
+  color: white;
+  margin-top: 10px;
+  scale: 1px;
+}
+
+.button:hover{
+  border: 2px solid rgb(218, 173, 83);
+  scale: 2px;
+  color: orange;
+}
+
+.button:click{
+  border: 2px solid rgb(218, 173, 83);
+}
+
+@media (max-width: 640px) {
+  html {
+    scroll-snap-type: none;
+  }
+  .section {
+    scroll-snap-align: none;
   }
 }
-
-.searchbar {
-  @apply flex items-center justify-start max-sm:flex-col w-full relative max-sm:gap-4 max-w-3xl;
-}
-
-.searchbar__item {
-  @apply flex-1 max-sm:w-full flex justify-start items-center relative;
-}
-
-.searchbar__input {
-  @apply w-full h-[48px] pl-12 p-4 bg-light-white rounded-r-full max-sm:rounded-full outline-none cursor-pointer text-sm;
-}
-
-
-
-.search-manufacturer {
-  @apply flex-1 max-sm:w-full flex justify-start items-center;
-}
-
-.search-manufacturer__input {
-  @apply w-full h-[48px] pl-12 p-4 rounded-l-full max-sm:rounded-full bg-light-white outline-none cursor-pointer text-sm;
-}
-
-.search-manufacturer__options {
-  @apply absolute mt-1 max-h-60 w-full overflow-auto rounded-md  py-1 text-base shadow-lg ring-1  ring-opacity-5 focus:outline-none sm:text-sm;
-}
-
-.search-manufacturer__option {
-  @apply cursor-default select-none py-2 pl-10 pr-4;
-} */
