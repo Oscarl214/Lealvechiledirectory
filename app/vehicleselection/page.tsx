@@ -4,6 +4,8 @@ import NavBar from '../components/navbar';
 import { Session } from 'next-auth';
 import { useSession } from 'next-auth/react';
 import { CarCard } from '../components';
+import { Suspense } from 'react';
+import Loading from '../loading';
 const VehicleSelection = () => {
   const { data: session } = useSession();
   if (!session) {
@@ -13,7 +15,9 @@ const VehicleSelection = () => {
     <div>
       <NavBar />
       <div className="pt-[80px]">
-        <CarCard/>
+        <Suspense fallback={<Loading />}>
+          <CarCard />
+        </Suspense>
       </div>
     </div>
   );

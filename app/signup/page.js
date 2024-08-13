@@ -172,10 +172,10 @@ export default function SignUpPage() {
       <div>
         <Image
           width={550}
-          height={500}
+          // height={500}
           src="https://firebasestorage.googleapis.com/v0/b/lealvehicledirectory.appspot.com/o/SignInTruck.jpg?alt=media&token=f1cb4d7f-c922-458c-9837-2451f523142d"
           alt="Nissan GTR"
-          className="mt-3 lg:m-5 rounded-sm"
+          className="mt-3 lg:m-5 rounded-sm lg:h-[850] h-[550]"
         />
       </div>
     </main>

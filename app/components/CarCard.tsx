@@ -46,7 +46,7 @@ const CarCard = () => {
       {vehicles.map((vehicle) => (
         <div
           key={vehicle.id}
-          className="flex flex-col p-6 justify-center items-start text-black-100 bg-gray-500 hover:bg-white hover:shadow-md rounded-xl md:w-[500px] w-[300px] m-5 flex-wrap"
+          className="flex flex-col p-6 justify-center items-start text-black-100 bg-gray-500 hover:bg-blue-300 hover:shadow-md rounded-xl md:w-[500px] w-[300px] m-5 flex-wrap"
         >
           <div className="w-full flex flex-col justify-between items-start gap-3">
             <h2 className="text-[22px] leading-[26px] font-bold capitalize text-white">
@@ -82,7 +82,7 @@ const CarCard = () => {
                     width={20}
                     height={20}
                   />
-                  <p className="text-[14px] text-gray-700 mt-3">
+                  <p className="text-[14px] text-white mt-3">
                     {vehicle.transmission === 'a' ? 'Automatic' : 'Manual'}
                   </p>
                 </div>
@@ -93,9 +93,7 @@ const CarCard = () => {
                     width={20}
                     height={20}
                   />
-                  <p className="text-[14px] text-gray-700 mt-3">
-                    {vehicle.drive}
-                  </p>
+                  <p className="text-[14px] text-white mt-3">{vehicle.drive}</p>
                 </div>
                 <div className="flex flex-col justify-center items-center gap-2 ">
                   <Image
@@ -104,14 +102,14 @@ const CarCard = () => {
                     width={22}
                     height={21}
                   />
-                  <p className="text-[14px] text-gray-700 mt-3">
+                  <p className="text-[14px] text-white mt-3">
                     {vehicle.highway_mpg} MPG
                   </p>
                 </div>
               </div>
 
               <div className=" lg:flex-row flex-col lg:justify-center lg:ml-4 lg:pl-4 items-start mt-4">
-                <Button className="button">My Vehicles</Button>
+                <Button className="bg-orange-600">Add to Profile</Button>
               </div>
             </div>
           </div>
