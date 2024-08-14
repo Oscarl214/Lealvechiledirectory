@@ -74,9 +74,7 @@ html {
   scroll-snap-type: y mandatory;
 }
 
-.hero {
-  margin-top: 0;
-}
+
 
 .section {
   margin: 0px auto;
@@ -117,4 +115,8 @@ html {
   .section {
     scroll-snap-align: none;
   }
+}
+
+.min-h-screen-policy {
+  min-height: 80vh;
 }
