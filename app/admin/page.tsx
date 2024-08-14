@@ -9,7 +9,7 @@ const AdminPage = () => {
   const { data: session } = useSession();
 
   if (!session) {
-    return <p>Access Denied</p>;
+    return <p>Access Denied | HAHAH LOSER!</p>;
   }
 
   return (
