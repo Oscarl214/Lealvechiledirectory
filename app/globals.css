@@ -83,6 +83,12 @@ html {
   scroll-snap-align: start;
 }
 
+.headersection {
+  margin: 0px auto;
+  max-width: 1080px;
+  height: 5vh;
+  scroll-snap-align: start;
+}
 .hero-section {
   margin: 0px auto;
   height: 100vh;
