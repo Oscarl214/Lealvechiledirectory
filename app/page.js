@@ -1,6 +1,6 @@
 'use client';
 import React from 'react';
-import { useRouter } from 'next/navigation';
+import { redirect, useRouter } from 'next/navigation';
 import { Image, Button } from '@nextui-org/react';
 import { toast } from 'react-hot-toast';
 import { signIn } from 'next-auth/react';
@@ -141,7 +141,9 @@ function SignInPage() {
                       type="button"
                       className="text-white  bg-transparent hover:bg-[#4285F4]/90 focus:ring-4 focus:outline-none focus:ring-[#4285F4]/50 font-medium rounded-lg text-sm px-5 py-2.5 text-start inline-flex items-start justify-between"
                       variant="bordered"
-                      onClick={()=>signIn('google')}
+                      onClick={() =>
+                        signIn('google', { callbackUrl: '/admin' })
+                      }
                     >
                       <svg
                         className=" w-4 h-4"
