@@ -1,9 +1,10 @@
 'use client';
 import React from 'react';
-import { useRouter } from 'next/navigation';
+import { redirect, useRouter } from 'next/navigation';
 import { Image, Button } from '@nextui-org/react';
 import { toast } from 'react-hot-toast';
 import { signIn } from 'next-auth/react';
+
 function SignInPage() {
   const [email, setEmail] = React.useState('');
   const [password, setPassword] = React.useState('');
@@ -140,7 +141,9 @@ function SignInPage() {
                       type="button"
                       className="text-white  bg-transparent hover:bg-[#4285F4]/90 focus:ring-4 focus:outline-none focus:ring-[#4285F4]/50 font-medium rounded-lg text-sm px-5 py-2.5 text-start inline-flex items-start justify-between"
                       variant="bordered"
-                      onClick={() => console.log('Sign In with Google')}
+                      onClick={() =>
+                        signIn('google', { callbackUrl: '/admin' })
+                      }
                     >
                       <svg
                         className=" w-4 h-4"
@@ -174,18 +177,9 @@ function SignInPage() {
             </div>
           </div>
         </section>
-        {/* <div>
-          <Image
-            width={550}
-            // height={850}
-            src="https://firebasestorage.googleapis.com/v0/b/lealvehicledirectory.appspot.com/o/SignUpPageGTR.jpg?alt=media&token=0bd51fcd-b6ab-4018-85ca-ce1e660b6dc4"
-            alt="Nissan GTR"
-            className="mt-3 lg:m-5 rounded-sm lg:h-[850] h-[550]"
-          />
-        </div> */}
       </main>
     </div>
   );
 }
-
+// addressing google auth sign in
 export default SignInPage;

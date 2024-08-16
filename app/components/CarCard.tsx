@@ -29,7 +29,11 @@ const CarCard = () => {
   useEffect(() => {
     const fetchCarData = async () => {
       try {
-        const response = await fetch('/api/vehicles');
+        const response = await fetch('/api/vehicles', {
+          headers: {
+            cache: 'no-store',
+          },
+        });
         const data = await response.json();
 
         console.log('All Vehicle Data', data);
