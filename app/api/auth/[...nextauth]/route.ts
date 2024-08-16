@@ -42,15 +42,19 @@ const handler = NextAuth({
   callbacks: {
     async signIn({ user, account, profile }) {
       if (account?.provider === 'google') {
-        const existingUser = await prisma.user.findUnique({
-          where: { email: user.email },
-        });
-        if (!existingUser) {
-          await prisma.user.create({
-            data: {
-              email: user.email,
-            },
+        const email = user.email;
+
+        if (email) {
+          const existingUser = await prisma.user.findUnique({
+            where: { email },
           });
+          if (!existingUser) {
+            await prisma.user.create({
+              data: {
+                email: user.email,
+              },
+            });
+          }
         }
       }
       return true;
