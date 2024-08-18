@@ -21,7 +21,7 @@ const AdminHero = () => {
           A dedicated digital space for documenting all our vehicle maintenance.
         </p>
         <Link href={'/vehicleselection'}>
-          <Button className="button">Browse Vehicles</Button>
+          <Button className="bg-orange-600 mt-2">Browse Vehicles</Button>
         </Link>
         <Link href={'/vehicleselection'}>
           <Button className="button">My Vehicles</Button>
