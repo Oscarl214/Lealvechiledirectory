@@ -6,6 +6,7 @@ import AdminHero from '../components/adminpagecomponents/hero';
 import Features from '../components/adminpagecomponents/features';
 import Footer from '../components/footer';
 import Header from '../components/adminpagecomponents/header';
+
 const AdminPage = () => {
   const { data: session } = useSession();
 

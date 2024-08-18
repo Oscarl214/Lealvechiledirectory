@@ -18,7 +18,7 @@ import Router from 'next/router';
 const NavBar = () => {
   const [isMenuOpen, setIsMenuOpen] = React.useState(false);
 
-  const menuItems = ['Logout', 'Profile', 'Vehicle Selection'];
+  const menuItems = ['Home', 'Profile', 'vehicleselection'];
 
   const handleSignOut = async () => {
     signOut({ callbackUrl: '/' });
@@ -37,10 +37,9 @@ const NavBar = () => {
             className="sm:hidden"
           />
           <NavbarBrand>
-            <Link href='/admin'>
-            <Image width={50} alt="NextUI hero Image" src="./favicon.png" />
+            <Link href="/admin">
+              <Image width={50} alt="NextUI hero Image" src="./favicon.png" />
             </Link>
-            
           </NavbarBrand>
         </NavbarContent>
 
@@ -81,24 +80,22 @@ const NavBar = () => {
         <NavbarMenu className=" text-white bg-gray-200 bg-opacity-10">
           {menuItems.map((item, index) => (
             <NavbarMenuItem key={`${item}-${index}`}>
-              {item === 'Logout' ? (
-                <Link href="/">
-                  <div className="text-white" onClick={() => handleSignOut()}>
-                    {item}
-                  </div>
+              {item === 'Home' ? (
+                <Link href="admin">
+                  <div className="text-white">{item}</div>
                 </Link>
               ) : (
                 <Link
                   color={
-                    index === 2
+                    index === 3
                       ? 'primary'
                       : index === menuItems.length - 1
                       ? 'danger'
                       : 'foreground'
                   }
                   className="w-full text-white"
-                  href="#"
                   size="lg"
+                  href={`${item}`}
                 >
                   {item}
                 </Link>
