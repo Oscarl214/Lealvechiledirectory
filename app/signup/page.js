@@ -43,7 +43,9 @@ export default function SignUpPage() {
       console.log('Response Data:', data);
 
       if (response.ok) {
-        router.push('/admin');
+        toast.success('Account created. Please Sign in!');
+
+        router.push('/');
       } else {
         setErrorMessage(data.error || 'An error occurred. Please try again');
         toast.error(data.error || 'An error occurred. Please try again');
