@@ -2,8 +2,10 @@
 
 import React, { useState, useEffect } from 'react';
 import Image from 'next/image';
+import Link from 'next/link';
 import { Button } from '@nextui-org/react';
 import { Motion } from './adminpagecomponents/motion';
+import { useSession } from 'next-auth/react';
 interface Vehicle {
   id: string;
   make: string;
@@ -25,6 +27,7 @@ interface Vehicle {
 
 const CarCard = () => {
   const [vehicles, setVehicles] = useState<Vehicle[]>([]);
+  const { data: session, status } = useSession();
 
   useEffect(() => {
     const fetchCarData = async () => {
@@ -45,6 +48,13 @@ const CarCard = () => {
     fetchCarData();
   }, []);
 
+  //use the session to pass in user email as param to be able to pass in the data to the api route so it can find the user and update the
+  //users vehicle array
+  //Pass in the vechciole id as you call the handletoprofile function on Click
+
+  const handleAddToProfile = async (vehicleId: string) => {
+    if (!session?.user?.email) return;
+  };
   return (
     <div className="flex flex-wrap justify-center">
       {vehicles.map((vehicle) => (
@@ -113,7 +123,9 @@ const CarCard = () => {
                 </div>
 
                 <div className=" lg:flex-row flex-col lg:justify-center lg:ml-4 lg:pl-4 items-start mt-4">
-                  <Button className="bg-orange-600">Add to Profile</Button>
+                  <Link href={'/uservehicles'}>
+                    <Button className="bg-orange-600">Add to Profile</Button>
+                  </Link>
                 </div>
               </div>
             </div>
