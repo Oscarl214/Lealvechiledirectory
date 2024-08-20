@@ -24,7 +24,7 @@ const handler = NextAuth({
 
         const user = await prisma.user.findUnique({
           where: { email: credentials.email },
-          select: { id: true, email: true, password: true },
+          select: { id: true, email: true, password: true, vehicles: true },
         });
 
         if (
@@ -47,11 +47,19 @@ const handler = NextAuth({
         if (email) {
           const existingUser = await prisma.user.findUnique({
             where: { email },
+            include: {
+              vehicles: true, // Include vehicles in the query
+            },
           });
+
           if (!existingUser) {
+            // Create a new user with an empty vehicles array
             await prisma.user.create({
               data: {
                 email: user.email,
+                vehicles: {
+                  create: [],
+                },
               },
             });
           }

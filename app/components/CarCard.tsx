@@ -6,6 +6,7 @@ import Link from 'next/link';
 import { Button } from '@nextui-org/react';
 import { Motion } from './adminpagecomponents/motion';
 import { useSession } from 'next-auth/react';
+import toast, { Toast } from 'react-hot-toast';
 interface Vehicle {
   id: string;
   make: string;
@@ -54,7 +55,28 @@ const CarCard = () => {
 
   const handleAddToProfile = async (vehicleId: string) => {
     if (!session?.user?.email) return;
+
+    try {
+      const response = await fetch('/api/addvehicle', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ email: session.user.email, vehicleId }),
+      });
+
+      if (response.ok) {
+        console.log('Vehicle added to profile successfully');
+        toast.success('Vehicle Added to Profile');
+      } else {
+        console.error('Failed to add vehicle to profile');
+        toast.error('Failed to add vehicle to profile');
+      }
+    } catch (error) {
+      console.error('Error adding vehicle to profile:', error);
+    }
   };
+
   return (
     <div className="flex flex-wrap justify-center">
       {vehicles.map((vehicle) => (
@@ -123,9 +145,12 @@ const CarCard = () => {
                 </div>
 
                 <div className=" lg:flex-row flex-col lg:justify-center lg:ml-4 lg:pl-4 items-start mt-4">
-                  <Link href={'/uservehicles'}>
-                    <Button className="bg-orange-600">Add to Profile</Button>
-                  </Link>
+                  <Button
+                    className="bg-orange-600"
+                    onClick={() => handleAddToProfile(vehicle.id)}
+                  >
+                    Add to Profile
+                  </Button>
                 </div>
               </div>
             </div>

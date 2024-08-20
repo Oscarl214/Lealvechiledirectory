@@ -35,8 +35,8 @@ function SignInPage() {
       });
 
       if (result?.error) {
-        setErrorMessage(result.error);
-        toast.error(result.error);
+        setErrorMessage('Incorrect Email or Password');
+        toast.error('Incorrect Email or Password');
       } else if (result?.ok) {
         router.push('/admin');
       } else {

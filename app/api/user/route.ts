@@ -6,11 +6,6 @@ export async function POST(request: Request) {
   try {
     const { email, password } = await request.json();
 
-    // Check if the user already exists
-    let user = await prisma.user.findUnique({
-      where: { email: email },
-    });
-
     // Validate password length
     if (password.length < 6) {
       return NextResponse.json(
@@ -19,8 +14,17 @@ export async function POST(request: Request) {
       );
     }
 
+    // Check if the user already exists
+    const existingUser = await prisma.user.findUnique({
+      where: { email },
+      select: {
+        id: true, // Only select what you need
+        email: true,
+      },
+    });
+
     // If user already exists, return an error
-    if (user) {
+    if (existingUser) {
       return NextResponse.json(
         { error: 'User already exists. Please log in.' },
         { status: 400 }
@@ -30,11 +34,18 @@ export async function POST(request: Request) {
     // Hash the password
     const hashedPassword = await bcrypt.hash(password, 10);
 
-    // Create the user
-    user = await prisma.user.create({
+    // Create the user with an empty vehicles array
+    const user = await prisma.user.create({
       data: {
         email,
         password: hashedPassword,
+        vehicles: {
+          create: [],
+        },
+      },
+      select: {
+        id: true,
+        email: true,
       },
     });
 
@@ -43,7 +54,7 @@ export async function POST(request: Request) {
       message: 'User created successfully',
     });
   } catch (error) {
-    console.log('error', error);
+    console.error('Error creating user:', error);
     return NextResponse.json(
       { error: 'Internal server error' },
       { status: 500 }
