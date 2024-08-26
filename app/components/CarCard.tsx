@@ -67,6 +67,7 @@ const CarCard = () => {
 
       if (response.ok) {
         console.log('Vehicle added to profile successfully');
+        console.log('Vehicle ID', vehicleId);
         toast.success('Vehicle Added to Profile');
       } else {
         console.error('Failed to add vehicle to profile');

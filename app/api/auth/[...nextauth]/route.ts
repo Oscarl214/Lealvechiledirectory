@@ -54,7 +54,7 @@ const handler = NextAuth({
 
           if (!existingUser) {
             // Create a new user with an empty vehicles array
-            await prisma.user.create({
+            const newUser = await prisma.user.create({
               data: {
                 email: user.email,
                 vehicles: {
@@ -62,6 +62,7 @@ const handler = NextAuth({
                 },
               },
             });
+            console.log('New Google user created with vehicles:', newUser);
           }
         }
       }

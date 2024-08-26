@@ -50,7 +50,7 @@ const NavBar = () => {
             </Link>
           </NavbarItem>
           <NavbarItem isActive>
-            <Link href="/uservechicles" aria-current="page">
+            <Link href="/uservehicles" aria-current="page">
               Users Cars
             </Link>
           </NavbarItem>

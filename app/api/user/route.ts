@@ -18,7 +18,7 @@ export async function POST(request: Request) {
     const existingUser = await prisma.user.findUnique({
       where: { email },
       select: {
-        id: true, // Only select what you need
+        id: true,
         email: true,
       },
     });
@@ -34,7 +34,6 @@ export async function POST(request: Request) {
     // Hash the password
     const hashedPassword = await bcrypt.hash(password, 10);
 
-    // Create the user with an empty vehicles array
     const user = await prisma.user.create({
       data: {
         email,
@@ -46,9 +45,10 @@ export async function POST(request: Request) {
       select: {
         id: true,
         email: true,
+        vehicles: true,
       },
     });
-
+    console.log('User created with vehicles array:', user);
     return NextResponse.json({
       userId: user.id,
       message: 'User created successfully',

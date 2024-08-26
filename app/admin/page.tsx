@@ -6,7 +6,7 @@ import AdminHero from '../components/adminpagecomponents/hero';
 import Features from '../components/adminpagecomponents/features';
 import Footer from '../components/footer';
 import Header from '../components/adminpagecomponents/header';
-import { Button, Loading } from '@nextui-org/react';
+import { Button } from '@nextui-org/react';
 import Link from 'next/link';
 const AdminPage = () => {
   const { data: session } = useSession();
