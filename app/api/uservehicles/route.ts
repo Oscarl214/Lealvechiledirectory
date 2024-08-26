@@ -22,7 +22,7 @@ export async function POST(request: Request) {
 
     return NextResponse.json({
       message: 'Users Vehicles',
-      CarData: usersVehicles,
+      userCarData: usersVehicles,
     });
   } catch (error) {
     console.log('error', error);
