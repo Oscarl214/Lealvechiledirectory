@@ -72,17 +72,29 @@ const UsersCar = () => {
   }
 
   return (
-    <div className="flex flex-wrap">
+    <div className="mt-10 flex flex-wrap h-screen bg-white">
       {userVehicles.map((vehicle) => (
-        <div className="flex justify-center p-4" key={vehicle.id}>
-          <Image
-            src={vehicle.image}
-            alt={`${vehicle.make} ${vehicle.model} (${vehicle.year})`}
-            height={250}
-            width={270}
-            priority
-            className="object-center"
-          />
+        <div
+          key={vehicle.id}
+          className="flex flex-col md:flex-row w-full p-4 items-center"
+        >
+          {/* Car image */}
+          <div className="flex-shrink-0 md:w-1/2 mb-4 md:mb-0">
+            <h2 className="text-center mb-4 text-4xl font-extrabold text-gray-900 md:text-5xl lg:text-6xl ">
+              {vehicle.make} {vehicle.model}
+            </h2>
+            <Image
+              src={vehicle.image}
+              alt={`${vehicle.make} ${vehicle.model} (${vehicle.year})`}
+              height={550}
+              width={570}
+              priority
+              className="object-cover w-full h-auto"
+            />
+          </div>
+          <div className="flex-grow md:w-1/2 flex justify-center items-center">
+            {/* <h2 className=" text-lg font-semibold">{vehicle.model}</h2> */}
+          </div>
         </div>
       ))}
     </div>

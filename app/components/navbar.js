@@ -18,7 +18,7 @@ import Router from 'next/router';
 const NavBar = () => {
   const [isMenuOpen, setIsMenuOpen] = React.useState(false);
 
-  const menuItems = ['Home', 'Profile', 'vehicleselection'];
+  const menuItems = ['Home', 'uservehicles'];
 
   const handleSignOut = async () => {
     signOut({ callbackUrl: '/' });
@@ -77,12 +77,12 @@ const NavBar = () => {
             </Button>
           </NavbarItem>
         </NavbarContent>
-        <NavbarMenu className=" text-white bg-gray-200 bg-opacity-10">
+        <NavbarMenu className=" text-white bg-transparent">
           {menuItems.map((item, index) => (
             <NavbarMenuItem key={`${item}-${index}`}>
               {item === 'Home' ? (
                 <Link href="admin">
-                  <div className="text-white">{item}</div>
+                  <div className="text-black">{item}</div>
                 </Link>
               ) : (
                 <Link
@@ -93,7 +93,7 @@ const NavBar = () => {
                       ? 'danger'
                       : 'foreground'
                   }
-                  className="w-full text-white"
+                  className="w-full text-black"
                   size="lg"
                   href={`${item}`}
                 >
