@@ -25,11 +25,11 @@ const NavBar = () => {
   };
 
   return (
-    <div className="fixed z-5">
+    <div className="fixed z-5 w-full">
       {' '}
       <Navbar
         onMenuOpenChange={setIsMenuOpen}
-        className=" bg-black shadow-xl text-white"
+        className=" bg-black shadow-xl text-white "
       >
         <NavbarContent>
           <NavbarMenuToggle
