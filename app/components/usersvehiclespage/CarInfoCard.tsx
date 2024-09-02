@@ -35,10 +35,10 @@ interface CarInfoCardProps {
 const CarInfoCard: React.FC<CarInfoCardProps> = ({ vehicle }) => {
   return (
     <div>
-      <Card className="w-[300px] h-[50px] hover:h-full text-white bg-slate-500 ">
+      <Card className="w-[300px] h-[50px] hover:h-full text-black bg-slate-500 ">
         <CardHeader className="flex gap-3 justify-center">
           <div className="flex ">
-            <p className="text-md font-bold">Vehicle Information</p>
+            <p className="text-md font-bold text-white">Vehicle Information</p>
           </div>
         </CardHeader>
         <Divider />
