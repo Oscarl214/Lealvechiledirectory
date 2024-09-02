@@ -2,6 +2,7 @@
 import React, { useEffect, useState } from 'react';
 import { useSession } from 'next-auth/react';
 import Image from 'next/image';
+import CarInfoCard from './CarInfoCard';
 
 interface Vehicle {
   id: string;
@@ -93,7 +94,7 @@ const UsersCar = () => {
             />
           </div>
           <div className="flex-grow md:w-1/2 flex justify-center items-center">
-            {/* <h2 className=" text-lg font-semibold">{vehicle.model}</h2> */}
+            <CarInfoCard vehicle={vehicle} />
           </div>
         </div>
       ))}
