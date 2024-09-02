@@ -4,6 +4,7 @@ import { useSession } from 'next-auth/react';
 import Image from 'next/image';
 import CarInfoCard from './CarInfoCard';
 import Loading from '@/app/uservehicles/loading';
+import DeleteVehicleButton from './deleteButton';
 interface Vehicle {
   id: string;
   make: string;
@@ -66,6 +67,33 @@ const UsersCar = () => {
     getUsersVehicles();
   }, [session]);
 
+  const deleteUserVehicle = async (vehicleId: string) => {
+    try {
+      const response = await fetch('/api/removevehicle', {
+        method: 'DELETE',
+        headers: {
+          'Content-Type': 'application/json',
+          cache: 'no-store',
+        },
+        body: JSON.stringify({
+          email: session?.user?.email,
+          VehicleID: vehicleId,
+        }),
+      });
+
+      if (response.ok) {
+        setUserVehicles(
+          (prevVehicles) =>
+            prevVehicles?.filter((vehicle) => vehicle.id !== vehicleId) || null
+        );
+      } else {
+        console.error('Failed to delete vehicle');
+      }
+    } catch (error) {
+      console.error('Error deleting vehicle:', error);
+    }
+  };
+
   if (status === 'loading') {
     return <Loading />;
   }
@@ -75,25 +103,28 @@ const UsersCar = () => {
   }
 
   return (
-    <div className=" flex flex-wrap h-screen bg-white">
+    <div className=" flex flex-wrap h-screen ">
       {userVehicles.map((vehicle) => (
         <div
           key={vehicle.id}
           className="flex flex-col md:flex-row w-full p-4 items-center"
         >
           {/* Car image */}
-          <div className="flex-shrink-0 md:w-1/2 mb-4 md:mb-0">
-            <h2 className="text-center mb-4 text-4xl font-extrabold text-gray-900 md:text-5xl lg:text-6xl ">
-              {vehicle.year} {vehicle.make} {vehicle.model}
-            </h2>
+          <div className="flex-shrink-0 md:w-1/2 mb-4 md:mb-0 mt-10">
+            <DeleteVehicleButton
+              onClick={() => deleteUserVehicle(vehicle.id)}
+            />
             <Image
               src={vehicle.image}
               alt={`${vehicle.make} ${vehicle.model} (${vehicle.year})`}
               height={550}
               width={570}
               priority
-              className="object-cover w-full h-auto"
+              className="object-cover w-full h-auto mt-5"
             />
+            <h2 className="text-center mb-4 text-4xl font-extrabold text-white md:text-5xl lg:text-6xl ">
+              {vehicle.year} {vehicle.make} {vehicle.model}
+            </h2>
           </div>
           <div className="flex-grow md:w-1/2 flex justify-start">
             <CarInfoCard vehicle={vehicle} />
