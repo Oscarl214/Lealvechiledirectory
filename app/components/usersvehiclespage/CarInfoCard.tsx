@@ -40,6 +40,7 @@ const CarInfoCard: React.FC<CarInfoCardProps> = ({ vehicle }) => {
           <div className="flex ">
             <p className="text-md font-bold text-white">Vehicle Information</p>
           </div>
+          <span className="icon-[gridicons--dropdown] text-white text-3xl" />
         </CardHeader>
         <Divider />
         <CardBody>

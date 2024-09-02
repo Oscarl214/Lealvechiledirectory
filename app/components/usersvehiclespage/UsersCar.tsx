@@ -3,7 +3,7 @@ import React, { useEffect, useState } from 'react';
 import { useSession } from 'next-auth/react';
 import Image from 'next/image';
 import CarInfoCard from './CarInfoCard';
-
+import Loading from '@/app/uservehicles/loading';
 interface Vehicle {
   id: string;
   make: string;
@@ -26,7 +26,7 @@ interface Vehicle {
 const UsersCar = () => {
   const { data: session, status } = useSession();
   const [userVehicles, setUserVehicles] = useState<Vehicle[] | null>(null);
-
+  const [loading, setLoading] = useState<boolean>(true);
   useEffect(() => {
     if (!session?.user?.email) return;
 
@@ -58,6 +58,8 @@ const UsersCar = () => {
         }
       } catch (error) {
         console.error('Error fetching vehicles:', error);
+      } finally {
+        setLoading(false);
       }
     };
 
@@ -65,7 +67,7 @@ const UsersCar = () => {
   }, [session]);
 
   if (status === 'loading') {
-    return <div>Loading...</div>;
+    return <Loading />;
   }
 
   if (!userVehicles || userVehicles.length === 0) {
@@ -73,7 +75,7 @@ const UsersCar = () => {
   }
 
   return (
-    <div className="mt-10 flex flex-wrap h-screen bg-white">
+    <div className=" flex flex-wrap h-screen bg-white">
       {userVehicles.map((vehicle) => (
         <div
           key={vehicle.id}
@@ -82,7 +84,7 @@ const UsersCar = () => {
           {/* Car image */}
           <div className="flex-shrink-0 md:w-1/2 mb-4 md:mb-0">
             <h2 className="text-center mb-4 text-4xl font-extrabold text-gray-900 md:text-5xl lg:text-6xl ">
-              {vehicle.make} {vehicle.model}
+              {vehicle.year} {vehicle.make} {vehicle.model}
             </h2>
             <Image
               src={vehicle.image}
@@ -93,7 +95,7 @@ const UsersCar = () => {
               className="object-cover w-full h-auto"
             />
           </div>
-          <div className="flex-grow md:w-1/2 flex justify-center items-center">
+          <div className="flex-grow md:w-1/2 flex justify-start">
             <CarInfoCard vehicle={vehicle} />
           </div>
         </div>

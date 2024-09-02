@@ -7,6 +7,7 @@ import { Button } from '@nextui-org/react';
 import { Motion } from './adminpagecomponents/motion';
 import { useSession } from 'next-auth/react';
 import toast, { Toast } from 'react-hot-toast';
+import Loading from '../uservehicles/loading';
 interface Vehicle {
   id: string;
   make: string;
@@ -29,7 +30,7 @@ interface Vehicle {
 const CarCard = () => {
   const [vehicles, setVehicles] = useState<Vehicle[]>([]);
   const { data: session, status } = useSession();
-
+  const [loading, setLoading] = useState<boolean>(true);
   useEffect(() => {
     const fetchCarData = async () => {
       try {
@@ -44,11 +45,16 @@ const CarCard = () => {
         setVehicles(data.CarData);
       } catch (error) {
         console.error('Error fetching car data', error);
+      } finally {
+        setLoading(false);
       }
     };
     fetchCarData();
   }, []);
 
+  if (status === 'loading') {
+    return <Loading />;
+  }
   //use the session to pass in user email as param to be able to pass in the data to the api route so it can find the user and update the
   //users vehicle array
   //Pass in the vechciole id as you call the handletoprofile function on Click

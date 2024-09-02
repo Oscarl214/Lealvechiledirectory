@@ -18,7 +18,7 @@ import Router from 'next/router';
 const NavBar = () => {
   const [isMenuOpen, setIsMenuOpen] = React.useState(false);
 
-  const menuItems = ['Home', 'uservehicles'];
+  const menuItems = ['Home', 'uservehicles', 'Logout'];
 
   const handleSignOut = async () => {
     signOut({ callbackUrl: '/' });
@@ -29,7 +29,7 @@ const NavBar = () => {
       {' '}
       <Navbar
         onMenuOpenChange={setIsMenuOpen}
-        className=" bg-transparent shadow-xl text-white"
+        className=" bg-black shadow-xl text-white"
       >
         <NavbarContent>
           <NavbarMenuToggle
@@ -65,7 +65,7 @@ const NavBar = () => {
           {/* <NavbarItem className="hidden lg:flex">
         <Link href="#">Login</Link>
       </NavbarItem> */}
-          <NavbarItem>
+          {/* <NavbarItem>
             <Button
               onClick={() => handleSignOut()}
               color="primary"
@@ -75,27 +75,32 @@ const NavBar = () => {
             >
               Log Out
             </Button>
-          </NavbarItem>
+          </NavbarItem> */}
         </NavbarContent>
-        <NavbarMenu className=" text-white bg-transparent">
+        <NavbarMenu className="text-white bg-transparent">
           {menuItems.map((item, index) => (
             <NavbarMenuItem key={`${item}-${index}`}>
               {item === 'Home' ? (
-                <Link href="admin">
+                <Link href="/admin">
                   <div className="text-black">{item}</div>
                 </Link>
+              ) : item === 'Logout' ? (
+                <div
+                  className="text-black cursor-pointer"
+                  onClick={handleSignOut}
+                >
+                  {item}
+                </div>
               ) : (
                 <Link
-                  color={
-                    index === 3
-                      ? 'primary'
-                      : index === menuItems.length - 1
-                      ? 'danger'
-                      : 'foreground'
-                  }
-                  className="w-full text-black"
-                  size="lg"
                   href={`${item}`}
+                  className={`w-full text-black ${
+                    index === 3
+                      ? 'text-primary'
+                      : index === menuItems.length - 1
+                      ? 'text-danger'
+                      : ''
+                  }`}
                 >
                   {item}
                 </Link>

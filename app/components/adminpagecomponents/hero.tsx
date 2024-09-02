@@ -23,7 +23,7 @@ const AdminHero = () => {
         <Link href={'/vehicleselection'}>
           <Button className="bg-orange-600 mt-2">Browse Vehicles</Button>
         </Link>
-        <Link href={'/vehicleselection'}>
+        <Link href={'/uservehicles'}>
           <Button className="button">My Vehicles</Button>
         </Link>
       </div>
