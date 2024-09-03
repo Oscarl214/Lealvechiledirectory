@@ -18,7 +18,7 @@ import Router from 'next/router';
 const NavBar = () => {
   const [isMenuOpen, setIsMenuOpen] = React.useState(false);
 
-  const menuItems = ['Home', 'uservehicles', 'Logout'];
+  const menuItems = ['Home', 'profile', 'Logout'];
 
   const handleSignOut = async () => {
     signOut({ callbackUrl: '/' });
@@ -50,8 +50,8 @@ const NavBar = () => {
             </Link>
           </NavbarItem>
           <NavbarItem isActive>
-            <Link href="/uservehicles" aria-current="page">
-              Users Cars
+            <Link href="/Profile" aria-current="page">
+              My Vehicle
             </Link>
           </NavbarItem>
           {/*
@@ -77,16 +77,16 @@ const NavBar = () => {
             </Button>
           </NavbarItem> */}
         </NavbarContent>
-        <NavbarMenu className="text-white bg-transparent">
+        <NavbarMenu className="text-white bg-transparent flex justify-center items-center">
           {menuItems.map((item, index) => (
             <NavbarMenuItem key={`${item}-${index}`}>
               {item === 'Home' ? (
                 <Link href="/admin">
-                  <div className="text-black">{item}</div>
+                  <div className="text-white">{item}</div>
                 </Link>
               ) : item === 'Logout' ? (
                 <div
-                  className="text-black cursor-pointer"
+                  className=" text-white cursor-pointer"
                   onClick={handleSignOut}
                 >
                   {item}
@@ -94,7 +94,7 @@ const NavBar = () => {
               ) : (
                 <Link
                   href={`${item}`}
-                  className={`w-full text-black ${
+                  className={`w-full text-white ${
                     index === 3
                       ? 'text-primary'
                       : index === menuItems.length - 1

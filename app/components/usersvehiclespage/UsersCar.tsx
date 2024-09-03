@@ -3,8 +3,11 @@ import React, { useEffect, useState } from 'react';
 import { useSession } from 'next-auth/react';
 import Image from 'next/image';
 import CarInfoCard from './CarInfoCard';
-import Loading from '@/app/uservehicles/loading';
+import Loading from '@/app/profile/loading';
+import { Button } from '@nextui-org/react';
+import Link from 'next/link';
 import DeleteVehicleButton from './deleteButton';
+
 interface Vehicle {
   id: string;
   make: string;
@@ -28,6 +31,7 @@ const UsersCar = () => {
   const { data: session, status } = useSession();
   const [userVehicles, setUserVehicles] = useState<Vehicle[] | null>(null);
   const [loading, setLoading] = useState<boolean>(true);
+
   useEffect(() => {
     if (!session?.user?.email) return;
 
@@ -65,7 +69,7 @@ const UsersCar = () => {
     };
 
     getUsersVehicles();
-  }, [session]);
+  }, [session?.user?.email]);
 
   const deleteUserVehicle = async (vehicleId: string) => {
     try {
@@ -99,7 +103,14 @@ const UsersCar = () => {
   }
 
   if (!userVehicles || userVehicles.length === 0) {
-    return <div>No vehicles found</div>;
+    return (
+      <div className="flex flex-col justify-center items-center h-screen">
+        <h2 className="m-4">No vehicles found: Add A Vehicle</h2>
+        <Link href="/vehicleselection">
+          <Button className="bg-orange-500">Vehicles</Button>
+        </Link>
+      </div>
+    );
   }
 
   return (
@@ -120,7 +131,7 @@ const UsersCar = () => {
               height={550}
               width={570}
               priority
-              className="object-cover w-full h-auto mt-5"
+              className="object-cover w-full h-auto mt-5 animate-pulse "
             />
             <h2 className="text-center mb-4 text-4xl font-extrabold text-white md:text-5xl lg:text-6xl ">
               {vehicle.year} {vehicle.make} {vehicle.model}

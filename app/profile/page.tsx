@@ -4,7 +4,7 @@ import UsersCar from '../components/usersvehiclespage/UsersCar';
 import NavBar from '../components/navbar';
 import { Suspense } from 'react';
 import Loading from './loading';
-const UserVehicles = () => {
+const Profile = () => {
   return (
     <div>
       <NavBar />
@@ -15,4 +15,4 @@ const UserVehicles = () => {
   );
 };
 
-export default UserVehicles;
+export default Profile;

@@ -7,7 +7,7 @@ import { Button } from '@nextui-org/react';
 import { Motion } from './adminpagecomponents/motion';
 import { useSession } from 'next-auth/react';
 import toast, { Toast } from 'react-hot-toast';
-import Loading from '../uservehicles/loading';
+import Loading from '../profile/loading';
 interface Vehicle {
   id: string;
   make: string;
@@ -77,7 +77,7 @@ const CarCard = () => {
         toast.success('Vehicle Added to Profile');
       } else {
         console.error('Failed to add vehicle to profile');
-        toast.error('Failed to add vehicle to profile');
+        toast.error('Vehicle already added to Profile');
       }
     } catch (error) {
       console.error('Error adding vehicle to profile:', error);
