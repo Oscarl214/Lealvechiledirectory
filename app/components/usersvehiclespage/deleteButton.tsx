@@ -1,6 +1,6 @@
 import React from 'react';
 
-const DeleteVehicleButton = ({ onClick }) => {
+const DeleteVehicleButton = ({ onClick }: any) => {
   return (
     <a
       onClick={onClick}
