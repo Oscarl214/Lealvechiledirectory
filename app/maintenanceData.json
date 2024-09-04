@@ -1,0 +1,114 @@
+{
+  "maintenanceTypes": [
+    {
+      "category": "Engine",
+      "tasks": [
+        "Oil Change",
+        "Oil Filter Replacement",
+        "Air Filter Replacement",
+        "Spark Plug Replacement",
+        "Timing Belt Replacement",
+        "Engine Coolant Flush",
+        "Fuel Filter Replacement",
+        "Engine Tune-Up"
+      ]
+    },
+    {
+      "category": "Transmission",
+      "tasks": [
+        "Transmission Fluid Change",
+        "Transmission Filter Replacement",
+        "Clutch Adjustment (Manual)",
+        "Clutch Replacement (Manual)",
+        "Automatic Transmission Service",
+        "Differential Fluid Change"
+      ]
+    },
+    {
+      "category": "Brakes",
+      "tasks": [
+        "Brake Pad Replacement",
+        "Brake Rotor Resurfacing/Replacement",
+        "Brake Fluid Flush",
+        "Brake Caliper Replacement",
+        "Brake Line Inspection/Replacement",
+        "Parking Brake Adjustment"
+      ]
+    },
+    {
+      "category": "Suspension and Steering",
+      "tasks": [
+        "Shock Absorber Replacement",
+        "Strut Replacement",
+        "Wheel Alignment",
+        "Power Steering Fluid Change",
+        "Tie Rod End Replacement",
+        "Ball Joint Replacement"
+      ]
+    },
+    {
+      "category": "Electrical System",
+      "tasks": [
+        "Battery Replacement",
+        "Alternator Replacement",
+        "Starter Motor Replacement",
+        "Fuse Replacement",
+        "Light Bulb Replacement",
+        "Wiring Inspection/Repair"
+      ]
+    },
+    {
+      "category": "Heating and Cooling",
+      "tasks": [
+        "Air Conditioning Service",
+        "Heater Core Replacement",
+        "Radiator Replacement",
+        "Thermostat Replacement",
+        "Coolant Hose Replacement",
+        "Water Pump Replacement"
+      ]
+    },
+    {
+      "category": "Exhaust System",
+      "tasks": [
+        "Exhaust Pipe Replacement",
+        "Muffler Replacement",
+        "Catalytic Converter Replacement",
+        "Oxygen Sensor Replacement",
+        "Exhaust Manifold Gasket Replacement"
+      ]
+    },
+    {
+      "category": "Tires and Wheels",
+      "tasks": [
+        "Tire Rotation",
+        "Tire Replacement",
+        "Wheel Balancing",
+        "Tire Pressure Check",
+        "Wheel Bearing Replacement"
+      ]
+    },
+    {
+      "category": "Fluids",
+      "tasks": [
+        "Engine Oil Change",
+        "Transmission Fluid Change",
+        "Brake Fluid Flush",
+        "Power Steering Fluid Change",
+        "Coolant Flush",
+        "Windshield Washer Fluid Refill"
+      ]
+    },
+    {
+      "category": "Body and Interior",
+      "tasks": [
+        "Windshield Replacement",
+        "Window Tinting",
+        "Door Seal Replacement",
+        "Interior Detailing",
+        "Seatbelt Replacement",
+        "Carpet Cleaning"
+      ]
+    }
+  ]
+}

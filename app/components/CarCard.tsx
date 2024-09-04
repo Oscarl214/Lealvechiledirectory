@@ -2,12 +2,13 @@
 
 import React, { useState, useEffect } from 'react';
 import Image from 'next/image';
-import Link from 'next/link';
+
 import { Button } from '@nextui-org/react';
 import { Motion } from './adminpagecomponents/motion';
 import { useSession } from 'next-auth/react';
 import toast, { Toast } from 'react-hot-toast';
 import Loading from '../profile/loading';
+
 interface Vehicle {
   id: string;
   make: string;
@@ -31,6 +32,7 @@ const CarCard = () => {
   const [vehicles, setVehicles] = useState<Vehicle[]>([]);
   const { data: session, status } = useSession();
   const [loading, setLoading] = useState<boolean>(true);
+
   useEffect(() => {
     const fetchCarData = async () => {
       try {
@@ -74,6 +76,7 @@ const CarCard = () => {
       if (response.ok) {
         console.log('Vehicle added to profile successfully');
         console.log('Vehicle ID', vehicleId);
+        toast.success('Proceed to Profile to Update');
         toast.success('Vehicle Added to Profile');
       } else {
         console.error('Failed to add vehicle to profile');
@@ -98,7 +101,7 @@ const CarCard = () => {
                   {vehicle.make} {vehicle.year}
                 </span>
               </p>
-              <div className="relative w-full h-40 my-3 flex items-center justify-center">
+              <div className="relative  w-full h-40 my-3 flex items-center justify-center">
                 {vehicle.image ? (
                   <Image
                     src={vehicle.image}
@@ -106,7 +109,7 @@ const CarCard = () => {
                     height={250}
                     width={270}
                     priority
-                    className="object-center"
+                    className="object-center -z-3 "
                   />
                 ) : (
                   <div className="flex items-center justify-center w-full h-full bg-gray-300">

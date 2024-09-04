@@ -7,6 +7,7 @@ import Loading from '@/app/profile/loading';
 import { Button } from '@nextui-org/react';
 import Link from 'next/link';
 import DeleteVehicleButton from './deleteButton';
+import SearchBar from './searchBar';
 
 interface Vehicle {
   id: string;
@@ -139,6 +140,7 @@ const UsersCar = () => {
           </div>
           <div className="flex-grow md:w-1/2 flex justify-start">
             <CarInfoCard vehicle={vehicle} />
+            {/* <SearchBar /> */}
           </div>
         </div>
       ))}

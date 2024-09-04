@@ -25,7 +25,7 @@ const NavBar = () => {
   };
 
   return (
-    <div className="fixed z-5 w-full">
+    <div className="fixed z-50 w-full">
       {' '}
       <Navbar
         onMenuOpenChange={setIsMenuOpen}
@@ -50,7 +50,7 @@ const NavBar = () => {
             </Link>
           </NavbarItem>
           <NavbarItem isActive>
-            <Link href="/Profile" aria-current="page">
+            <Link href="/profile" aria-current="page">
               My Vehicle
             </Link>
           </NavbarItem>
