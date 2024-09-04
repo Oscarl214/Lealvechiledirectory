@@ -8,7 +8,7 @@ import { Button, Divider } from '@nextui-org/react';
 import Link from 'next/link';
 import DeleteVehicleButton from './deleteButton';
 import SearchBar from './searchBar';
-
+import HistoryButton from './HistoryButton';
 interface Vehicle {
   id: string;
   make: string;
@@ -138,7 +138,10 @@ const UsersCar = () => {
               <h2 className="text-center mb-4 text-4xl font-extrabold text-white md:text-5xl lg:text-6xl ">
                 {vehicle.year} {vehicle.make} {vehicle.model}
               </h2>
-              <CarInfoCard vehicle={vehicle} />
+              <div className="flex flex-col gap-2">
+                <CarInfoCard vehicle={vehicle} />
+                <HistoryButton />
+              </div>
             </div>
           </div>
           <Divider />
