@@ -132,9 +132,9 @@ const UsersCar = () => {
               height={550}
               width={570}
               priority
-              className="object-cover w-full h-auto mt-5 animate-pulse "
+              className="object-cover w-full h-auto mt-5  "
             />
-            <div className="flex flex-col m-2 justify-center items-center">
+            <div className="flex md:flex-col flex-row gap-3 m-2 justify-center items-center">
               <h2 className="text-center mb-4 text-4xl font-extrabold text-white md:text-5xl lg:text-6xl ">
                 {vehicle.year} {vehicle.make} {vehicle.model}
               </h2>
@@ -142,10 +142,15 @@ const UsersCar = () => {
             </div>
           </div>
           <Divider />
-          <div className="flex-col md:w-1/2 flex  justify-center flex-wrap gap-4 m-2">
-            <h2 className="font-semibold text-2xl lg:text-4xl">
-              Input your last Maintenance
+          <div className="flex flex-col mf:flex-col lg:flex-row   justify-center items-center flex-wrap gap-4 m-2">
+            <h2 className="font-semibold text-3xl lg:text-4xl text-center">
+              Guide to Maintenance Types
             </h2>
+            <p className="text-md">
+              Choose a maintenance type from the list to see the different tasks
+              available for your vehicle. You can also enter your own details if
+              needed.
+            </p>
             <SearchBar />
           </div>
         </div>

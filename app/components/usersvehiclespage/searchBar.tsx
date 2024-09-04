@@ -24,7 +24,7 @@ const SearchBar = () => {
   return (
     <div>
       <form className="max-w-md mx-auto">
-        <Card className="w-[300px] h-auto">
+        <Card className="w-[375px] h-auto">
           <div className="flex flex-col">
             <CardHeader>
               <label
