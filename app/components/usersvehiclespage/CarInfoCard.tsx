@@ -47,7 +47,7 @@ const CarInfoCard: React.FC<CarInfoCardProps> = ({ vehicle }) => {
   const { isOpen, onOpen, onOpenChange } = useDisclosure();
   return (
     <div>
-      <Button onPress={onOpen} className="bg-blue-500">
+      <Button onPress={onOpen} className="bg-blue-500 hover:bg-orange-500">
         Vehicle Information
       </Button>
       <Modal isOpen={isOpen} onOpenChange={onOpenChange}>

@@ -4,7 +4,7 @@ import { useSession } from 'next-auth/react';
 import Image from 'next/image';
 import CarInfoCard from './CarInfoCard';
 import Loading from '@/app/profile/loading';
-import { Button } from '@nextui-org/react';
+import { Button, Divider } from '@nextui-org/react';
 import Link from 'next/link';
 import DeleteVehicleButton from './deleteButton';
 import SearchBar from './searchBar';
@@ -119,10 +119,10 @@ const UsersCar = () => {
       {userVehicles.map((vehicle) => (
         <div
           key={vehicle.id}
-          className="flex flex-col md:flex-row w-full p-4 items-center"
+          className="flex flex-col  w-full p-4 items-center"
         >
           {/* Car image */}
-          <div className="flex-shrink-0 md:w-1/2 mb-4 md:mb-0 mt-10">
+          <div className="flex-shrink-0 md:w-1/2 mb-4 md:mb-0 mt-[50px]">
             <DeleteVehicleButton
               onClick={() => deleteUserVehicle(vehicle.id)}
             />
@@ -134,12 +134,15 @@ const UsersCar = () => {
               priority
               className="object-cover w-full h-auto mt-5 animate-pulse "
             />
-            <h2 className="text-center mb-4 text-4xl font-extrabold text-white md:text-5xl lg:text-6xl ">
-              {vehicle.year} {vehicle.make} {vehicle.model}
-            </h2>
+            <div className="flex flex-col m-2 justify-center items-center">
+              <h2 className="text-center mb-4 text-4xl font-extrabold text-white md:text-5xl lg:text-6xl ">
+                {vehicle.year} {vehicle.make} {vehicle.model}
+              </h2>
+              <CarInfoCard vehicle={vehicle} />
+            </div>
           </div>
-          <div className="flex-grow flex-col md:w-1/2 flex  justify-center flex-wrap gap-4">
-            <CarInfoCard vehicle={vehicle} />
+          <Divider />
+          <div className="flex-col md:w-1/2 flex  justify-center flex-wrap gap-4 m-2">
             <h2 className="font-semibold text-2xl lg:text-4xl">
               Input your last Maintenance
             </h2>
