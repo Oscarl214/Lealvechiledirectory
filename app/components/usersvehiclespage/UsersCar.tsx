@@ -132,7 +132,7 @@ const UsersCar = () => {
               height={550}
               width={570}
               priority
-              className="object-cover w-full h-auto mt-5  "
+              className="object-cover w-full h-auto mt-5  bg-white"
             />
             <div className="flex md:flex-col flex-row gap-3 m-2 justify-center items-center">
               <h2 className="text-center mb-4 text-4xl font-extrabold text-white md:text-5xl lg:text-6xl ">

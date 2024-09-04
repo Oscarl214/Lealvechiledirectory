@@ -65,17 +65,11 @@ const NavBar = () => {
           {/* <NavbarItem className="hidden lg:flex">
         <Link href="#">Login</Link>
       </NavbarItem> */}
-          {/* <NavbarItem>
-            <Button
-              onClick={() => handleSignOut()}
-              color="primary"
-              href="#"
-              variant="flat"
-              className="bg-transparent text-white"
-            >
-              Log Out
-            </Button>
-          </NavbarItem> */}
+          <NavbarItem>
+            <Link href="/profile" aria-current="page">
+              My Vehicle
+            </Link>
+          </NavbarItem>
         </NavbarContent>
         <NavbarMenu className="text-white bg-black flex justify-center items-center">
           {menuItems.map((item, index) => (
