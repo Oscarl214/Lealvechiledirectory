@@ -77,7 +77,7 @@ const NavBar = () => {
             </Button>
           </NavbarItem> */}
         </NavbarContent>
-        <NavbarMenu className="text-white bg-transparent flex justify-center items-center">
+        <NavbarMenu className="text-white bg-black flex justify-center items-center">
           {menuItems.map((item, index) => (
             <NavbarMenuItem key={`${item}-${index}`}>
               {item === 'Home' ? (

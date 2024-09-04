@@ -138,9 +138,12 @@ const UsersCar = () => {
               {vehicle.year} {vehicle.make} {vehicle.model}
             </h2>
           </div>
-          <div className="flex-grow md:w-1/2 flex justify-start">
+          <div className="flex-grow flex-col md:w-1/2 flex  justify-center flex-wrap gap-4">
             <CarInfoCard vehicle={vehicle} />
-            {/* <SearchBar /> */}
+            <h2 className="font-semibold text-2xl lg:text-4xl">
+              Input your last Maintenance
+            </h2>
+            <SearchBar />
           </div>
         </div>
       ))}
