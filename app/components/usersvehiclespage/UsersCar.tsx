@@ -151,8 +151,9 @@ const UsersCar = () => {
             </h2>
             <p className="text-md">
               Choose a maintenance type from the list to see the different tasks
-              available for your vehicle. You can also enter your own details if
-              needed.
+              available for your vehicle. Then proceed to enter in the task that
+              best fits what you had done to your vehicle or input anything youd
+              like that best reflects the maintenance done.
             </p>
             <SearchBar />
           </div>

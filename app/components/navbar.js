@@ -18,7 +18,7 @@ import Router from 'next/router';
 const NavBar = () => {
   const [isMenuOpen, setIsMenuOpen] = React.useState(false);
 
-  const menuItems = ['Home', 'profile', 'Logout'];
+  const menuItems = ['Home', 'profile', 'vehicleselection', 'Logout'];
 
   const handleSignOut = async () => {
     signOut({ callbackUrl: '/' });
@@ -38,9 +38,14 @@ const NavBar = () => {
           />
           <NavbarBrand>
             <Link href="/admin">
-              <Image width={50} alt="NextUI hero Image" src="./favicon.png" />
+              <Image width={50} alt="Car Image" src="./favicon.png" />
             </Link>
           </NavbarBrand>
+          <NavbarItem>
+            <Link href="/profile" aria-current="page">
+              My Vehicle
+            </Link>
+          </NavbarItem>
         </NavbarContent>
 
         <NavbarContent className="hidden sm:flex gap-4" justify="center">
@@ -50,11 +55,11 @@ const NavBar = () => {
             </Link>
           </NavbarItem>
           <NavbarItem isActive>
-            <Link href="/profile" aria-current="page">
+            {/* <Link href="/profile" aria-current="page">
               My Vehicle
-            </Link>
+            </Link> */}
           </NavbarItem>
-          {/*
+          {/* 
           <NavbarItem>
             <Link color="foreground" href="#">
               Integrations
@@ -65,11 +70,11 @@ const NavBar = () => {
           {/* <NavbarItem className="hidden lg:flex">
         <Link href="#">Login</Link>
       </NavbarItem> */}
-          <NavbarItem>
+          {/* <NavbarItem>
             <Link href="/profile" aria-current="page">
               My Vehicle
             </Link>
-          </NavbarItem>
+          </NavbarItem> */}
         </NavbarContent>
         <NavbarMenu className="text-white bg-black flex justify-center items-center">
           {menuItems.map((item, index) => (
