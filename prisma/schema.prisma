@@ -42,6 +42,16 @@ model Vehicle {
   image          String
   userId         String?     @map("userId") @db.ObjectId
   user           User?       @relation("UserVehicles", fields: [userId], references: [id], onDelete: Cascade) // Consistent relation name
+  maintenances   Maintenance[] @relation("VehicleMaintenances")
+}
+
+model Maintenance {
+  id           String   @id @default(auto()) @map("_id") @db.ObjectId
+  type         String   
+  description  String?  
+  date         DateTime @default(now())
+  vehicleId    String   @map("vehicleId") @db.ObjectId
+  vehicle      Vehicle  @relation("VehicleMaintenances", fields: [vehicleId], references: [id], onDelete: Cascade)
 }
 
 
