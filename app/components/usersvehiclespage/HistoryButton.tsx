@@ -9,6 +9,7 @@ import {
   ModalFooter,
   useDisclosure,
 } from '@nextui-org/react';
+
 interface Vehicle {
   id: string;
   make: string;
@@ -31,8 +32,10 @@ interface Vehicle {
 interface CarInfoCardProps {
   vehicle: Vehicle;
 }
+
 const HistoryButton: React.FC<CarInfoCardProps> = ({ vehicle }) => {
   const { isOpen, onOpen, onOpenChange } = useDisclosure();
+
   return (
     <div>
       <Button
@@ -45,12 +48,41 @@ const HistoryButton: React.FC<CarInfoCardProps> = ({ vehicle }) => {
         <ModalContent>
           {(onClose) => (
             <>
-              <ModalHeader className="flex flex-col gap-1">
-                Maintenance History
+              <ModalHeader className="flex flex-col gap-1 text-center">
+                Maintenance History for {vehicle.make} {vehicle.model}
               </ModalHeader>
               <Divider />
-              <ModalBody className="">
-                My fetch for the maintenance using the vehicleID
+              <ModalBody className="flex flex-col gap-4">
+                {/* Replace with dynamic fetch for maintenance history */}
+                <div className="flex flex-col gap-4">
+                  {/* Example maintenance card */}
+                  <div className="p-4 rounded-md bg-gray-100 shadow-md dark:bg-gray-800">
+                    <div className="flex justify-between items-center">
+                      <span className="font-semibold text-gray-700 dark:text-white">
+                        Maintenance Type:
+                      </span>
+                      <span className="text-sm text-gray-600 dark:text-gray-300">
+                        Engine
+                      </span>
+                    </div>
+                    <div className="mt-2">
+                      <span className="font-semibold text-gray-700 dark:text-white">
+                        Task/Comment:
+                      </span>
+                      <div className="text-sm text-gray-600 dark:text-gray-300">
+                        Oil Change, 09/12/2024, Miles at 45,909
+                      </div>
+                    </div>
+                    <div className="mt-2">
+                      <span className="font-semibold text-gray-700 dark:text-white">
+                        Date Posted:
+                      </span>
+                      <div className="text-sm text-gray-600 dark:text-gray-300">
+                        09/24/2024
+                      </div>
+                    </div>
+                  </div>
+                </div>
               </ModalBody>
               <ModalFooter>
                 <Button color="danger" variant="light" onPress={onClose}>

@@ -140,7 +140,7 @@ const UsersCar = () => {
               </h2>
               <div className="flex flex-col gap-2">
                 <CarInfoCard vehicle={vehicle} />
-                <HistoryButton vehicle={vehicle.id} />
+                <HistoryButton vehicle={vehicle} />
               </div>
             </div>
           </div>
