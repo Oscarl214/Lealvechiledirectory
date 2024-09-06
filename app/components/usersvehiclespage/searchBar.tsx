@@ -6,9 +6,13 @@ import Mtypes from './Mtypes';
 
 interface SearchBarProps {
   vehicleid: string;
+  onNewSubmission: () => void;
 }
 
-const SearchBar: React.FC<SearchBarProps> = ({ vehicleid }) => {
+const SearchBar: React.FC<SearchBarProps> = ({
+  vehicleid,
+  onNewSubmission,
+}) => {
   const [type, setType] = useState('');
   const [description, setDescription] = useState('');
 
@@ -41,6 +45,7 @@ const SearchBar: React.FC<SearchBarProps> = ({ vehicleid }) => {
         toast.success('Maintenance added successfully');
         setType('');
         setDescription('');
+        onNewSubmission();
       } else {
         console.error('Failed to add maintenance');
         toast.error('Failed to add maintenance');

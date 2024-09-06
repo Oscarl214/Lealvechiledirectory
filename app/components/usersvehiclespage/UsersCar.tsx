@@ -99,6 +99,37 @@ const UsersCar = () => {
     }
   };
 
+  const refreshMaintenanceData = async (vehicleId: string) => {
+    try {
+      const response = await fetch('/api/callMaint', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          cache: 'no-store',
+        },
+        body: JSON.stringify({
+          vehicleId,
+        }),
+      });
+
+      if (response.ok) {
+        const data = await response.json();
+        setUserVehicles(
+          (prevVehicles) =>
+            prevVehicles?.map((vehicle) =>
+              vehicle.id === vehicleId
+                ? { ...vehicle, maintenance: data.maintenanceData }
+                : vehicle
+            ) || null
+        );
+      } else {
+        console.error('Failed to refresh maintenance data');
+      }
+    } catch (error) {
+      console.error('Error refreshing maintenance data:', error);
+    }
+  };
+
   if (status === 'loading') {
     return <Loading />;
   }
@@ -140,7 +171,10 @@ const UsersCar = () => {
               </h2>
               <div className="flex flex-col gap-2">
                 <CarInfoCard vehicle={vehicle} />
-                <HistoryButton vehicle={vehicle} />
+                <HistoryButton
+                  vehicle={vehicle}
+                  refreshMaintenanceData={refreshMaintenanceData}
+                />
               </div>
             </div>
           </div>
@@ -155,7 +189,10 @@ const UsersCar = () => {
               best fits what you had done to your vehicle or input anything youd
               like that best reflects the maintenance done.
             </p>
-            <SearchBar vehicleid={vehicle.id} />
+            <SearchBar
+              vehicleid={vehicle.id}
+              onNewSubmission={() => refreshMaintenanceData(vehicle.id)}
+            />
           </div>
         </div>
       ))}

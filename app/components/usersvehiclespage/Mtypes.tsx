@@ -30,7 +30,7 @@ const Mtypes = () => {
             <CardHeader>
               <label
                 htmlFor="maintenance-type"
-                className="mb-2 text-md font-medium text-gray-900 dark:text-white"
+                className="mb-2 font-semibold underline text-md font-medium text-gray-900 dark:text-white"
               >
                 Select Maintenance Category
               </label>
@@ -50,9 +50,10 @@ const Mtypes = () => {
                   </option>
                 ))}
               </select>
-
+              <Divider />
+              <h3 className="text-white font-semibold underline">Tasks:</h3>
               {tasks.length > 0 && (
-                <ul className="list-disc pl-5 marker:text-blue-500">
+                <ul className="list-disc pl-5 marker:text-blue-500 mt-2">
                   {tasks.map((task, index) => (
                     <li
                       key={index}
