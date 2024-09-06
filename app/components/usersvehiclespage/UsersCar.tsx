@@ -132,7 +132,7 @@ const UsersCar = () => {
               height={550}
               width={570}
               priority
-              className="object-cover w-full h-auto mt-5  bg-white"
+              className="object-cover w-full h-auto mt-5 rounded-md bg-white"
             />
             <div className="flex md:flex-col flex-row gap-3 m-2 justify-center items-center">
               <h2 className="text-center mb-4 text-4xl font-extrabold text-white md:text-5xl lg:text-6xl ">
@@ -140,7 +140,7 @@ const UsersCar = () => {
               </h2>
               <div className="flex flex-col gap-2">
                 <CarInfoCard vehicle={vehicle} />
-                <HistoryButton />
+                <HistoryButton vehicle={vehicle.id} />
               </div>
             </div>
           </div>
@@ -155,7 +155,7 @@ const UsersCar = () => {
               best fits what you had done to your vehicle or input anything youd
               like that best reflects the maintenance done.
             </p>
-            <SearchBar />
+            <SearchBar vehicleid={vehicle.id} />
           </div>
         </div>
       ))}

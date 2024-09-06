@@ -1,4 +1,4 @@
-'use client'; // Ensure this is at the top of your file
+'use client';
 
 import { useSession } from 'next-auth/react';
 import NavBar from '../components/navbar';
