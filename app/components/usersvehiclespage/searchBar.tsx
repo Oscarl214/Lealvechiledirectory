@@ -3,7 +3,8 @@ import React, { useState } from 'react';
 import { Card, CardBody, CardHeader, Divider, Button } from '@nextui-org/react';
 import { toast } from 'react-hot-toast';
 import Mtypes from './Mtypes';
-
+import { useSession } from 'next-auth/react';
+import Loading from '@/app/profile/loading';
 interface SearchBarProps {
   vehicleid: string;
   onNewSubmission: () => void;
@@ -15,7 +16,8 @@ const SearchBar: React.FC<SearchBarProps> = ({
 }) => {
   const [type, setType] = useState('');
   const [description, setDescription] = useState('');
-
+  const { data: session, status } = useSession();
+  const [loading, setLoading] = useState<boolean>(true);
   const handleSubmission = async () => {
     if (!type) {
       toast.error('Please input a type of maintenance');
@@ -52,8 +54,14 @@ const SearchBar: React.FC<SearchBarProps> = ({
       }
     } catch (error) {
       console.error('Error submitting maintenance:', error);
+    } finally {
+      setLoading(false);
     }
   };
+
+  if (status === 'loading') {
+    return <Loading />;
+  }
   return (
     <div>
       <Mtypes />

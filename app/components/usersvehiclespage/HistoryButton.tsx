@@ -9,7 +9,8 @@ import {
   ModalFooter,
   useDisclosure,
 } from '@nextui-org/react';
-
+import { useSession } from 'next-auth/react';
+import Loading from '@/app/profile/loading';
 interface HistoryButtonProps {
   vehicle: any;
   refreshMaintenanceData: (vehicleId: string) => void;
@@ -23,7 +24,7 @@ const HistoryButton: React.FC<HistoryButtonProps> = ({
   const [maintenance, setMaintenance] = React.useState<any[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
-
+  const { data: session, status } = useSession();
   const fetchMaintenanceData = async () => {
     try {
       const response = await fetch('/api/callMaint', {
@@ -51,6 +52,10 @@ const HistoryButton: React.FC<HistoryButtonProps> = ({
       setLoading(false);
     }
   };
+  if (status === 'loading') {
+    return <Loading />;
+  }
+
   return (
     <div>
       <Button
@@ -68,10 +73,10 @@ const HistoryButton: React.FC<HistoryButtonProps> = ({
                 Maintenance History for {vehicle.make} {vehicle.model}
               </ModalHeader>
               <Divider />
-              <ModalBody className="flex flex-col gap-4">
+              <ModalBody className="flex flex-col gap-4 max-h-[500px] overflow-y-auto">
                 {maintenance.map((maintenance) => (
-                  <div className="flex flex-col gap-4" key={maintenance.id}>
-                    <div className="p-4 rounded-md bg-gray-100 shadow-md dark:bg-gray-800">
+                  <div className="flex flex-col gap-4 " key={maintenance.id}>
+                    <div className="p-4 rounded-md bg-gray-100 shadow-md dark:bg-gray-800 ">
                       <div className="flex justify-between items-center">
                         <span className="font-semibold text-gray-700 dark:text-white">
                           Maintenance Type:
