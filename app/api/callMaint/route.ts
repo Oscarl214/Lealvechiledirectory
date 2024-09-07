@@ -13,6 +13,14 @@ export async function POST(request: Request) {
       where: {
         vehicleId: vehicleId,
       },
+      select: {
+        id: true,
+        type: true,
+        description: true,
+        date: true,
+        vehicleId: true,
+        vehicle: true,
+      },
     });
 
     if (!allMaintenance || allMaintenance.length === 0) {
