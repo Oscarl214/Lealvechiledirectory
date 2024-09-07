@@ -40,7 +40,8 @@ const HistoryButton: React.FC<HistoryButtonProps> = ({
       if (response.ok) {
         const data = await response.json();
         setMaintenance(data.maintenanceData);
-        refreshMaintenanceData(vehicle.id); // Notify parent to refresh the data
+        refreshMaintenanceData(vehicle.id);
+        onOpen();
       } else {
         console.error('Failed to fetch maintenance data');
         setError('Error fetching maintenance data');
@@ -60,8 +61,7 @@ const HistoryButton: React.FC<HistoryButtonProps> = ({
     <div>
       <Button
         className="bg-orange-500 hover:bg-blue-500 text-center"
-        onPress={onOpen}
-        onClick={fetchMaintenanceData}
+        onPress={fetchMaintenanceData}
       >
         Maintenance History
       </Button>
