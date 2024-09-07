@@ -81,7 +81,7 @@ const SearchBar: React.FC<SearchBarProps> = ({
           </label>
           <input
             type="text"
-            className="block p-2.5 rounded-md w-auto m-4 z-20 text-sm text-gray-900 bg-gray-50 border-s-gray-50  border border-gray-300 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-s-gray-700  dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:border-blue-500"
+            className="block p-2.5 rounded-md w-auto m-4 z-20 text-[16px] text-gray-900 bg-gray-50 border-s-gray-50  border border-gray-300 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-s-gray-700  dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:border-blue-500"
             placeholder="Engine"
             required
             value={type}
@@ -96,7 +96,7 @@ const SearchBar: React.FC<SearchBarProps> = ({
           <textarea
             rows={4}
             maxLength={200}
-            className="block p-2.5 w-[350px] m-4 rounded-md  z-20 text-sm text-gray-900 bg-gray-50 border-s-gray-50 border-s-2 border border-gray-300 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-s-gray-700  dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:border-blue-500"
+            className="block p-2.5 w-[350px] m-4 rounded-md  z-20 text-[16px] text-gray-900 bg-gray-50 border-s-gray-50 border-s-2 border border-gray-300 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-s-gray-700  dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:border-blue-500"
             placeholder="Oil Change, 09/12/2024, Miles at 45,909"
             required
             value={description}
