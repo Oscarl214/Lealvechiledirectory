@@ -9,6 +9,7 @@ import Link from 'next/link';
 import DeleteVehicleButton from './deleteButton';
 import SearchBar from './searchBar';
 import HistoryButton from './HistoryButton';
+import { CarMotion } from '../../components/usersvehiclespage/CarMotion';
 interface Vehicle {
   id: string;
   make: string;
@@ -156,14 +157,16 @@ const UsersCar = () => {
             <DeleteVehicleButton
               onClick={() => deleteUserVehicle(vehicle.id)}
             />
-            <Image
-              src={vehicle.image}
-              alt={`${vehicle.make} ${vehicle.model} (${vehicle.year})`}
-              height={550}
-              width={570}
-              priority
-              className="object-cover w-full h-auto mt-5 rounded-md "
-            />
+            <CarMotion>
+              <Image
+                src={vehicle.image}
+                alt={`${vehicle.make} ${vehicle.model} (${vehicle.year})`}
+                height={550}
+                width={570}
+                priority
+                className="object-cover w-full h-auto mt-5 rounded-md "
+              />
+            </CarMotion>
             <div className="flex md:flex-col flex-row gap-3 m-2 justify-center items-center">
               <h2 className="text-center mb-4 text-4xl font-extrabold text-white md:text-5xl lg:text-6xl ">
                 {vehicle.year} {vehicle.make} {vehicle.model}
