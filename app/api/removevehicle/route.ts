@@ -28,7 +28,6 @@ export async function DELETE(request: Request) {
       );
     }
 
-    // Disconnect the vehicle from the user
     await prisma.vehicle.update({
       where: { id: VehicleID },
       data: {

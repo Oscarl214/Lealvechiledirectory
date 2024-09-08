@@ -10,7 +10,9 @@ import {
   useDisclosure,
 } from '@nextui-org/react';
 import { useSession } from 'next-auth/react';
+import DeleteMaint from './DeleteMaintButton';
 import Loading from '@/app/profile/loading';
+import toast, { Toast } from 'react-hot-toast';
 interface HistoryButtonProps {
   vehicle: any;
   refreshMaintenanceData: (vehicleId: string) => void;
@@ -25,6 +27,7 @@ const HistoryButton: React.FC<HistoryButtonProps> = ({
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
   const { data: session, status } = useSession();
+
   const fetchMaintenanceData = async () => {
     try {
       const response = await fetch('/api/callMaint', {
@@ -53,6 +56,36 @@ const HistoryButton: React.FC<HistoryButtonProps> = ({
       setLoading(false);
     }
   };
+
+  const deleteMaint = async (maintenanceId: string) => {
+    try {
+      const response = await fetch('/api/removeMaint', {
+        method: 'DELETE',
+        headers: {
+          'Content-Type': 'application/json',
+          cache: 'no-store',
+        },
+        body: JSON.stringify({
+          maintenanceId,
+        }),
+      });
+
+      if (response.ok) {
+        setMaintenance(
+          (prevMaintenance) =>
+            prevMaintenance?.filter(
+              (maintenance) => maintenance.id !== maintenanceId
+            ) || []
+        );
+        toast.success('Successfully removed the maintenance Submission');
+      } else {
+        console.error('Failed to delete Maintenance');
+      }
+    } catch (error) {
+      console.error('Error deleting maintenance:', error);
+    }
+  };
+
   if (status === 'loading') {
     return <Loading />;
   }
@@ -73,33 +106,30 @@ const HistoryButton: React.FC<HistoryButtonProps> = ({
                 Maintenance History for {vehicle.make} {vehicle.model}
               </ModalHeader>
               <Divider />
-              <ModalBody className="flex flex-col gap-4 max-h-[500px] overflow-y-auto">
+              <ModalBody className="flex flex-col gap-4 max-h-[500px] overflow-y-auto ">
                 {maintenance.map((maintenance) => (
                   <div className="flex flex-col gap-4 " key={maintenance.id}>
-                    <div className="p-4 rounded-md bg-gray-100 shadow-md dark:bg-gray-800 ">
+                    <div className="p-4 rounded-md bg-white shadow-md text-black">
                       <div className="flex justify-between items-center">
-                        <span className="font-semibold text-gray-700 dark:text-white">
+                        <span className="font-semibold ">
                           Maintenance Type:
                         </span>
-                        <span className="text-sm text-gray-600 dark:text-gray-300">
-                          {maintenance.type}
-                        </span>
+                        <span className="text-sm">{maintenance.type}</span>
                       </div>
                       <div className="mt-2">
-                        <span className="font-semibold text-gray-700 dark:text-white">
-                          Task/Comment:
-                        </span>
-                        <div className="text-sm text-gray-600 dark:text-gray-300">
+                        <span className="font-semibold ">Task/Comment:</span>
+                        <div className="text-sm text-gray-600 dark:text-gray-700">
                           {maintenance.description}
                         </div>
                       </div>
                       <div className="mt-2">
-                        <span className="font-semibold text-gray-700 dark:text-white">
-                          Date Posted:
-                        </span>
-                        <div className="text-sm text-gray-600 dark:text-gray-300">
+                        <span className="font-semibold ">Date Posted:</span>
+                        <div className="text-sm text-gray-600 dark:text-gray-700">
                           {maintenance.date}
                         </div>
+                        <DeleteMaint
+                          onClick={() => deleteMaint(maintenance.id)}
+                        />
                       </div>
                     </div>
                   </div>
