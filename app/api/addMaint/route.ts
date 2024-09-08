@@ -4,7 +4,7 @@ import dayjs, { Dayjs } from 'dayjs';
 
 export async function POST(request: Request) {
   try {
-    const { type, description, vehicleId } = await request.json();
+    const { type, description, datedone, vehicleId } = await request.json();
 
     if (!type || !vehicleId) {
       return NextResponse.json(
@@ -18,6 +18,7 @@ export async function POST(request: Request) {
       data: {
         type,
         description,
+        datedone,
         date: currentDate,
         vehicle: {
           connect: { id: vehicleId },

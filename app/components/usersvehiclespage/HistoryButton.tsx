@@ -124,6 +124,14 @@ const HistoryButton: React.FC<HistoryButtonProps> = ({
                         </div>
                       </div>
                       <div className="mt-2">
+                        <span className="font-semibold ">
+                          Date Maintenance was Done:
+                        </span>
+                        <div className="text-sm text-gray-600 dark:text-gray-700">
+                          {maintenance.datedone}
+                        </div>
+                      </div>
+                      <div className="mt-2">
                         <span className="font-semibold ">Date Posted:</span>
                         <div className="text-sm text-gray-600 dark:text-gray-700">
                           {dayjs(maintenance.date).format('MM/DD/YYYY hh:mm A')}

@@ -16,6 +16,7 @@ const SearchBar: React.FC<SearchBarProps> = ({
 }) => {
   const [type, setType] = useState('');
   const [description, setDescription] = useState('');
+  const [datedone, setDateDone] = useState('');
   const { data: session, status } = useSession();
   const [loading, setLoading] = useState<boolean>(true);
   const handleSubmission = async () => {
@@ -27,7 +28,9 @@ const SearchBar: React.FC<SearchBarProps> = ({
       toast.error('Please input a task or comment');
       return;
     }
-
+    if (!datedone) {
+      toast.error('Please input the date the maintenance was done');
+    }
     try {
       let response = await fetch('/api/addMaint', {
         method: 'POST',
@@ -37,6 +40,7 @@ const SearchBar: React.FC<SearchBarProps> = ({
         body: JSON.stringify({
           type,
           description,
+          datedone,
           vehicleId: vehicleid,
         }),
       });
@@ -47,6 +51,7 @@ const SearchBar: React.FC<SearchBarProps> = ({
         toast.success('Maintenance added successfully');
         setType('');
         setDescription('');
+        setDateDone('');
         onNewSubmission();
       } else {
         console.error('Failed to add maintenance');
@@ -101,6 +106,20 @@ const SearchBar: React.FC<SearchBarProps> = ({
             required
             value={description}
             onChange={(e) => setDescription(e.target.value)}
+          />
+          <label
+            htmlFor="maintenance-type"
+            className=" m-4 mb-2 text-md font-medium text-gray-900 dark:text-white"
+          >
+            Enter when Maintenance was Done
+          </label>
+          <input
+            type="text"
+            className="block p-2.5 rounded-md w-auto m-4 z-20 text-[16px] text-gray-900 bg-gray-50 border-s-gray-50  border border-gray-300 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-s-gray-700  dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:border-blue-500"
+            placeholder="08-31-2024"
+            required
+            value={datedone}
+            onChange={(e) => setDateDone(e.target.value)}
           />
           <Button
             className="bg-blue-500 hover:bg-orange-500 m-4"

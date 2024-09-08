@@ -54,11 +54,7 @@ const NavBar = () => {
               Vehicle Selection
             </Link>
           </NavbarItem>
-          <NavbarItem isActive>
-            {/* <Link href="/profile" aria-current="page">
-              My Vehicle
-            </Link> */}
-          </NavbarItem>
+          <NavbarItem isActive></NavbarItem>
           {/* 
           <NavbarItem>
             <Link color="foreground" href="#">
@@ -66,15 +62,13 @@ const NavBar = () => {
             </Link>
           </NavbarItem> */}
         </NavbarContent>
-        <NavbarContent justify="end">
+        <NavbarContent className="hidden sm:flex gap-4" justify="end">
           {/* <NavbarItem className="hidden lg:flex">
         <Link href="#">Login</Link>
       </NavbarItem> */}
-          {/* <NavbarItem>
-            <Link href="/profile" aria-current="page">
-              My Vehicle
-            </Link>
-          </NavbarItem> */}
+          <NavbarItem onClick={handleSignOut}>
+            <a href="">Logout</a>
+          </NavbarItem>
         </NavbarContent>
         <NavbarMenu className="text-white bg-black flex justify-center items-center">
           {menuItems.map((item, index) => (

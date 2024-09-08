@@ -27,7 +27,7 @@ const AdminHero = () => {
           <Button className="bg-orange-600 mt-2 ml-5">Browse Vehicles</Button>
         </Link>
         <Link href={'/profile'}>
-          <Button className="button ml-5">My Vehicles</Button>
+          <Button className="button ml-5">My Vehicle</Button>
         </Link>
       </div>
     </div>

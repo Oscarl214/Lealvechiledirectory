@@ -7,6 +7,7 @@ import Loading from './loading';
 import Link from 'next/link';
 import { Button, Spinner } from '@nextui-org/react';
 import { useSession } from 'next-auth/react';
+import { CarMotion } from '../components/usersvehiclespage/CarMotion';
 const Profile = () => {
   const { data: session } = useSession();
 
@@ -23,7 +24,9 @@ const Profile = () => {
     <div>
       <NavBar />
       <div className="">
-        <UsersCar />
+        <CarMotion>
+          <UsersCar />
+        </CarMotion>
       </div>
     </div>
   );

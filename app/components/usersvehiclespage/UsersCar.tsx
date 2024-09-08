@@ -152,7 +152,6 @@ const UsersCar = () => {
           key={vehicle.id}
           className="flex flex-col  w-full p-4 items-center"
         >
-          {/* Car image */}
           <div className="flex-shrink-0 md:w-1/2 mb-4 md:mb-0 mt-[50px]">
             <DeleteVehicleButton
               onClick={() => deleteUserVehicle(vehicle.id)}
@@ -163,7 +162,7 @@ const UsersCar = () => {
               height={550}
               width={570}
               priority
-              className="object-cover w-full h-auto mt-5 rounded-md bg-white"
+              className="object-cover w-full h-auto mt-5 rounded-md "
             />
             <div className="flex md:flex-col flex-row gap-3 m-2 justify-center items-center">
               <h2 className="text-center mb-4 text-4xl font-extrabold text-white md:text-5xl lg:text-6xl ">
@@ -179,15 +178,15 @@ const UsersCar = () => {
             </div>
           </div>
           <Divider />
-          <div className="flex flex-col mf:flex-col lg:flex-row   justify-center items-center flex-wrap gap-4 m-2">
+          <div className="flex flex-col mf:flex-col lg:flex-row   justify-center items-center flex-wrap gap-2 m-2">
             <h2 className="font-semibold text-3xl lg:text-4xl text-center">
               Guide to Maintenance Types
             </h2>
-            <p className="text-md">
-              Choose a maintenance type from the list to see the different tasks
-              available for your vehicle. Then proceed to enter in the task that
-              best fits what you had done to your vehicle or input anything youd
-              like that best reflects the maintenance done.
+            <p className="text-md m-4 text-center">
+              Select a maintenance type from the list to view the available
+              tasks for your vehicle. Next, enter the task that most accurately
+              describes the maintenance performed or provide any additional
+              details that reflect the work done.
             </p>
             <SearchBar
               vehicleid={vehicle.id}

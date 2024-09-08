@@ -20,6 +20,7 @@ export async function POST(request: Request) {
         date: true,
         vehicleId: true,
         vehicle: true,
+        datedone: true,
       },
     });
 

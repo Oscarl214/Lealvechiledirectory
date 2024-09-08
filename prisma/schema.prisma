@@ -48,7 +48,8 @@ model Vehicle {
 model Maintenance {
   id           String   @id @default(auto()) @map("_id") @db.ObjectId
   type         String   
-  description  String?  
+  description  String?
+  datedone     String
   date         DateTime @default(now())
   vehicleId    String   @map("vehicleId") @db.ObjectId
   vehicle      Vehicle  @relation("VehicleMaintenances", fields: [vehicleId], references: [id], onDelete: Cascade)
