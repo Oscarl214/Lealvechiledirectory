@@ -151,7 +151,7 @@ export default function SignUpPage() {
                     </a>
                   </p>
                 </form>
-                <p>or</p>
+                {/* <p>or</p>
                 <div className="max-w-sm text-start">
                   <Button
                     type="button"
@@ -176,7 +176,7 @@ export default function SignUpPage() {
                     </svg>
                     Sign Up with Google<div></div>
                   </Button>
-                </div>
+                </div> */}
               </div>
             </div>
           </div>
