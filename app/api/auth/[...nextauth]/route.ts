@@ -65,7 +65,7 @@ const handler = NextAuth({
             console.log('New Google user created with vehicles:', newUser);
           }
         }
-      }
+      } //test
       return true;
     },
     async jwt({ token, user }) {
