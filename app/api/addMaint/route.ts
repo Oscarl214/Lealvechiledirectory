@@ -12,7 +12,7 @@ export async function POST(request: Request) {
         { status: 400 }
       );
     }
-    const currentDate = dayjs().format('YYYY-MM-DD hh:mm A');
+    const currentDate = dayjs().toISOString();
 
     const newMaintenance = await prisma.maintenance.create({
       data: {

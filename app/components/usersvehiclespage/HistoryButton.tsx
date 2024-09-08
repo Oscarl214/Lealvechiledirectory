@@ -10,6 +10,7 @@ import {
   useDisclosure,
 } from '@nextui-org/react';
 import { useSession } from 'next-auth/react';
+import dayjs from 'dayjs';
 import DeleteMaint from './DeleteMaintButton';
 import Loading from '@/app/profile/loading';
 import toast, { Toast } from 'react-hot-toast';
@@ -125,7 +126,7 @@ const HistoryButton: React.FC<HistoryButtonProps> = ({
                       <div className="mt-2">
                         <span className="font-semibold ">Date Posted:</span>
                         <div className="text-sm text-gray-600 dark:text-gray-700">
-                          {maintenance.date}
+                          {dayjs(maintenance.date).format('MM/DD/YYYY hh:mm A')}
                         </div>
                         <DeleteMaint
                           onClick={() => deleteMaint(maintenance.id)}
