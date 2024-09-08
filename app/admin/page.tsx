@@ -6,7 +6,7 @@ import AdminHero from '../components/adminpagecomponents/hero';
 import Features from '../components/adminpagecomponents/features';
 import Footer from '../components/footer';
 import Header from '../components/adminpagecomponents/header';
-import { Button } from '@nextui-org/react';
+import { Button, Spinner } from '@nextui-org/react';
 import Link from 'next/link';
 const AdminPage = () => {
   const { data: session } = useSession();
@@ -15,7 +15,7 @@ const AdminPage = () => {
     return (
       <div className="flex justify-center items-center h-screen">
         <Link href="/">
-          <Button className="bg-orange-500">Please Sign In</Button>
+          <Spinner size="lg" />
         </Link>
       </div>
     );

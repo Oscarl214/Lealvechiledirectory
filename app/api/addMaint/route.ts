@@ -12,12 +12,13 @@ export async function POST(request: Request) {
         { status: 400 }
       );
     }
+    const currentDate = dayjs().format('YYYY-MM-DD hh:mm A');
 
     const newMaintenance = await prisma.maintenance.create({
       data: {
         type,
         description,
-        date: dayjs().toDate(),
+        date: currentDate,
         vehicle: {
           connect: { id: vehicleId },
         },

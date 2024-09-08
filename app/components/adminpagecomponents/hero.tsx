@@ -13,18 +13,21 @@ const AdminHero = () => {
         backgroundRepeat: 'no-repeat',
       }}
     >
-      <div className="div-center ml-2 pt-4">
-        <h1 className="font-bold text-4xl md:text-5xl lg:text-6xl leading-tight">
+      <div className="flex flex-col justify-center h-screen items-start ml-2 pt-4 ">
+        <h1 className="font-bold text-4xl md:text-5xl lg:text-6xl leading-tight m-5">
           Leal Vehicle Maintenance Hub
         </h1>
-        <p className="text-2xl md:text-3xl lg:text-2xl leading-tight pt-4">
+        <p className="text-2xl md:text-3xl lg:text-2xl leading-tight pt-4 ml-5">
           A dedicated digital space for documenting all our vehicle maintenance.
         </p>
+        <p className="text-start text-md md:text-lg lg:text-xl leading-tight pt-4 pb-4 ml-5">
+          Scroll Down to View Features.
+        </p>
         <Link href={'/vehicleselection'}>
-          <Button className="bg-orange-600 mt-2">Browse Vehicles</Button>
+          <Button className="bg-orange-600 mt-2 ml-5">Browse Vehicles</Button>
         </Link>
         <Link href={'/profile'}>
-          <Button className="button">My Vehicles</Button>
+          <Button className="button ml-5">My Vehicles</Button>
         </Link>
       </div>
     </div>
