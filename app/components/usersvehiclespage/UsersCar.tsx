@@ -178,7 +178,7 @@ const UsersCar = () => {
             </div>
           </div>
           <Divider />
-          <div className="flex flex-col mf:flex-col lg:flex-row   justify-center items-center flex-wrap gap-2 m-2">
+          <div className="flex flex-col mf:flex-col lg:flex-col   justify-center items-center flex-wrap gap-2 m-2">
             <h2 className="font-semibold text-3xl lg:text-4xl text-center">
               Guide to Maintenance Types
             </h2>
