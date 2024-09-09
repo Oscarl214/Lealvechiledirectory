@@ -25,8 +25,10 @@ The Vehicle Maintenance Tracker is a private, full-stack application exclusively
 - **React-Scroll-Up:** https://www.npmjs.com/package/react-scroll-up
 
 ## Desktop View
+![LealDirect-Desktop](https://github.com/user-attachments/assets/83f1e3f4-a81e-4122-89b6-df3a46d5099f)
 
 # Mobile View
+![MobileLealDirect](https://github.com/user-attachments/assets/4323694b-24ed-445a-97ef-726e09e28d8d)
 
 ## Live
 
