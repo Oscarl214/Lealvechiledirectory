@@ -58,8 +58,6 @@ const CarCard = () => {
     return <Loading />;
   }
   //use the session to pass in user email as param to be able to pass in the data to the api route so it can find the user and update the
-  //users vehicle array
-  //Pass in the vechciole id as you call the handletoprofile function on Click
 
   const handleAddToProfile = async (vehicleId: string) => {
     if (!session?.user?.email) return;
