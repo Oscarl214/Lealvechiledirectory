@@ -46,7 +46,6 @@ function SignInPage() {
     } catch (error) {
       console.error('Error:', error);
       setErrorMessage('An unexpected error occurred. Please try again');
-ected error occurred. Pl      toast.error('An unexpease try again');
     }
   };
 
