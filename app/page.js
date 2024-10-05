@@ -46,7 +46,7 @@ function SignInPage() {
     } catch (error) {
       console.error('Error:', error);
       setErrorMessage('An unexpected error occurred. Please try again');
-      toast.error('An unexpected error occurred. Please try again');
+ected error occurred. Pl      toast.error('An unexpease try again');
     }
   };
 
@@ -161,7 +161,7 @@ function SignInPage() {
                       Sign in with Google
                     </Button>
                   </div> */}
-                  <p className="text-sm font-light text-gray-500 dark:text-gray-400">
+                  {/* <p className="text-sm font-light text-gray-500 dark:text-gray-400">
                     Don{''}t have an Account?
                     <a
                       href="/signup"
@@ -169,7 +169,7 @@ function SignInPage() {
                     >
                       Sign Up Here
                     </a>
-                  </p>
+                  </p> */}
                 </form>
               </div>
             </div>
