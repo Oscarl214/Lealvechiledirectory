@@ -103,7 +103,7 @@ export function productSuggestions(logs: MaintenanceLog[]) {
     if (/air\s*&\s*cabin|engine air/i.test(description)) items.add("Engine air filter")
     if (/metal plate|under cover/i.test(description)) items.add("Under cover metal plate")
   }
-  return [...items]
+  return Array.from(items)
 }
 
 export type WearPart = {
