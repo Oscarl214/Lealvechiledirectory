@@ -96,10 +96,15 @@ function FitCamera() {
         camera.fov = portrait ? 37 : short ? 38 : 34
         camera.updateProjectionMatrix()
       }
-      if (controls && "target" in controls && controls.target && "set" in controls.target) {
-        controls.target.set(0, portrait ? 0.5 : 0.65, 0)
-        if ("enabled" in controls) controls.enabled = !portrait
-        if ("update" in controls && typeof controls.update === "function") controls.update()
+      const orbit = controls as {
+        target?: { set?: (x: number, y: number, z: number) => void }
+        enabled?: boolean
+        update?: () => void
+      } | null
+      if (orbit?.target?.set) {
+        orbit.target.set(0, portrait ? 0.5 : 0.65, 0)
+        orbit.enabled = !portrait
+        orbit.update?.()
       }
       gl.domElement.style.touchAction = portrait ? "pan-y" : "none"
     }
