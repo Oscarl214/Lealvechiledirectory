@@ -40,6 +40,7 @@ model Vehicle {
   combination_mpg Int?
   class          String
   image          String
+  odometer       Int?
   userId         String?     @map("userId") @db.ObjectId
   user           User?       @relation("UserVehicles", fields: [userId], references: [id], onDelete: Cascade) // Consistent relation name
   maintenances   Maintenance[] @relation("VehicleMaintenances")
@@ -50,6 +51,13 @@ model Maintenance {
   type         String   
   description  String?
   datedone     String
+  mileage      Int?
+  cost            Float?
+  products        Json?
+  tireHealth      Int?
+  batteryHealth   Int?
+  tiresReplaced   Boolean?
+  batteryReplaced Boolean?
   date         DateTime @default(now())
   vehicleId    String   @map("vehicleId") @db.ObjectId
   vehicle      Vehicle  @relation("VehicleMaintenances", fields: [vehicleId], references: [id], onDelete: Cascade)

@@ -1,7 +1,10 @@
 import { prisma } from '@/lib/prisma';
 import { NextResponse } from 'next/server';
+import { requireGarageSession } from '@/lib/garage-session';
 
 export async function DELETE(request: Request) {
+  const auth = await requireGarageSession();
+  if (auth.response) return auth.response;
   try {
     const { maintenanceId } = await request.json();
 

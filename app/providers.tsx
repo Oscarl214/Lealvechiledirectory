@@ -1,20 +1,11 @@
-'use client';
+"use client"
 
-import { NextUIProvider } from '@nextui-org/react';
-import { ThemeProvider as NextThemesProvider } from 'next-themes';
-import { SessionProvider } from 'next-auth/react';
+import { ThemeProvider } from "next-themes"
+
 export default function Providers({ children }: { children: React.ReactNode }) {
   return (
-    <SessionProvider>
-      <NextUIProvider>
-        <NextThemesProvider
-          attribute="class"
-          defaultTheme="dark"
-          themes={['light', 'dark']}
-        >
-          {children}
-        </NextThemesProvider>
-      </NextUIProvider>
-    </SessionProvider>
-  );
+    <ThemeProvider attribute="class" defaultTheme="dark" forcedTheme="dark">
+      {children}
+    </ThemeProvider>
+  )
 }
