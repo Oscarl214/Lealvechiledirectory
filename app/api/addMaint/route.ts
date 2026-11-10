@@ -42,12 +42,12 @@ export async function POST(request: Request) {
       ? body.products.map((item: unknown) => String(item).trim()).filter(Boolean)
       : [];
 
-    function life(value: unknown) {
+    const life = (value: unknown) => {
       if (value === undefined || value === null || value === '') return null;
       const parsed = Number(value);
       if (!Number.isInteger(parsed) || parsed < 0 || parsed > 100) return undefined;
       return parsed;
-    }
+    };
 
     const tireHealth = life(body.tireHealth);
     const batteryHealth = life(body.batteryHealth);
