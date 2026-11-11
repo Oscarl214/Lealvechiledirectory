@@ -6,7 +6,7 @@ export const SESSION_COOKIE = "garage_session"
 const FIVE_DAYS_MS = 60 * 60 * 24 * 5 * 1000
 
 export function ownerEmail() {
-  const email = process.env.GARAGE_OWNER_EMAIL?.trim().toLowerCase()
+  const email = process.env.GARAGE_OWNER_EMAIL?.trim().replace(/^["']|["']$/g, "").trim().toLowerCase()
   if (!email) throw new Error("GARAGE_OWNER_EMAIL is not set")
   return email
 }

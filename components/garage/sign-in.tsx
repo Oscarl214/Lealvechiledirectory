@@ -19,8 +19,9 @@ export function GarageSignIn({ onSignedIn }: { onSignedIn: () => void }) {
         body: JSON.stringify({ idToken }),
       })
       if (!response.ok) {
+        const body = await response.json().catch(() => null)
         await clientAuth().signOut()
-        toast.error("This Google account cannot open the garage")
+        toast.error(body?.error || "This Google account cannot open the garage")
         return
       }
       onSignedIn()

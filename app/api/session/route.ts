@@ -26,7 +26,18 @@ export async function POST(request: Request) {
       maxAge: opened.maxAge,
     })
     return response
-  } catch {
+  } catch (error) {
+    const code = error && typeof error === "object" && "code" in error ? String(error.code) : ""
+    const detail = error instanceof Error ? error.message : ""
+    if (!process.env.GARAGE_OWNER_EMAIL?.trim()) {
+      return NextResponse.json({ error: "Garage owner email is not on this deployment. Redeploy after saving it." }, { status: 401 })
+    }
+    if (/FIREBASE_SERVICE_ACCOUNT|private_key|JSON/i.test(detail)) {
+      return NextResponse.json({ error: "The Firebase service account on Vercel could not be read." }, { status: 401 })
+    }
+    if (code.startsWith("auth/")) {
+      return NextResponse.json({ error: "Google sign-in could not be verified." }, { status: 401 })
+    }
     return NextResponse.json({ error: "Could not start the session" }, { status: 401 })
   }
 }
