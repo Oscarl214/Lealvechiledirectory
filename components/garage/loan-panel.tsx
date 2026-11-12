@@ -162,19 +162,19 @@ export function LoanPanel({
   }
 
   return (
-    <div className="fixed inset-0 z-30 flex justify-end bg-black/40">
+    <div className="fixed inset-0 z-30 flex justify-end overflow-x-hidden bg-black/40">
       <button
         type="button"
         aria-label="Close loan"
         className="hidden h-full min-w-0 flex-1 max-[999px]:landscape:block min-[1000px]:block"
         onClick={onClose}
       />
-      <aside className="h-dvh w-full overflow-auto border-white/10 bg-zinc-950 p-4 pb-[max(1.25rem,env(safe-area-inset-bottom))] pt-[max(1rem,env(safe-area-inset-top))] max-[999px]:landscape:max-w-[min(24rem,62vw)] max-[999px]:landscape:border-l min-[1000px]:max-w-md min-[1000px]:border-l min-[1000px]:p-5">
-        <div className="flex items-start justify-between gap-3">
-          <div>
+      <aside className="h-dvh w-full min-w-0 max-w-full overflow-x-hidden overflow-y-auto border-white/10 bg-zinc-950 p-4 pb-[max(1.25rem,env(safe-area-inset-bottom))] pt-[max(1rem,env(safe-area-inset-top))] max-[999px]:landscape:max-w-[min(24rem,62vw)] max-[999px]:landscape:border-l min-[1000px]:max-w-md min-[1000px]:border-l min-[1000px]:p-5">
+        <div className="flex min-w-0 items-start justify-between gap-3">
+          <div className="min-w-0">
             <p className="text-[11px] font-medium uppercase tracking-[0.22em] text-white/50">Loan</p>
             <h2 className="text-lg font-semibold">{formatMoney(view.balance)} owed</h2>
-            <p className="text-xs text-white/50">
+            <p className="break-words text-xs text-white/50">
               {view.payoffOn ? `Paid off ${dayjs(view.payoffOn).format("MMM YYYY")}` : "Payment does not cover the interest"}
               {view.interestRemaining > 0 ? ` · ${formatMoney(view.interestRemaining)} interest left` : ""}
             </p>
@@ -185,7 +185,7 @@ export function LoanPanel({
         </div>
 
         <form className="mt-6 space-y-4" onSubmit={saveTerms}>
-          <div className="grid grid-cols-1 gap-3 min-[380px]:grid-cols-2">
+          <div className="grid min-w-0 grid-cols-1 gap-3 sm:grid-cols-2">
             <div className="space-y-2">
               <Label htmlFor="loan-balance">Current balance</Label>
               <Input id="loan-balance" inputMode="decimal" value={balance} onChange={(event) => setBalance(event.target.value)} />
@@ -207,7 +207,7 @@ export function LoanPanel({
             <Label htmlFor="loan-price">Price</Label>
             <Input id="loan-price" inputMode="decimal" value={price} onChange={(event) => setPrice(event.target.value)} />
           </div>
-          <Button type="submit" disabled={savingTerms || vehicleId === "local"}>
+          <Button type="submit" className="max-w-full" disabled={savingTerms || vehicleId === "local"}>
             {savingTerms ? "Saving" : "Save loan"}
           </Button>
         </form>
@@ -217,7 +217,7 @@ export function LoanPanel({
           <p className="text-xs text-white/50">
             Each payment takes one month of {loan.apr.toFixed(2)}% interest off the balance first. The rest lowers what you owe.
           </p>
-          <div className="grid grid-cols-1 gap-3 min-[380px]:grid-cols-2">
+          <div className="grid min-w-0 grid-cols-1 gap-3 sm:grid-cols-2">
             <div className="space-y-2">
               <Label htmlFor="payment-amount">Amount</Label>
               <Input id="payment-amount" inputMode="decimal" value={amount} onChange={(event) => setAmount(event.target.value)} />
@@ -227,7 +227,7 @@ export function LoanPanel({
               <Input id="payment-date" type="date" value={paidOn} onChange={(event) => setPaidOn(event.target.value)} required />
             </div>
           </div>
-          <Button type="submit" disabled={savingPayment || view.balance <= 0 || vehicleId === "local"}>
+          <Button type="submit" className="max-w-full" disabled={savingPayment || view.balance <= 0 || vehicleId === "local"}>
             {savingPayment ? "Saving" : "Log payment"}
           </Button>
         </form>
@@ -302,11 +302,11 @@ function LoanTimeline({ events, onRemove }: { events: LoanEvent[]; onRemove?: (i
               event.kind === "upcoming" ? "bg-white" : "bg-white/35"
             }`}
           />
-          <div className="flex items-baseline justify-between gap-3">
-            <p className="text-sm">{dayjs(event.due).format("MMM D, YYYY")}</p>
+          <div className="flex min-w-0 items-baseline justify-between gap-3">
+            <p className="min-w-0 text-sm">{dayjs(event.due).format("MMM D, YYYY")}</p>
             <p className="shrink-0 text-sm">{formatMoney(event.balance)} left</p>
           </div>
-          <p className="text-xs text-white/50">
+          <p className="break-words text-xs text-white/50">
             {formatMoney(event.amount)} · {formatMoney(event.interest)} interest · {formatMoney(event.principal)} principal
             {event.kind === "estimated" ? " · estimated" : ""}
           </p>

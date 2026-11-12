@@ -457,16 +457,16 @@ export default function GaragePage() {
       )}
 
       {panelOpen && (
-        <div className="fixed inset-0 z-30 flex justify-end bg-black/40">
+        <div className="fixed inset-0 z-30 flex justify-end overflow-x-hidden bg-black/40">
           <button
             type="button"
             aria-label="Close log"
             className="hidden h-full min-w-0 flex-1 max-[999px]:landscape:block min-[1000px]:block"
             onClick={() => setPanelOpen(false)}
           />
-          <aside className="h-dvh w-full overflow-auto border-white/10 bg-zinc-950 p-4 pb-[max(1.25rem,env(safe-area-inset-bottom))] pt-[max(1rem,env(safe-area-inset-top))] max-[999px]:landscape:max-w-[min(24rem,62vw)] max-[999px]:landscape:border-l min-[1000px]:max-w-md min-[1000px]:border-l min-[1000px]:p-5">
-            <div className="flex flex-wrap items-start justify-between gap-3">
-              <div>
+          <aside className="h-dvh w-full min-w-0 max-w-full overflow-x-hidden overflow-y-auto border-white/10 bg-zinc-950 p-4 pb-[max(1.25rem,env(safe-area-inset-bottom))] pt-[max(1rem,env(safe-area-inset-top))] max-[999px]:landscape:max-w-[min(24rem,62vw)] max-[999px]:landscape:border-l min-[1000px]:max-w-md min-[1000px]:border-l min-[1000px]:p-5">
+            <div className="flex min-w-0 flex-wrap items-start justify-between gap-3">
+              <div className="min-w-0">
                 <p className="text-[11px] font-medium uppercase tracking-[0.22em] text-white/50">
                   Log
                 </p>
@@ -504,8 +504,8 @@ export default function GaragePage() {
               </Button>
             </div>
 
-            <form className="mt-6 flex items-end gap-2" onSubmit={saveOdometer}>
-              <div className="flex-1 space-y-2">
+            <form className="mt-6 flex min-w-0 items-end gap-2" onSubmit={saveOdometer}>
+              <div className="min-w-0 flex-1 space-y-2">
                 <Label htmlFor="odometer">Current miles</Label>
                 <Input
                   id="odometer"
@@ -515,7 +515,7 @@ export default function GaragePage() {
                   placeholder="45200"
                 />
               </div>
-              <Button type="submit" disabled={savingMiles}>
+              <Button type="submit" className="shrink-0" disabled={savingMiles}>
                 Save
               </Button>
             </form>
@@ -598,7 +598,7 @@ export default function GaragePage() {
                               : [...current, product]
                           )
                         }
-                        className={`rounded-full border px-2.5 py-1 text-xs ${
+                        className={`max-w-full break-words rounded-full border px-2.5 py-1 text-left text-xs ${
                           selected ? "border-white bg-white text-black" : "border-white/20 text-white/75"
                         }`}
                       >
@@ -607,7 +607,7 @@ export default function GaragePage() {
                     )
                   })}
                 </div>
-                <div className="flex gap-2">
+                <div className="flex min-w-0 gap-2">
                   <Input
                     id="product-draft"
                     value={productDraft}
@@ -617,6 +617,7 @@ export default function GaragePage() {
                   <Button
                     type="button"
                     variant="outline"
+                    className="shrink-0"
                     onClick={() => {
                       const name = productDraft.trim()
                       if (!name) return
@@ -628,7 +629,7 @@ export default function GaragePage() {
                   </Button>
                 </div>
               </div>
-              <div className="grid grid-cols-1 gap-3 min-[380px]:grid-cols-2">
+              <div className="grid min-w-0 grid-cols-1 gap-3 sm:grid-cols-2">
                 <div className="space-y-2">
                   <Label htmlFor="tire-life">Tire life %</Label>
                   <Input
@@ -701,10 +702,10 @@ export default function GaragePage() {
                           {entry.cost != null ? ` · ${formatMoney(entry.cost)}` : ""}
                         </p>
                         {entry.products && entry.products.length > 0 ? (
-                          <p className="text-xs text-white/45">{entry.products.join(" · ")}</p>
+                          <p className="break-words text-xs text-white/45">{entry.products.join(" · ")}</p>
                         ) : null}
                         {entry.description ? (
-                          <p className="text-xs text-white/40">{entry.description}</p>
+                          <p className="break-words text-xs text-white/40">{entry.description}</p>
                         ) : null}
                         <CostField
                           entry={entry}
@@ -767,7 +768,7 @@ function CostField({
   }
 
   return (
-    <form className="mt-2 flex items-center gap-2" onSubmit={save}>
+    <form className="mt-2 flex min-w-0 items-center gap-2" onSubmit={save}>
       <Input
         aria-label={`Cost for ${entry.type}`}
         inputMode="decimal"
@@ -775,7 +776,7 @@ function CostField({
         onChange={(event) => setValue(event.target.value)}
         placeholder="0.00"
       />
-      <Button type="submit" size="sm" variant="outline" disabled={saving}>
+      <Button type="submit" size="sm" variant="outline" className="shrink-0" disabled={saving}>
         {saving ? "Saving" : "Save"}
       </Button>
     </form>
