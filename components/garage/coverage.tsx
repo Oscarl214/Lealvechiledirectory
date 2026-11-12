@@ -7,15 +7,15 @@ import { formatMoney } from "@/lib/garage-logs"
 const chip =
   "w-[8.75rem] shrink-0 rounded-lg border border-white/15 bg-black/80 p-2.5 text-left landscape:w-32 landscape:p-2 min-[1000px]:w-40 min-[1000px]:bg-black/70 min-[1000px]:p-3 min-[1000px]:backdrop-blur-sm"
 
-function CardLink({ children }: { children: string }) {
+function CardOption() {
   return (
     <a
       href="/api/insurance-card"
       target="_blank"
       rel="noopener"
-      className="rounded-full border border-white/20 px-3 py-1.5 text-xs text-white/90"
+      className="mt-3 inline-block rounded-full border border-white/20 px-3 py-1.5 text-xs text-white/90"
     >
-      {children}
+      View card
     </a>
   )
 }
@@ -35,12 +35,9 @@ export function InsuranceCard({ onOpen }: { onOpen: () => void }) {
 export function InsuranceSheet() {
   return (
     <section className="mt-5">
-      <div className="flex items-end justify-between gap-3">
-        <div>
-          <p className="text-[11px] font-medium uppercase tracking-[0.22em] text-white/45">Insurance</p>
-          <p className="mt-1 text-2xl font-medium">{formatMoney(insurance.monthlyPayment)}</p>
-        </div>
-        <CardLink>Card</CardLink>
+      <div>
+        <p className="text-[11px] font-medium uppercase tracking-[0.22em] text-white/45">Insurance</p>
+        <p className="mt-1 text-2xl font-medium">{formatMoney(insurance.monthlyPayment)}</p>
       </div>
       <p className="mt-1 text-xs text-white/50">
         {insurance.carrier} · {insurance.policyNumber}
@@ -49,6 +46,7 @@ export function InsuranceSheet() {
         {dayjs(insurance.effective).format("MMM D, YYYY")} – {dayjs(insurance.expires).format("MMM D, YYYY")} · every month
       </p>
       <p className="mt-1 text-xs text-white/45">Claims {insurance.claimsPhone}</p>
+      <CardOption />
     </section>
   )
 }
@@ -85,17 +83,15 @@ export function InsurancePanel({ onClose }: { onClose: () => void }) {
           <Fact label="Company" value={insurance.phone} />
           <Fact label="Claims" value={insurance.claimsPhone} />
         </dl>
-        <div className="mt-6 flex flex-wrap gap-2">
-          <CardLink>Open insurance card</CardLink>
-          <a
-            href={insurance.claimsUrl}
-            target="_blank"
-            rel="noopener"
-            className="rounded-full border border-white/20 px-3 py-1.5 text-xs text-white/70"
-          >
-            File a claim
-          </a>
-        </div>
+        <CardOption />
+        <a
+          href={insurance.claimsUrl}
+          target="_blank"
+          rel="noopener"
+          className="mt-4 inline-block text-xs text-white/45"
+        >
+          File a claim
+        </a>
       </aside>
     </div>
   )
