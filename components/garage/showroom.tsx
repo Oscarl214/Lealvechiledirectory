@@ -18,7 +18,9 @@ import {
 import { LoanCard, LoanSheet } from "@/components/garage/loan-panel"
 import { RecallCard, RecallSheet } from "@/components/garage/recalls"
 import { LifeFill, Reveal, useReveal } from "@/components/garage/motion"
-import { batteryStatus, formatMoney, lastRegistration, recordedMiles, tireStatus, totalSpend } from "@/lib/garage-logs"
+import { InsuranceCard, InsuranceSheet, RegistrationCard, RegistrationLabel } from "@/components/garage/coverage"
+import { insurance, registrationView } from "@/lib/coverage"
+import { batteryStatus, formatMoney, recordedMiles, tireStatus, totalSpend } from "@/lib/garage-logs"
 import type { CarLoan } from "@/lib/loan"
 import type { GarageRecall, RecallStatus } from "@/lib/recalls"
 
@@ -167,6 +169,8 @@ export default function Showroom({
   onLoan,
   onRecalls,
   onRecallStatus,
+  onInsurance,
+  onRegistration,
 }: {
   logs: MaintenanceLog[]
   records: MaintenanceLog[]
@@ -181,6 +185,8 @@ export default function Showroom({
   onLoan: () => void
   onRecalls: () => void
   onRecallStatus: (campaign: string, status: RecallStatus) => void
+  onInsurance: () => void
+  onRegistration: () => void
 }) {
   const [zone, setZone] = useState<GarageZone>("all")
   const { active, progress, errors } = useProgress()
@@ -194,10 +200,7 @@ export default function Showroom({
   const spent = totalSpend(records)
   const tires = tireStatus(records)
   const battery = batteryStatus(records)
-  const registration = lastRegistration(records)
-  const registrationDate = registration
-    ? (parseServiceDate(registration.when) ?? dayjs(registration.when)).format("MMM D, YYYY")
-    : null
+  const registration = useMemo(() => registrationView(records), [records])
   const recent = useMemo(() => {
     return [...records]
       .sort((a, b) => {
@@ -356,13 +359,10 @@ export default function Showroom({
           <RecallCard recalls={recalls} loaded={recallsLoaded} failed={recallsFailed} onOpen={onRecalls} />
         </Reveal>
         <Reveal ready={modelReady} delay={350} className="shrink-0">
-        <div className="w-[8.75rem] shrink-0 rounded-lg border border-white/15 bg-black/80 p-2.5 landscape:w-32 landscape:p-2 max-[999px]:portrait:w-auto max-[999px]:portrait:min-w-0 max-[999px]:portrait:p-2 min-[1000px]:w-40 min-[1000px]:bg-black/70 min-[1000px]:p-3 min-[1000px]:backdrop-blur-sm">
-          <p className="text-[11px] font-medium uppercase tracking-[0.18em] text-white/50">Registration</p>
-          <p className="mt-1 text-sm leading-snug">{registrationDate ?? "Not logged"}</p>
-          {registration?.mileage != null ? (
-            <p className="mt-1 text-[11px] text-white/45">{registration.mileage.toLocaleString()} mi</p>
-          ) : null}
-        </div>
+          <RegistrationCard registration={registration} onOpen={onRegistration} />
+        </Reveal>
+        <Reveal ready={modelReady} delay={420} className="shrink-0">
+          <InsuranceCard onOpen={onInsurance} />
         </Reveal>
       </div>
 
@@ -504,15 +504,27 @@ export default function Showroom({
             <WearCard part={tires} delay={80} ready={modelReady} immediate />
             <WearCard part={battery} delay={140} ready={modelReady} immediate />
             <Reveal ready={modelReady} delay={200} immediate>
-            <div className="rounded-2xl border border-white/10 bg-white/5 p-3">
-              <p className="text-[11px] font-medium uppercase tracking-[0.18em] text-white/50">Registration</p>
-              <p className="mt-1 text-sm leading-snug">{registrationDate ?? "Not logged"}</p>
-              {registration?.mileage != null ? (
-                <p className="mt-1 text-[11px] text-white/45">{registration.mileage.toLocaleString()} mi</p>
-              ) : null}
-            </div>
+            <button
+              type="button"
+              onClick={onRegistration}
+              className="w-full rounded-2xl border border-white/10 bg-white/5 p-3 text-left"
+            >
+              <RegistrationLabel registration={registration} />
+            </button>
+            </Reveal>
+            <Reveal ready={modelReady} delay={260} immediate>
+            <button
+              type="button"
+              onClick={onInsurance}
+              className="w-full rounded-2xl border border-white/10 bg-white/5 p-3 text-left"
+            >
+              <p className="text-[11px] font-medium uppercase tracking-[0.18em] text-white/50">Insurance</p>
+              <p className="mt-1 text-lg font-medium">{formatMoney(insurance.monthlyPayment)}</p>
+              <p className="mt-1 text-[11px] text-white/45">Every month</p>
+            </button>
             </Reveal>
           </div>
+          <InsuranceSheet />
           <LoanSheet loan={loan} onOpen={onLoan} ready={modelReady} immediate />
           <RecallSheet
             recalls={recalls}
