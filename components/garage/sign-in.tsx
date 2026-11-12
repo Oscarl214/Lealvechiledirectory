@@ -1,9 +1,75 @@
 "use client"
 
 import { useState } from "react"
-import { GoogleAuthProvider, signInWithPopup } from "firebase/auth"
+import {
+  GoogleAuthProvider,
+  getRedirectResult,
+  signInWithPopup,
+  signInWithRedirect,
+  type User,
+  type UserCredential,
+} from "firebase/auth"
 import { toast } from "sonner"
 import { clientAuth } from "@/lib/firebase"
+
+let redirectResult: Promise<UserCredential | null> | null = null
+
+function redirectResultOnce() {
+  if (!redirectResult) redirectResult = getRedirectResult(clientAuth())
+  return redirectResult
+}
+
+function homeScreenSignIn() {
+  return (
+    window.matchMedia("(display-mode: standalone)").matches ||
+    (navigator as Navigator & { standalone?: boolean }).standalone === true
+  )
+}
+
+function signInError(error: unknown) {
+  const code = error && typeof error === "object" && "code" in error ? String(error.code) : ""
+  if (
+    code === "auth/popup-closed-by-user" ||
+    code === "auth/cancelled-popup-request" ||
+    code === "auth/user-cancelled" ||
+    code === "auth/no-auth-event"
+  ) {
+    return null
+  }
+  if (code === "auth/network-request-failed") return "The sign-in connection dropped. Try again."
+  if (error instanceof Error && !code) return error.message
+  return "Google sign-in did not finish. Try again."
+}
+
+async function openSession(user: User) {
+  await user.reload()
+  const idToken = await user.getIdToken(true)
+  const response = await fetch("/api/session", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ idToken }),
+  })
+  if (!response.ok) {
+    const body = await response.json().catch(() => null)
+    await clientAuth().signOut().catch(() => undefined)
+    throw new Error(typeof body?.error === "string" ? body.error : "Google sign-in did not finish. Try again.")
+  }
+}
+
+export async function resumeGoogleSignIn() {
+  try {
+    const result = await redirectResultOnce()
+    if (result?.user) {
+      await openSession(result.user)
+      return true
+    }
+  } catch (error) {
+    const message = signInError(error)
+    if (message) toast.error(message)
+  }
+  const response = await fetch("/api/session")
+  return response.ok
+}
 
 export function GarageSignIn({ onSignedIn }: { onSignedIn: () => void }) {
   const [pending, setPending] = useState(false)
@@ -11,22 +77,29 @@ export function GarageSignIn({ onSignedIn }: { onSignedIn: () => void }) {
   async function signIn() {
     setPending(true)
     try {
-      const result = await signInWithPopup(clientAuth(), new GoogleAuthProvider())
-      const idToken = await result.user.getIdToken()
-      const response = await fetch("/api/session", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ idToken }),
-      })
-      if (!response.ok) {
-        const body = await response.json().catch(() => null)
-        await clientAuth().signOut()
-        toast.error(body?.error || "This Google account cannot open the garage")
+      const provider = new GoogleAuthProvider()
+      provider.addScope("email")
+      provider.setCustomParameters({ prompt: "select_account" })
+      const auth = clientAuth()
+      if (homeScreenSignIn()) {
+        await signInWithRedirect(auth, provider)
         return
       }
-      onSignedIn()
-    } catch {
-      toast.error("Google sign-in did not finish")
+      try {
+        const result = await signInWithPopup(auth, provider)
+        await openSession(result.user)
+        onSignedIn()
+      } catch (error) {
+        const code = error && typeof error === "object" && "code" in error ? String(error.code) : ""
+        if (code === "auth/popup-blocked" || code === "auth/operation-not-supported-in-this-environment") {
+          await signInWithRedirect(auth, provider)
+          return
+        }
+        throw error
+      }
+    } catch (error) {
+      const message = signInError(error)
+      if (message) toast.error(message)
     } finally {
       setPending(false)
     }

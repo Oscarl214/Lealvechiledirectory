@@ -14,9 +14,18 @@ export function ownerEmail() {
 export async function openGarageSession(idToken: string) {
   const decoded = await adminAuth().verifyIdToken(idToken)
   const email = decoded.email?.toLowerCase()
-  if (!email || email !== ownerEmail()) return null
+  if (!email) {
+    return {
+      ok: false as const,
+      status: 401,
+      error: "Google did not confirm the email on that sign-in. Try again.",
+    }
+  }
+  if (email !== ownerEmail()) {
+    return { ok: false as const, status: 403, error: "This Google account cannot open the garage" }
+  }
   const session = await adminAuth().createSessionCookie(idToken, { expiresIn: FIVE_DAYS_MS })
-  return { session, email, maxAge: FIVE_DAYS_MS / 1000 }
+  return { ok: true as const, session, email, maxAge: FIVE_DAYS_MS / 1000 }
 }
 
 export async function readGarageSession() {

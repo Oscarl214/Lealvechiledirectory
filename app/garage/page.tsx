@@ -16,7 +16,7 @@ import {
 } from "@/components/ui/select"
 import { Textarea } from "@/components/ui/textarea"
 import { formatMoney, highestReading, productSuggestions, raisedOdometer, recordedMiles, scheduleLogs } from "@/lib/garage-logs"
-import { GarageSignIn } from "@/components/garage/sign-in"
+import { GarageSignIn, resumeGoogleSignIn } from "@/components/garage/sign-in"
 import { LoanPanel } from "@/components/garage/loan-panel"
 import { AlertsPanel } from "@/components/garage/alerts"
 import { InsurancePanel, RegistrationPanel } from "@/components/garage/coverage"
@@ -113,7 +113,12 @@ export default function GaragePage() {
   useEffect(() => {
     let cancelled = false
     fetch("/api/session").then((response) => {
-      if (!cancelled) setSignedIn(response.ok)
+      if (cancelled) return
+      if (response.ok) setSignedIn(true)
+      else setSignedIn(false)
+    })
+    resumeGoogleSignIn().then((ok) => {
+      if (!cancelled && ok) setSignedIn(true)
     })
     return () => {
       cancelled = true

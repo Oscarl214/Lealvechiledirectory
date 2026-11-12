@@ -1,1 +1,1 @@
-export const vapidPublicKey = "BBbEV16VUNy5qX9bplGORPqpw7si3_bKv_94ReWbr5447pUNjeJvV9no_IEtwmqbqrpDp7VQ1tXywnfNWRJ3214"
+export const vapidPublicKey = "BMhrFmJ3zNM-Vv_XUNZhI9bmuk32iPyc6-dWmauqA75E0vHjemREkh_FMpCsEgkcYekvAr2z1zEqQ7mXEL4pQgg"

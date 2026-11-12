@@ -2,7 +2,9 @@
 
 import { useEffect, useMemo, useState } from "react"
 import dayjs from "dayjs"
+import { getMessaging, getToken, isSupported } from "firebase/messaging"
 import { formatMoney } from "@/lib/garage-logs"
+import { clientApp } from "@/lib/firebase"
 import { loanView, type CarLoan } from "@/lib/loan"
 import { vapidPublicKey } from "@/lib/vapid-public"
 
@@ -97,24 +99,23 @@ function AlertSetup() {
     setBusy(true)
     setMessage("")
     try {
-      const registration = await navigator.serviceWorker.register("/sw.js")
-      await navigator.serviceWorker.ready
       const permission = await Notification.requestPermission()
       if (permission !== "granted") {
         setState(permission === "denied" ? "blocked" : "ready")
         return
       }
-      const existing = await registration.pushManager.getSubscription()
-      const subscription =
-        existing ??
-        (await registration.pushManager.subscribe({
-          userVisibleOnly: true,
-          applicationServerKey: urlBase64ToUint8Array(vapidPublicKey),
-        }))
+      if (!(await isSupported())) throw new Error("This phone cannot turn on alerts yet")
+      const registration = await navigator.serviceWorker.register("/sw.js", { scope: "/" })
+      await navigator.serviceWorker.ready
+      const token = await getToken(getMessaging(clientApp()), {
+        vapidKey: vapidPublicKey,
+        serviceWorkerRegistration: registration,
+      })
+      if (!token) throw new Error("This phone did not accept alerts")
       const saved = await fetch("/api/alerts", {
         method: "PUT",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(subscription),
+        body: JSON.stringify({ token }),
       })
       const body = await saved.json().catch(() => ({}))
       if (!saved.ok) throw new Error(body.error || "Could not save this phone")
@@ -183,15 +184,6 @@ function AlertSetup() {
       {message && <p className="mt-3 text-xs leading-relaxed text-white/70">{message}</p>}
     </div>
   )
-}
-
-function urlBase64ToUint8Array(value: string) {
-  const padding = "=".repeat((4 - (value.length % 4)) % 4)
-  const base64 = (value + padding).replace(/-/g, "+").replace(/_/g, "/")
-  const raw = atob(base64)
-  const output = new Uint8Array(raw.length)
-  for (let index = 0; index < raw.length; index += 1) output[index] = raw.charCodeAt(index)
-  return output
 }
 
 function IphoneNote({ title, body }: { title: string; body: string }) {

@@ -1,7 +1,7 @@
 import { Prisma } from "@prisma/client"
 import { NextResponse } from "next/server"
 import { requireGarageSession } from "@/lib/garage-session"
-import { parsePush, parsePushList, pushConfigured, sendPush } from "@/lib/push"
+import { parsePush, parsePushList, sendPush } from "@/lib/push"
 import { prisma } from "@/lib/prisma"
 
 export const runtime = "nodejs"
@@ -23,10 +23,7 @@ export async function GET() {
   if (auth.response) return auth.response
   const vehicle = await k5()
   if (!vehicle) return NextResponse.json({ error: "K5 not found" }, { status: 404 })
-  return NextResponse.json({
-    configured: pushConfigured(),
-    phones: parsePushList(vehicle.alerts).length,
-  })
+  return NextResponse.json({ phones: parsePushList(vehicle.alerts).length })
 }
 
 export async function PUT(request: Request) {
@@ -36,9 +33,9 @@ export async function PUT(request: Request) {
   if (!vehicle) return NextResponse.json({ error: "K5 not found" }, { status: 404 })
   const subscription = parsePush(await request.json().catch(() => null))
   if (!subscription) {
-    return NextResponse.json({ error: "This phone did not send a usable alert subscription" }, { status: 400 })
+    return NextResponse.json({ error: "This phone did not send a usable alert token" }, { status: 400 })
   }
-  const next = parsePushList(vehicle.alerts).filter((item) => item.endpoint !== subscription.endpoint)
+  const next = parsePushList(vehicle.alerts).filter((item) => item.token !== subscription.token)
   next.push(subscription)
   await prisma.vehicle.update({
     where: { id: vehicle.id },
@@ -47,15 +44,9 @@ export async function PUT(request: Request) {
   return NextResponse.json({ phones: next.length })
 }
 
-export async function POST() {
+export async function POST(request: Request) {
   const auth = await requireGarageSession()
   if (auth.response) return auth.response
-  if (!pushConfigured()) {
-    return NextResponse.json(
-      { error: "Alert sending is not turned on yet. Add the alert key on Vercel and redeploy." },
-      { status: 503 }
-    )
-  }
   const vehicle = await k5()
   if (!vehicle) return NextResponse.json({ error: "K5 not found" }, { status: 404 })
   const list = parsePushList(vehicle.alerts)
@@ -63,12 +54,14 @@ export async function POST() {
     return NextResponse.json({ error: "Allow alerts on this phone first" }, { status: 400 })
   }
   try {
-    const gone = await sendPush(list, {
-      title: "K5 Garage",
-      body: "Alerts are on. This is a test from the garage.",
-    })
+    const link = new URL("/garage", request.url).href
+    const gone = await sendPush(
+      list,
+      { title: "K5 Garage", body: "Alerts are on. This is a test from the garage." },
+      link
+    )
     if (gone.length) {
-      const kept = list.filter((item) => !gone.includes(item.endpoint))
+      const kept = list.filter((item) => !gone.includes(item.token))
       await prisma.vehicle.update({
         where: { id: vehicle.id },
         data: { alerts: kept as unknown as Prisma.InputJsonValue },

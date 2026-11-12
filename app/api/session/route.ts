@@ -15,8 +15,8 @@ export async function POST(request: Request) {
       return NextResponse.json({ error: "Missing sign-in token" }, { status: 400 })
     }
     const opened = await openGarageSession(idToken)
-    if (!opened) {
-      return NextResponse.json({ error: "This Google account cannot open the garage" }, { status: 403 })
+    if (!opened.ok) {
+      return NextResponse.json({ error: opened.error }, { status: opened.status })
     }
     const response = NextResponse.json({ email: opened.email })
     response.cookies.set(SESSION_COOKIE, opened.session, {
