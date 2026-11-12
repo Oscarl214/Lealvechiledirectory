@@ -11,6 +11,8 @@ export const k5 = {
   make: "Kia",
   model: "K5",
   year: 2023,
+  vin: "5XXG64J25MG063586",
+  openRecall: "25V794",
   engine: "1.6L turbo I4",
   oil: "0W-20 full synthetic, about 5.1 qt with filter",
   drive: "FWD",

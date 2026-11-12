@@ -2,7 +2,8 @@ import { Prisma } from "@prisma/client"
 import { NextResponse } from "next/server"
 import { prisma } from "@/lib/prisma"
 import { requireGarageSession } from "@/lib/garage-session"
-import { parseRecallStatuses, recallsFromNhtsa, type RecallStatus } from "@/lib/recalls"
+import { k5 as k5Profile } from "@/lib/k5"
+import { parseRecallStatuses, recallsFromNhtsa, vinModelYear, type RecallStatus } from "@/lib/recalls"
 
 function isK5(vehicle: { make: string; model: string }) {
   return (
@@ -20,7 +21,7 @@ async function officialRecalls(vehicle: { year: number; make: string; model: str
   const url = new URL("https://api.nhtsa.gov/recalls/recallsByVehicle")
   url.searchParams.set("make", vehicle.make)
   url.searchParams.set("model", vehicle.model)
-  url.searchParams.set("modelYear", String(vehicle.year))
+  url.searchParams.set("modelYear", String(vinModelYear(k5Profile.vin) ?? vehicle.year))
   const response = await fetch(url, { signal: AbortSignal.timeout(8000), next: { revalidate: 60 * 60 * 24 } })
   if (!response.ok) throw new Error("NHTSA recall lookup failed")
   return recallsFromNhtsa(await response.json(), parseRecallStatuses(vehicle.recalls))

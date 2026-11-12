@@ -1,7 +1,7 @@
 "use client"
 
-import { useState } from "react"
 import dayjs from "dayjs"
+import { k5 } from "@/lib/k5"
 import { openRecallCount, type GarageRecall, type RecallStatus } from "@/lib/recalls"
 
 function componentLabel(component: string) {
@@ -30,7 +30,7 @@ export function RecallCard({
       <p className="text-[11px] font-medium uppercase tracking-[0.18em] text-white/50">Recalls</p>
       <p className="mt-1 text-lg font-medium">{failed ? "—" : loaded ? open : "…"}</p>
       <p className="mt-1 text-[11px] leading-snug text-white/45">
-        {failed ? "Unavailable" : !loaded ? "Checking" : open === 0 ? "None open" : "Still open"}
+        {failed ? "Unavailable" : !loaded ? "Checking" : open === 0 ? "None open" : "Unrepaired"}
       </p>
     </button>
   )
@@ -52,7 +52,7 @@ export function RecallSheet({
   return (
     <section className="mt-5">
       <p className="text-[11px] font-medium uppercase tracking-[0.22em] text-white/45">Recalls</p>
-      <p className="mt-1 text-xs text-white/50">Official campaigns for this model year. A 2.5 turbo listing may not be this 1.6.</p>
+      <p className="mt-1 text-xs text-white/50">NHTSA’s VIN check for {k5.vin}. Refreshed Nov 10, 2026.</p>
       <RecallList recalls={recalls} loaded={loaded} failed={failed} pending={pending} onStatus={onStatus} />
     </section>
   )
@@ -86,7 +86,8 @@ export function RecallPanel({
         <div className="flex items-start justify-between gap-3">
           <div>
             <p className="text-[11px] font-medium uppercase tracking-[0.22em] text-white/50">Recalls</p>
-            <h2 className="text-lg font-semibold">{failed ? "Could not load" : `${open} open`}</h2>
+            <h2 className="text-lg font-semibold">{failed ? "Could not load" : `${open} unrepaired`}</h2>
+            <p className="mt-1 text-xs text-white/50">VIN {k5.vin}</p>
           </div>
           <button type="button" onClick={onClose} className="text-sm text-white/70">
             Close
@@ -111,15 +112,27 @@ function RecallList({
   pending: string | null
   onStatus: (campaign: string, status: RecallStatus) => void
 }) {
+  const mine = recalls.filter((recall) => recall.onThisVin)
+  const others = recalls.length - mine.length
   if (failed) return <p className="mt-3 text-sm text-white/55">The recall list could not be loaded.</p>
-  if (!loaded) return <p className="mt-3 text-sm text-white/55">Checking official recalls.</p>
-  if (recalls.length === 0) return <p className="mt-3 text-sm text-white/55">No campaigns are on file for this model year.</p>
+  if (!loaded) return <p className="mt-3 text-sm text-white/55">Checking this VIN with NHTSA.</p>
   return (
-    <ul className="mt-3 space-y-3">
-      {recalls.map((recall) => (
-        <RecallRow key={recall.campaign} recall={recall} pending={pending === recall.campaign} onStatus={onStatus} />
-      ))}
-    </ul>
+    <div className="mt-3">
+      {mine.length === 0 ? (
+        <p className="text-sm text-white/55">No unrepaired recalls on this VIN.</p>
+      ) : (
+        <ul className="space-y-3">
+          {mine.map((recall) => (
+            <RecallRow key={recall.campaign} recall={recall} pending={pending === recall.campaign} onStatus={onStatus} />
+          ))}
+        </ul>
+      )}
+      {others > 0 ? (
+        <p className="mt-3 text-[11px] leading-relaxed text-white/40">
+          {others} other 2021 K5 campaigns are not open on this VIN.
+        </p>
+      ) : null}
+    </div>
   )
 }
 
@@ -132,7 +145,6 @@ function RecallRow({
   pending: boolean
   onStatus: (campaign: string, status: RecallStatus) => void
 }) {
-  const [open, setOpen] = useState(false)
   const quiet = recall.status !== "open"
   return (
     <li className={`rounded-2xl border border-white/10 p-3 ${quiet ? "bg-white/[0.03]" : "bg-white/5"}`}>
@@ -140,25 +152,35 @@ function RecallRow({
         <p className={`text-sm ${quiet ? "text-white/55" : ""}`}>{componentLabel(recall.component)}</p>
         <p className="shrink-0 text-[11px] text-white/40">{dayjs(recall.reported).format("MMM D, YYYY")}</p>
       </div>
-      <p className={`mt-1 text-xs leading-relaxed ${quiet ? "text-white/40" : "text-white/60"}`}>
-        {open ? recall.summary : recall.summary.slice(0, 180)}
-        {!open && recall.summary.length > 180 ? "…" : ""}
+      <p className="mt-2 text-[11px] uppercase tracking-[0.16em] text-white/40">
+        {recall.status === "done" ? "Repaired" : recall.status === "skip" ? "Not this car" : "Recall incomplete"}
       </p>
-      {recall.turboOnly ? <p className="mt-1 text-[11px] text-white/45">Listed for the 2.5 turbo</p> : null}
+      <div className={`mt-3 space-y-3 text-xs leading-relaxed ${quiet ? "text-white/40" : "text-white/60"}`}>
+        <p>
+          <span className="block text-[11px] font-medium uppercase tracking-[0.16em] text-white/40">Summary</span>
+          {recall.summary}
+        </p>
+        {recall.consequence ? (
+          <p>
+            <span className="block text-[11px] font-medium uppercase tracking-[0.16em] text-white/40">Safety risk</span>
+            {recall.consequence}
+          </p>
+        ) : null}
+        {recall.remedy ? (
+          <p>
+            <span className="block text-[11px] font-medium uppercase tracking-[0.16em] text-white/40">Remedy</span>
+            {recall.remedy}
+          </p>
+        ) : null}
+      </div>
+      <p className="mt-3 text-[11px] text-white/40">
+        NHTSA {recall.nhtsaNumber}
+        {recall.kiaNumber ? ` · Kia ${recall.kiaNumber}` : ""}
+      </p>
       {recall.parkOutside ? <p className="mt-1 text-[11px] text-white/70">Park outside until this is fixed</p> : null}
-      <button type="button" onClick={() => setOpen((value) => !value)} className="mt-2 text-[11px] text-white/45">
-        {open ? "Hide details" : "Details"}
-      </button>
-      {open ? (
-        <div className="mt-2 space-y-2 text-xs leading-relaxed text-white/55">
-          {recall.consequence ? <p>{recall.consequence}</p> : null}
-          {recall.remedy ? <p>{recall.remedy}</p> : null}
-          <p className="text-white/35">{recall.campaign}</p>
-        </div>
-      ) : null}
       <div className="mt-3 flex flex-wrap gap-2">
         <StatusButton
-          label="Open"
+          label="Incomplete"
           selected={recall.status === "open"}
           disabled={pending}
           onClick={() => onStatus(recall.campaign, "open")}
@@ -168,12 +190,6 @@ function RecallRow({
           selected={recall.status === "done"}
           disabled={pending}
           onClick={() => onStatus(recall.campaign, "done")}
-        />
-        <StatusButton
-          label="Not this car"
-          selected={recall.status === "skip"}
-          disabled={pending}
-          onClick={() => onStatus(recall.campaign, "skip")}
         />
       </div>
     </li>
