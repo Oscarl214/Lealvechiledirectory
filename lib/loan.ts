@@ -202,3 +202,27 @@ export function loanView(loan: CarLoan): LoanView {
     upcoming,
   }
 }
+
+export function payoffQuote(loan: CarLoan, monthlyPayment: number) {
+  const paymentCents = cents(monthlyPayment)
+  if (paymentCents <= 0) return null
+  const view = loanView(loan)
+  const balance = cents(view.balance)
+  if (balance <= 0) return null
+  const anchor = view.paid.at(-1)?.due ?? loan.asOf
+  const upcoming = project(
+    balance,
+    loan.apr,
+    paymentCents,
+    dayjs(anchor).add(1, "month").format("YYYY-MM-DD"),
+    "upcoming"
+  )
+  if (upcoming.length === 0) return null
+  const interestRemaining = upcoming.reduce((sum, row) => sum + cents(row.interest), 0)
+  return {
+    payment: dollars(paymentCents),
+    payoffOn: upcoming.at(-1)?.due ?? null,
+    paymentsLeft: upcoming.length,
+    interestRemaining: dollars(interestRemaining),
+  }
+}

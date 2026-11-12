@@ -8,7 +8,7 @@ import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { LifeFill, useReveal } from "@/components/garage/motion"
 import { formatMoney } from "@/lib/garage-logs"
-import { loanView, type CarLoan, type LoanEvent } from "@/lib/loan"
+import { loanView, payoffQuote, type CarLoan, type LoanEvent, type LoanView } from "@/lib/loan"
 
 export function LoanCard({ loan, onOpen }: { loan: CarLoan; onOpen: () => void }) {
   const view = useMemo(() => loanView(loan), [loan])
@@ -65,8 +65,8 @@ export function LoanSheet({
         {view.payoffOn ? ` · paid off ${dayjs(view.payoffOn).format("MMM YYYY")}` : ""}
         {view.interestRemaining > 0 ? ` · ${formatMoney(view.interestRemaining)} interest left` : ""}
       </p>
-      <p className="mt-4 text-[11px] font-medium uppercase tracking-[0.22em] text-white/45">Timeline</p>
-      <LoanTimeline events={[...view.paid, ...view.upcoming]} />
+      <DoublePayment loan={loan} view={view} />
+      <TimelineDisclosure events={[...view.paid, ...view.upcoming]} />
     </section>
   )
 }
@@ -237,6 +237,7 @@ export function LoanPanel({
           <p className="mt-2 text-xs text-white/50">
             {formatMoney(view.principalPaid)} of the {formatMoney(loan.purchasePrice)} price is paid off.
           </p>
+          <DoublePayment loan={loan} view={view} />
           {view.history.length > 0 ? (
             <details className="mt-4">
               <summary className="cursor-pointer text-sm text-white/70">
@@ -250,10 +251,43 @@ export function LoanPanel({
               <LoanTimeline events={view.history} />
             </details>
           ) : null}
-          <LoanTimeline events={[...view.paid, ...view.upcoming]} onRemove={removePayment} />
+          <TimelineDisclosure events={[...view.paid, ...view.upcoming]} onRemove={removePayment} />
         </div>
       </aside>
     </div>
+  )
+}
+
+function DoublePayment({ loan, view }: { loan: CarLoan; view: LoanView }) {
+  const quote = useMemo(() => payoffQuote(loan, loan.monthlyPayment * 2), [loan])
+  if (!quote?.payoffOn) return null
+  const saved = Math.max(0, Math.round((view.interestRemaining - quote.interestRemaining) * 100) / 100)
+  const sooner = Math.max(0, view.paymentsLeft - quote.paymentsLeft)
+  return (
+    <div className="mt-2 space-y-0.5 text-xs text-white/55">
+      <p>At {formatMoney(quote.payment)} a month, double the payment</p>
+      <p>
+        Paid off {dayjs(quote.payoffOn).format("MMM YYYY")}
+        {sooner > 0 ? ` · ${sooner} months sooner` : ""}
+      </p>
+      <p>
+        {formatMoney(quote.interestRemaining)} interest
+        {saved > 0 ? ` · ${formatMoney(saved)} less` : ""}
+      </p>
+    </div>
+  )
+}
+
+function TimelineDisclosure({ events, onRemove }: { events: LoanEvent[]; onRemove?: (id: string) => void }) {
+  if (events.length === 0) return null
+  const last = events[events.length - 1]
+  return (
+    <details className="mt-4">
+      <summary className="cursor-pointer text-sm text-white/70">
+        Timeline · {events.length} payments through {dayjs(last.due).format("MMM YYYY")}
+      </summary>
+      <LoanTimeline events={events} onRemove={onRemove} />
+    </details>
   )
 }
 
