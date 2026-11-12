@@ -1,7 +1,7 @@
 "use client"
 
 import { Suspense, useEffect, useMemo, useRef, useState } from "react"
-import { Canvas, useThree } from "@react-three/fiber"
+import { Canvas, useFrame, useThree } from "@react-three/fiber"
 import { OrbitControls, useProgress } from "@react-three/drei"
 import dayjs from "dayjs"
 import { ChevronDown, CircleDot, Cog, Disc, LayoutGrid, Wind } from "lucide-react"
@@ -21,6 +21,7 @@ import { LifeFill, Reveal, useReveal } from "@/components/garage/motion"
 import { InsuranceCard, InsuranceSheet, RegistrationCard, RegistrationLabel } from "@/components/garage/coverage"
 import { insurance, registrationView } from "@/lib/coverage"
 import { batteryStatus, formatMoney, recordedMiles, tireStatus, totalSpend } from "@/lib/garage-logs"
+import { Vector3, type PerspectiveCamera } from "three"
 import type { CarLoan } from "@/lib/loan"
 import type { GarageRecall, RecallStatus } from "@/lib/recalls"
 
@@ -85,41 +86,148 @@ function readout(item: ServiceEvaluation) {
   return parts.join(" · ") || "Logged"
 }
 
-function FitCamera() {
+const desktopShots: Record<GarageZone, { position: [number, number, number]; target: [number, number, number] }> = {
+  all: { position: [5.6, 1.9, 6.8], target: [0, 0.65, 0] },
+  engine: { position: [2.2, 1.65, 7.8], target: [0, 0.75, 1.6] },
+  wheels: { position: [7.4, 1.5, 1.5], target: [0, 0.42, 0] },
+  brakes: { position: [5.2, 1.45, 5.8], target: [0.8, 0.38, 1.2] },
+  cabin: { position: [6.8, 1.85, -1.2], target: [0, 0.95, -0.4] },
+}
+
+type Orbit = {
+  target: Vector3
+  enabled: boolean
+  update: () => void
+}
+
+function CameraRig({ zone }: { zone: GarageZone }) {
   const camera = useThree((state) => state.camera)
   const controls = useThree((state) => state.controls)
   const gl = useThree((state) => state.gl)
+  const zoneRef = useRef(zone)
+  const placed = useRef(false)
+  const anim = useRef<{
+    start: number
+    fromTheta: number
+    thetaDelta: number
+    fromPhi: number
+    toPhi: number
+    fromRadius: number
+    toRadius: number
+    fromTarget: Vector3
+    toTarget: Vector3
+  } | null>(null)
+  zoneRef.current = zone
+
+  const orbit = () => (controls as Orbit | null)
+
+  const place = (position: [number, number, number], target: [number, number, number], fov: number, enabled: boolean) => {
+    const rig = orbit()
+    camera.position.set(position[0], position[1], position[2])
+    if ("fov" in camera) {
+      const perspective = camera as PerspectiveCamera
+      perspective.fov = fov
+      perspective.updateProjectionMatrix()
+    }
+    if (!rig?.target) return
+    rig.target.set(target[0], target[1], target[2])
+    rig.enabled = enabled
+    rig.update()
+    anim.current = null
+  }
+
+  const phone = () => {
+    const narrow = window.innerWidth < 1000
+    const portrait = narrow && window.innerHeight > window.innerWidth
+    const short = narrow && window.innerHeight < 520
+    if (!narrow) return null
+    return portrait
+      ? { position: [0.1, 1.75, 8.1] as [number, number, number], target: [0, 0.5, 0] as [number, number, number], fov: 37, enabled: false }
+      : short
+        ? { position: [6.2, 2.05, 8.4] as [number, number, number], target: [0, 0.65, 0] as [number, number, number], fov: 38, enabled: true }
+        : { position: [5.6, 1.9, 6.8] as [number, number, number], target: [0, 0.65, 0] as [number, number, number], fov: 34, enabled: true }
+  }
+
   useEffect(() => {
     const fit = () => {
-      const narrow = window.innerWidth < 1000
-      const portrait = narrow && window.innerHeight > window.innerWidth
-      const short = narrow && window.innerHeight < 520
-      camera.position.set(
-        portrait ? 0.1 : short ? 6.2 : 5.6,
-        portrait ? 1.75 : short ? 2.05 : 1.9,
-        portrait ? 8.1 : short ? 8.4 : 6.8
-      )
-      if ("fov" in camera) {
-        camera.fov = portrait ? 37 : short ? 38 : 34
-        camera.updateProjectionMatrix()
-      }
-      const orbit = controls as {
-        target?: { set?: (x: number, y: number, z: number) => void }
-        enabled?: boolean
-        update?: () => void
-      } | null
-      if (orbit?.target?.set) {
-        orbit.target.set(0, portrait ? 0.5 : 0.65, 0)
-        orbit.enabled = !portrait
-        orbit.update?.()
-      }
+      const view = phone()
+      const portrait = window.innerWidth < 1000 && window.innerHeight > window.innerWidth
       gl.domElement.style.touchAction = portrait ? "pan-y" : "none"
       gl.domElement.style.pointerEvents = portrait ? "none" : "auto"
+      if (view) {
+        place(view.position, view.target, view.fov, view.enabled)
+        placed.current = false
+        return
+      }
+      if (!placed.current) {
+        const shot = desktopShots[zoneRef.current]
+        place(shot.position, shot.target, 34, true)
+        placed.current = true
+      }
     }
     fit()
     window.addEventListener("resize", fit)
     return () => window.removeEventListener("resize", fit)
   }, [camera, controls, gl])
+
+  useEffect(() => {
+    if (window.innerWidth < 1000 || !placed.current) return
+    const rig = orbit()
+    const shot = desktopShots[zone]
+    if (!rig?.target) return
+    const there = new Vector3(shot.position[0], shot.position[1], shot.position[2])
+    const focus = new Vector3(shot.target[0], shot.target[1], shot.target[2])
+    if (camera.position.distanceTo(there) < 0.05 && rig.target.distanceTo(focus) < 0.05) return
+    const reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches
+    if (reduced) {
+      place(shot.position, shot.target, 34, true)
+      return
+    }
+    const fromOffset = camera.position.clone().sub(rig.target)
+    const toOffset = there.clone().sub(focus)
+    const fromRadius = Math.max(fromOffset.length(), 0.001)
+    const toRadius = Math.max(toOffset.length(), 0.001)
+    let thetaDelta = Math.atan2(toOffset.x, toOffset.z) - Math.atan2(fromOffset.x, fromOffset.z)
+    if (thetaDelta > Math.PI) thetaDelta -= Math.PI * 2
+    if (thetaDelta < -Math.PI) thetaDelta += Math.PI * 2
+    rig.enabled = false
+    anim.current = {
+      start: performance.now(),
+      fromTheta: Math.atan2(fromOffset.x, fromOffset.z),
+      thetaDelta,
+      fromPhi: Math.acos(Math.min(1, Math.max(-1, fromOffset.y / fromRadius))),
+      toPhi: Math.acos(Math.min(1, Math.max(-1, toOffset.y / toRadius))),
+      fromRadius,
+      toRadius,
+      fromTarget: rig.target.clone(),
+      toTarget: focus,
+    }
+  }, [zone, camera, controls])
+
+  useFrame(() => {
+    const move = anim.current
+    const rig = orbit()
+    if (!move || !rig?.target || window.innerWidth < 1000) return
+    const t = Math.min(1, (performance.now() - move.start) / 1700)
+    const eased = t < 0.5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2
+    const theta = move.fromTheta + move.thetaDelta * eased
+    const phi = move.fromPhi + (move.toPhi - move.fromPhi) * eased
+    const radius = move.fromRadius + (move.toRadius - move.fromRadius) * eased + Math.sin(eased * Math.PI) * 1.15
+    rig.target.lerpVectors(move.fromTarget, move.toTarget, eased)
+    const sinPhi = Math.sin(phi)
+    camera.position.set(
+      rig.target.x + radius * sinPhi * Math.sin(theta),
+      rig.target.y + radius * Math.cos(phi),
+      rig.target.z + radius * sinPhi * Math.cos(theta)
+    )
+    camera.lookAt(rig.target)
+    rig.update()
+    if (t >= 1) {
+      const shot = desktopShots[zoneRef.current]
+      place(shot.position, shot.target, 34, true)
+    }
+  })
+
   return null
 }
 
@@ -278,7 +386,7 @@ export default function Showroom({
         }}
       >
         <GarageRoom />
-        <FitCamera />
+        <CameraRig zone={zone} />
       </Canvas>
 
       <ModelLoader active={active} progress={progress} hold={!modelReady} />
