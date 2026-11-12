@@ -33,7 +33,7 @@ export function GarageSignIn({ onSignedIn }: { onSignedIn: () => void }) {
   }
 
   return (
-    <div className="flex h-dvh flex-col items-center justify-center bg-black px-6 pb-[max(1.5rem,env(safe-area-inset-bottom))] pt-[max(1.5rem,env(safe-area-inset-top))] text-center text-white">
+    <div className="garage-enter flex h-dvh flex-col items-center justify-center bg-black px-6 pb-[max(1.5rem,env(safe-area-inset-bottom))] pt-[max(1.5rem,env(safe-area-inset-top))] text-center text-white">
       <p className="text-[11px] font-medium uppercase tracking-[0.22em] text-white/50">Garage</p>
       <h1 className="mt-2 text-3xl font-semibold">Kia K5</h1>
       <p className="mt-3 max-w-sm text-sm text-white/60">Sign in with Google to open the car.</p>

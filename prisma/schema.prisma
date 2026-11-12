@@ -41,6 +41,7 @@ model Vehicle {
   class          String
   image          String
   odometer       Int?
+  loan           Json?
   userId         String?     @map("userId") @db.ObjectId
   user           User?       @relation("UserVehicles", fields: [userId], references: [id], onDelete: Cascade) // Consistent relation name
   maintenances   Maintenance[] @relation("VehicleMaintenances")

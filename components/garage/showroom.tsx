@@ -15,7 +15,10 @@ import {
   type ScheduleMode,
   type ServiceEvaluation,
 } from "@/lib/k5"
+import { LoanCard, LoanSheet } from "@/components/garage/loan-panel"
+import { LifeFill, Reveal, useReveal } from "@/components/garage/motion"
 import { batteryStatus, formatMoney, lastRegistration, recordedMiles, tireStatus, totalSpend } from "@/lib/garage-logs"
+import type { CarLoan } from "@/lib/loan"
 
 type GarageZone = "all" | "engine" | "wheels" | "brakes" | "cabin"
 
@@ -107,6 +110,7 @@ function FitCamera() {
         orbit.update?.()
       }
       gl.domElement.style.touchAction = portrait ? "pan-y" : "none"
+      gl.domElement.style.pointerEvents = portrait ? "none" : "auto"
     }
     fit()
     window.addEventListener("resize", fit)
@@ -152,16 +156,21 @@ export default function Showroom({
   records,
   odometer,
   mode,
+  loan,
   onLog,
+  onLoan,
 }: {
   logs: MaintenanceLog[]
   records: MaintenanceLog[]
   odometer: number | null
   mode: ScheduleMode
+  loan: CarLoan
   onLog: () => void
+  onLoan: () => void
 }) {
   const [zone, setZone] = useState<GarageZone>("all")
-  const { active, progress } = useProgress()
+  const { active, progress, errors } = useProgress()
+  const modelReady = (!active && progress >= 100) || errors.length > 0
   const schedule = useMemo(
     () => evaluateSchedule(logs, odometer, mode),
     [logs, odometer, mode]
@@ -203,11 +212,11 @@ export default function Showroom({
         hint.style.opacity = ""
         return
       }
-      const distance = Math.max(scroller.clientHeight * 0.45, 1)
+      const distance = Math.max(scroller.clientHeight * 0.2, 1)
       const progress = Math.min(1, Math.max(0, scroller.scrollTop / distance))
       const eased = 1 - Math.pow(1 - progress, 3)
-      sheet.style.transform = `translate3d(0, ${(1 - eased) * 72}px, 0)`
-      sheet.style.opacity = String(0.15 + eased * 0.85)
+      sheet.style.transform = `translate3d(0, ${(1 - eased) * 16}px, 0)`
+      sheet.style.opacity = "1"
       hint.style.opacity = String(1 - eased)
     }
     const onScroll = () => {
@@ -226,12 +235,19 @@ export default function Showroom({
   return (
     <section
       ref={scrollerRef}
-      className="relative h-svh overflow-hidden bg-black text-white max-[999px]:portrait:overflow-y-auto max-[999px]:portrait:overscroll-y-contain"
+      className="garage-scroll relative h-svh overflow-hidden bg-black text-white max-[999px]:portrait:overflow-y-auto max-[999px]:portrait:overscroll-y-contain"
     >
-      <div className="relative z-0 h-full max-[999px]:portrait:sticky max-[999px]:portrait:top-0 max-[999px]:portrait:h-svh">
+      <div className="garage-hero relative z-0 h-full max-[999px]:portrait:sticky max-[999px]:portrait:top-0 max-[999px]:portrait:h-svh">
       <Canvas
         aria-hidden
-        style={{ position: "absolute", inset: 0, width: "100%", height: "100%" }}
+        style={{
+          position: "absolute",
+          inset: 0,
+          width: "100%",
+          height: "100%",
+          opacity: modelReady ? 1 : 0.22,
+          transition: "opacity 0.9s ease",
+        }}
         dpr={1}
         camera={{ position: [5.6, 1.9, 6.8], fov: 34 }}
         gl={{ antialias: true }}
@@ -249,7 +265,7 @@ export default function Showroom({
         <div>
           <p className="text-[11px] font-medium uppercase tracking-[0.22em] text-white/60">Garage</p>
           <p className="text-sm text-white/80">
-            {active ? `Loading model ${Math.round(progress)}%` : "Kia K5 · Wolf Gray"}
+            {modelReady ? "Kia K5 · Wolf Gray" : "Opening the K5"}
           </p>
         </div>
         <button
@@ -260,6 +276,8 @@ export default function Showroom({
           Log service
         </button>
       </div>
+
+      <ModelLoader active={active} progress={progress} hold={!modelReady} />
 
       <div
         ref={hintRef}
@@ -272,6 +290,7 @@ export default function Showroom({
       <div
         className={`pointer-events-auto absolute z-10 flex flex-col gap-2 overflow-y-auto overscroll-contain pr-1 max-[999px]:portrait:hidden max-[999px]:bottom-[calc(14.75rem+env(safe-area-inset-bottom))] max-[999px]:left-3 max-[999px]:right-3 max-[999px]:top-auto max-[999px]:max-h-[min(13.25rem,32svh)] max-[999px]:w-auto max-[999px]:landscape:bottom-auto max-[999px]:landscape:right-auto max-[999px]:landscape:top-[calc(4.15rem+env(safe-area-inset-top))] max-[999px]:landscape:w-52 max-[999px]:landscape:max-h-[calc(100svh-13.75rem-env(safe-area-inset-bottom))] min-[1000px]:max-h-none min-[1000px]:w-64 min-[1000px]:gap-5 min-[1000px]:overflow-visible ${selected.place}`}
       >
+        <Reveal ready={modelReady} delay={40} className="shrink-0">
         <aside className="pointer-events-auto shrink-0 overflow-x-hidden overflow-y-auto rounded-lg border border-white/15 bg-black/85 p-3 max-[999px]:max-h-[5rem] max-[999px]:landscape:max-h-[4.5rem] min-[1000px]:max-h-[46vh] min-[1000px]:bg-black/70 min-[1000px]:p-4 min-[1000px]:backdrop-blur-sm">
           <p className="text-[11px] font-medium uppercase tracking-[0.22em] text-white/50">{selected.label}</p>
           <p className="mt-1 text-xs text-white/55">
@@ -301,7 +320,9 @@ export default function Showroom({
             )}
           </ul>
         </aside>
+        </Reveal>
         {zone === "all" && recent.length > 0 ? (
+          <Reveal ready={modelReady} delay={140}>
           <div className="pointer-events-none [text-shadow:0_1px_3px_rgba(0,0,0,0.95)]">
             <p className="text-[11px] font-medium uppercase tracking-[0.22em] text-white/70">Last logs</p>
             <ul className="mt-1.5 space-y-1.5 min-[1000px]:mt-2 min-[1000px]:space-y-2">
@@ -322,16 +343,23 @@ export default function Showroom({
               })}
             </ul>
           </div>
+          </Reveal>
         ) : null}
       </div>
 
       <div className="pointer-events-auto absolute inset-x-0 bottom-[calc(2.9rem+env(safe-area-inset-bottom))] z-10 flex gap-2 overflow-x-auto px-3 pb-1 [scrollbar-width:none] max-[999px]:portrait:hidden min-[1000px]:justify-center [&::-webkit-scrollbar]:hidden">
+        <Reveal ready={modelReady} className="shrink-0">
         <div className="w-[8.75rem] shrink-0 rounded-lg border border-white/15 bg-black/80 p-2.5 landscape:w-32 landscape:p-2 max-[999px]:portrait:w-auto max-[999px]:portrait:min-w-0 max-[999px]:portrait:p-2 min-[1000px]:w-36 min-[1000px]:bg-black/70 min-[1000px]:p-3 min-[1000px]:backdrop-blur-sm">
           <p className="text-[11px] font-medium uppercase tracking-[0.18em] text-white/50">Spent</p>
           <p className="mt-1 text-lg font-medium">{formatMoney(spent)}</p>
         </div>
-        <WearCard part={tires} />
-        <WearCard part={battery} />
+        </Reveal>
+        <Reveal ready={modelReady} delay={70} className="shrink-0">
+          <LoanCard loan={loan} onOpen={onLoan} />
+        </Reveal>
+        <WearCard part={tires} delay={140} ready={modelReady} />
+        <WearCard part={battery} delay={210} ready={modelReady} />
+        <Reveal ready={modelReady} delay={280} className="shrink-0">
         <div className="w-[8.75rem] shrink-0 rounded-lg border border-white/15 bg-black/80 p-2.5 landscape:w-32 landscape:p-2 max-[999px]:portrait:w-auto max-[999px]:portrait:min-w-0 max-[999px]:portrait:p-2 min-[1000px]:w-40 min-[1000px]:bg-black/70 min-[1000px]:p-3 min-[1000px]:backdrop-blur-sm">
           <p className="text-[11px] font-medium uppercase tracking-[0.18em] text-white/50">Registration</p>
           <p className="mt-1 text-sm leading-snug">{registrationDate ?? "Not logged"}</p>
@@ -339,6 +367,7 @@ export default function Showroom({
             <p className="mt-1 text-[11px] text-white/45">{registration.mileage.toLocaleString()} mi</p>
           ) : null}
         </div>
+        </Reveal>
       </div>
 
       <div className="pointer-events-auto absolute inset-x-0 bottom-0 z-20 flex gap-1.5 overflow-x-auto px-3 pb-[max(0.6rem,env(safe-area-inset-bottom))] pt-1 [scrollbar-width:none] max-[999px]:portrait:hidden min-[1000px]:justify-center min-[1000px]:pb-4 [&::-webkit-scrollbar]:hidden">
@@ -390,6 +419,7 @@ export default function Showroom({
             })}
           </div>
 
+          <Reveal ready={modelReady} delay={40} immediate>
           <aside className="mt-4 rounded-2xl border border-white/10 bg-white/5 p-4">
             <p className="text-[11px] font-medium uppercase tracking-[0.22em] text-white/50">{selected.label}</p>
             <p className="mt-1 text-xs text-white/55">
@@ -419,8 +449,10 @@ export default function Showroom({
               )}
             </ul>
           </aside>
+          </Reveal>
 
           {zone === "all" && recent.length > 0 ? (
+            <Reveal ready={modelReady} delay={120} immediate>
             <div className="mt-5">
               <p className="text-[11px] font-medium uppercase tracking-[0.22em] text-white/45">Last logs</p>
               <ul className="mt-2 space-y-2">
@@ -438,15 +470,19 @@ export default function Showroom({
                 })}
               </ul>
             </div>
+            </Reveal>
           ) : null}
 
           <div className="mt-5 grid grid-cols-2 gap-2">
+            <Reveal ready={modelReady} immediate>
             <div className="rounded-2xl border border-white/10 bg-white/5 p-3">
               <p className="text-[11px] font-medium uppercase tracking-[0.18em] text-white/50">Spent</p>
               <p className="mt-1 text-lg font-medium">{formatMoney(spent)}</p>
             </div>
-            <WearCard part={tires} />
-            <WearCard part={battery} />
+            </Reveal>
+            <WearCard part={tires} delay={80} ready={modelReady} immediate />
+            <WearCard part={battery} delay={140} ready={modelReady} immediate />
+            <Reveal ready={modelReady} delay={200} immediate>
             <div className="rounded-2xl border border-white/10 bg-white/5 p-3">
               <p className="text-[11px] font-medium uppercase tracking-[0.18em] text-white/50">Registration</p>
               <p className="mt-1 text-sm leading-snug">{registrationDate ?? "Not logged"}</p>
@@ -454,22 +490,88 @@ export default function Showroom({
                 <p className="mt-1 text-[11px] text-white/45">{registration.mileage.toLocaleString()} mi</p>
               ) : null}
             </div>
+            </Reveal>
           </div>
+          <LoanSheet loan={loan} onOpen={onLoan} ready={modelReady} immediate />
         </div>
       </div>
     </section>
   )
 }
 
+function ModelLoader({ active, progress, hold }: { active: boolean; progress: number; hold: boolean }) {
+  const [visible, setVisible] = useState(hold)
+  useEffect(() => {
+    if (hold) {
+      setVisible(true)
+      return
+    }
+    const id = window.setTimeout(() => setVisible(false), 720)
+    return () => window.clearTimeout(id)
+  }, [hold])
+  if (!visible) return null
+  const radius = 46
+  const length = 2 * Math.PI * radius
+  const offset = length * (1 - Math.min(100, Math.max(0, progress)) / 100)
+  return (
+    <div
+      className={`pointer-events-none absolute inset-0 z-[25] flex items-center justify-center transition-opacity duration-700 ${
+        hold ? "opacity-100" : "opacity-0"
+      }`}
+    >
+      <div className="flex flex-col items-center">
+        <div className="relative h-28 w-28">
+          <div
+            className="absolute inset-3 animate-spin rounded-full border border-white/10 border-t-white/55 motion-reduce:animate-none"
+            style={{ animationDuration: "1.8s" }}
+          />
+          <svg viewBox="0 0 120 120" className="h-full w-full -rotate-90">
+            <circle cx="60" cy="60" r={radius} fill="none" stroke="rgba(255,255,255,0.14)" strokeWidth="2" />
+            <circle
+              cx="60"
+              cy="60"
+              r={radius}
+              fill="none"
+              stroke="white"
+              strokeWidth="2.5"
+              strokeLinecap="round"
+              strokeDasharray={length}
+              strokeDashoffset={offset}
+              style={{ transition: "stroke-dashoffset 0.35s ease" }}
+            />
+          </svg>
+          <p className="absolute inset-0 flex items-center justify-center text-sm tabular-nums text-white/90">
+            {Math.round(progress)}%
+          </p>
+        </div>
+        <p className="mt-4 text-[11px] font-medium uppercase tracking-[0.28em] text-white/65">
+          {active || progress < 100 ? "Opening the K5" : "Kia K5"}
+        </p>
+      </div>
+    </div>
+  )
+}
+
 function WearCard({
   part,
+  delay = 0,
+  ready = true,
+  immediate = false,
 }: {
   part: { name: string; life: number | null; replaced: boolean; when: string | null; mileage: number | null }
+  delay?: number
+  ready?: boolean
+  immediate?: boolean
 }) {
+  const reveal = useReveal<HTMLDivElement>(delay, ready, immediate)
   const when = part.when ? (parseServiceDate(part.when) ?? dayjs(part.when)).format("MMM D, YYYY") : null
   const life = part.life ?? (part.replaced ? 100 : null)
   return (
-    <div className="w-[8.75rem] shrink-0 rounded-lg border border-white/15 bg-black/80 p-2.5 landscape:w-32 landscape:p-2 max-[999px]:portrait:w-full max-[999px]:portrait:min-w-0 max-[999px]:portrait:rounded-2xl max-[999px]:portrait:border-white/10 max-[999px]:portrait:bg-white/5 max-[999px]:portrait:p-3 min-[1000px]:w-40 min-[1000px]:bg-black/70 min-[1000px]:p-3 min-[1000px]:backdrop-blur-sm">
+    <div
+      ref={reveal.ref}
+      className={`w-[8.75rem] shrink-0 rounded-lg border border-white/15 bg-black/80 p-2.5 landscape:w-32 landscape:p-2 max-[999px]:portrait:w-full max-[999px]:portrait:min-w-0 max-[999px]:portrait:rounded-2xl max-[999px]:portrait:border-white/10 max-[999px]:portrait:bg-white/5 max-[999px]:portrait:p-3 min-[1000px]:w-40 min-[1000px]:bg-black/70 min-[1000px]:p-3 min-[1000px]:backdrop-blur-sm ${reveal.className}`}
+      style={reveal.style}
+    >
       <p className="text-[11px] font-medium uppercase tracking-[0.18em] text-white/50">{part.name}</p>
       {life == null && !part.replaced ? (
         <p className="mt-1 text-sm text-white/70">Not logged</p>
@@ -479,9 +581,7 @@ function WearCard({
             {part.replaced ? "New" : "In service"}
             {life != null ? ` · ${life}% life` : ""}
           </p>
-          <div className="mt-2 h-1 overflow-hidden rounded-full bg-white/15">
-            <div className="h-full bg-white" style={{ width: `${life ?? 0}%` }} />
-          </div>
+          {life != null ? <LifeFill value={life} play={reveal.shown} /> : null}
           {when ? (
             <p className="mt-1 text-[11px] leading-snug text-white/45">
               {when}

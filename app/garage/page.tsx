@@ -17,6 +17,8 @@ import {
 import { Textarea } from "@/components/ui/textarea"
 import { formatMoney, highestReading, productSuggestions, raisedOdometer, recordedMiles, scheduleLogs } from "@/lib/garage-logs"
 import { GarageSignIn } from "@/components/garage/sign-in"
+import { LoanPanel } from "@/components/garage/loan-panel"
+import { starterLoan, type CarLoan } from "@/lib/loan"
 import {
   k5,
   k5Schedule,
@@ -28,7 +30,7 @@ import {
 const Showroom = dynamic(() => import("@/components/garage/showroom"), {
   ssr: false,
   loading: () => (
-    <div className="flex h-dvh items-center justify-center bg-black text-sm text-white/60">
+    <div className="garage-wait flex h-dvh items-center justify-center bg-black text-sm text-white/60">
       Opening garage
     </div>
   ),
@@ -43,6 +45,7 @@ type Vehicle = {
   displacement: number
   city_mpg: number | null
   highway_mpg: number | null
+  loan: CarLoan
   maintenances: MaintenanceLog[]
 }
 
@@ -62,6 +65,7 @@ const localVehicle: Vehicle = {
   displacement: k5.displacement,
   city_mpg: k5.city_mpg,
   highway_mpg: k5.highway_mpg,
+  loan: starterLoan,
   maintenances: [],
 }
 
@@ -85,6 +89,7 @@ export default function GaragePage() {
   const [savingLog, setSavingLog] = useState(false)
   const [formKey, setFormKey] = useState(0)
   const [panelOpen, setPanelOpen] = useState(false)
+  const [loanOpen, setLoanOpen] = useState(false)
   const [signedIn, setSignedIn] = useState<boolean | null>(null)
 
   useEffect(() => {
@@ -292,12 +297,13 @@ export default function GaragePage() {
     setVehicle(localVehicle)
     setOdometer("")
     setPanelOpen(false)
+    setLoanOpen(false)
     setSignedIn(false)
   }
 
   if (signedIn === null) {
     return (
-      <div className="flex h-dvh items-center justify-center bg-black text-sm text-white/60">
+      <div className="garage-wait flex h-dvh items-center justify-center bg-black text-sm text-white/60">
         Opening garage
       </div>
     )
@@ -314,8 +320,25 @@ export default function GaragePage() {
         records={vehicle.maintenances}
         odometer={vehicle.odometer}
         mode={mode}
-        onLog={() => setPanelOpen(true)}
+        loan={vehicle.loan}
+        onLog={() => {
+          setLoanOpen(false)
+          setPanelOpen(true)
+        }}
+        onLoan={() => {
+          setPanelOpen(false)
+          setLoanOpen(true)
+        }}
       />
+
+      {loanOpen && (
+        <LoanPanel
+          loan={vehicle.loan}
+          vehicleId={vehicle.id}
+          onChange={(loan) => setVehicle((current) => ({ ...current, loan }))}
+          onClose={() => setLoanOpen(false)}
+        />
+      )}
 
       {panelOpen && (
         <div className="fixed inset-0 z-30 flex justify-end bg-black/40">

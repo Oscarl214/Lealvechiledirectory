@@ -64,3 +64,71 @@
     overflow: hidden;
   }
 }
+
+@keyframes garage-enter {
+  from {
+    opacity: 0;
+    transform: translateY(16px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes life-fill {
+  from {
+    width: 0;
+  }
+  to {
+    width: var(--life);
+  }
+}
+
+@keyframes garage-wait {
+  50% {
+    opacity: 0.4;
+  }
+}
+
+.life-fill {
+  width: var(--life);
+}
+
+@media (max-width: 999px) and (orientation: portrait) {
+  .garage-scroll {
+    overflow-y: auto;
+    touch-action: pan-y;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  .garage-hero,
+  .garage-hero canvas {
+    pointer-events: none !important;
+    touch-action: pan-y !important;
+  }
+
+  .garage-hero .pointer-events-auto {
+    pointer-events: auto !important;
+    touch-action: manipulation;
+  }
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .garage-enter-pending {
+    opacity: 0;
+    transform: translateY(16px);
+  }
+
+  .garage-enter {
+    animation: garage-enter 0.8s cubic-bezier(0.16, 1, 0.3, 1) both;
+  }
+
+  .life-fill {
+    animation: life-fill 1.05s cubic-bezier(0.16, 1, 0.3, 1) 0.18s both;
+  }
+
+  .garage-wait {
+    animation: garage-wait 1.4s ease-in-out infinite;
+  }
+}

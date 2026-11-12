@@ -1,6 +1,8 @@
+import { Prisma } from "@prisma/client"
 import { NextResponse } from "next/server"
 import { prisma } from "@/lib/prisma"
 import { requireGarageSession } from "@/lib/garage-session"
+import { parseLoan, starterLoan } from "@/lib/loan"
 
 function isK5(vehicle: { make: string; model: string }) {
   return (
@@ -20,6 +22,14 @@ export async function GET() {
     if (!vehicle) {
       return NextResponse.json({ error: "K5 not found" }, { status: 404 })
     }
+    let loan = parseLoan(vehicle.loan)
+    if (!loan) {
+      loan = starterLoan
+      await prisma.vehicle.update({
+        where: { id: vehicle.id },
+        data: { loan: loan as unknown as Prisma.InputJsonValue },
+      })
+    }
 
     return NextResponse.json({
       vehicle: {
@@ -31,6 +41,7 @@ export async function GET() {
         displacement: vehicle.displacement,
         city_mpg: vehicle.city_mpg,
         highway_mpg: vehicle.highway_mpg,
+        loan,
         maintenances: vehicle.maintenances.map((entry) => ({
           id: entry.id,
           type: entry.type,
