@@ -95,22 +95,56 @@
   width: var(--life);
 }
 
+.garage-spacer {
+  display: none;
+}
+
 @media (max-width: 999px) and (orientation: portrait) {
-  .garage-scroll {
-    overflow-y: auto;
+  html,
+  body {
+    height: auto !important;
+    overflow: visible !important;
     touch-action: pan-y;
-    -webkit-overflow-scrolling: touch;
   }
 
-  .garage-hero,
+  .garage-shell,
+  .garage-scroll {
+    height: auto !important;
+    min-height: 100svh;
+    overflow: visible !important;
+    touch-action: pan-y;
+  }
+
+  .garage-hero {
+    position: fixed !important;
+    inset: 0;
+    z-index: 0;
+    width: 100%;
+    height: 100svh;
+    pointer-events: none !important;
+  }
+
   .garage-hero canvas {
     pointer-events: none !important;
     touch-action: pan-y !important;
   }
 
-  .garage-hero .pointer-events-auto {
-    pointer-events: auto !important;
-    touch-action: manipulation;
+  .garage-spacer {
+    display: block;
+    position: relative;
+    z-index: 1;
+    height: 100svh;
+  }
+
+  .garage-sheet {
+    display: block !important;
+    position: relative;
+    z-index: 20;
+  }
+
+  .garage-chrome {
+    position: fixed !important;
+    z-index: 25;
   }
 }
 

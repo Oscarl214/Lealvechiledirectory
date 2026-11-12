@@ -226,10 +226,11 @@ export default function Showroom({
         hint.style.opacity = ""
         return
       }
-      const distance = Math.max(scroller.clientHeight * 0.2, 1)
-      const progress = Math.min(1, Math.max(0, scroller.scrollTop / distance))
+      const distance = Math.max(window.innerHeight * 0.35, 1)
+      const top = window.scrollY || document.documentElement.scrollTop
+      const progress = Math.min(1, Math.max(0, top / distance))
       const eased = 1 - Math.pow(1 - progress, 3)
-      sheet.style.transform = `translate3d(0, ${(1 - eased) * 16}px, 0)`
+      sheet.style.transform = ""
       sheet.style.opacity = "1"
       hint.style.opacity = String(1 - eased)
     }
@@ -238,10 +239,12 @@ export default function Showroom({
     }
     update()
     scroller.addEventListener("scroll", onScroll, { passive: true })
+    window.addEventListener("scroll", onScroll, { passive: true })
     window.addEventListener("resize", update)
     return () => {
       if (frame) window.cancelAnimationFrame(frame)
       scroller.removeEventListener("scroll", onScroll)
+      window.removeEventListener("scroll", onScroll)
       window.removeEventListener("resize", update)
     }
   }, [])
@@ -249,7 +252,7 @@ export default function Showroom({
   return (
     <section
       ref={scrollerRef}
-      className="garage-scroll relative h-svh overflow-hidden bg-black text-white max-[999px]:portrait:overflow-y-auto max-[999px]:portrait:overscroll-y-contain"
+      className="garage-scroll relative h-svh overflow-hidden bg-black text-white"
     >
       <div className="garage-hero relative z-0 h-full max-[999px]:portrait:sticky max-[999px]:portrait:top-0 max-[999px]:portrait:h-svh">
       <Canvas
@@ -275,31 +278,7 @@ export default function Showroom({
         <FitCamera />
       </Canvas>
 
-      <div className="pointer-events-none absolute inset-x-0 top-0 z-30 flex items-start justify-between gap-3 bg-gradient-to-b from-black via-black/80 to-transparent p-3 pb-4 pt-[max(0.75rem,env(safe-area-inset-top))] min-[1000px]:p-4">
-        <div>
-          <p className="text-[11px] font-medium uppercase tracking-[0.22em] text-white/60">Garage</p>
-          <p className="text-sm text-white/80">
-            {modelReady ? "Kia K5 · Wolf Gray" : "Opening the K5"}
-          </p>
-        </div>
-        <button
-          type="button"
-          onClick={onLog}
-          className="pointer-events-auto rounded-full border border-white/20 bg-black/50 px-4 py-1.5 text-xs text-white/90"
-        >
-          Log service
-        </button>
-      </div>
-
       <ModelLoader active={active} progress={progress} hold={!modelReady} />
-
-      <div
-        ref={hintRef}
-        className="pointer-events-none absolute inset-x-0 bottom-[max(1rem,env(safe-area-inset-bottom))] z-20 hidden flex-col items-center gap-1 max-[999px]:portrait:flex"
-      >
-        <p className="text-[10px] font-medium uppercase tracking-[0.22em] text-white/55">Overview</p>
-        <ChevronDown className="h-4 w-4 text-white/70" />
-      </div>
 
       <div
         className={`pointer-events-auto absolute z-10 flex flex-col gap-2 overflow-y-auto overscroll-contain pr-1 max-[999px]:portrait:hidden max-[999px]:bottom-[calc(14.75rem+env(safe-area-inset-bottom))] max-[999px]:left-3 max-[999px]:right-3 max-[999px]:top-auto max-[999px]:max-h-[min(13.25rem,32svh)] max-[999px]:w-auto max-[999px]:landscape:bottom-auto max-[999px]:landscape:right-auto max-[999px]:landscape:top-[calc(4.15rem+env(safe-area-inset-top))] max-[999px]:landscape:w-52 max-[999px]:landscape:max-h-[calc(100svh-13.75rem-env(safe-area-inset-bottom))] min-[1000px]:max-h-none min-[1000px]:w-64 min-[1000px]:gap-5 min-[1000px]:overflow-visible ${selected.place}`}
@@ -410,7 +389,32 @@ export default function Showroom({
       </div>
       </div>
 
-      <div className="relative z-20 hidden max-[999px]:portrait:block">
+      <div className="garage-chrome pointer-events-none absolute inset-x-0 top-0 z-30 flex items-start justify-between gap-3 bg-gradient-to-b from-black via-black/80 to-transparent p-3 pb-4 pt-[max(0.75rem,env(safe-area-inset-top))] min-[1000px]:p-4">
+        <div>
+          <p className="text-[11px] font-medium uppercase tracking-[0.22em] text-white/60">Garage</p>
+          <p className="text-sm text-white/80">
+            {modelReady ? "Kia K5 · Wolf Gray" : "Opening the K5"}
+          </p>
+        </div>
+        <button
+          type="button"
+          onClick={onLog}
+          className="pointer-events-auto rounded-full border border-white/20 bg-black/50 px-4 py-1.5 text-xs text-white/90"
+        >
+          Log service
+        </button>
+      </div>
+
+      <div
+        ref={hintRef}
+        className="garage-chrome pointer-events-none absolute inset-x-0 bottom-[max(1rem,env(safe-area-inset-bottom))] z-20 hidden flex-col items-center gap-1 max-[999px]:portrait:flex"
+      >
+        <p className="text-[10px] font-medium uppercase tracking-[0.22em] text-white/55">Overview</p>
+        <ChevronDown className="h-4 w-4 text-white/70" />
+      </div>
+
+      <div className="garage-spacer" aria-hidden="true" />
+      <div className="garage-sheet relative z-20 hidden max-[999px]:portrait:block">
         <div
           ref={sheetRef}
           className="rounded-t-[1.75rem] border border-b-0 border-white/10 bg-zinc-950 px-4 pb-[max(1.5rem,env(safe-area-inset-bottom))] pt-3 shadow-[0_-28px_50px_rgba(0,0,0,0.55)]"

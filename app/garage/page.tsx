@@ -372,7 +372,7 @@ export default function GaragePage() {
   }
 
   return (
-    <div className="h-svh overflow-hidden bg-black text-white">
+    <div className="garage-shell h-svh overflow-hidden bg-black text-white">
       <Showroom
         logs={scheduleLogs(vehicle.maintenances)}
         records={vehicle.maintenances}
