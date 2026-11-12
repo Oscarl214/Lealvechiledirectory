@@ -15,6 +15,17 @@ export const viewport: Viewport = {
 export const metadata: Metadata = {
   title: "K5 Garage",
   description: "Personal maintenance log for the Kia K5",
+  applicationName: "K5 Garage",
+  manifest: "/manifest.webmanifest",
+  appleWebApp: {
+    capable: true,
+    title: "K5 Garage",
+    statusBarStyle: "black-translucent",
+  },
+  icons: {
+    icon: "/icon-192.png",
+    apple: "/apple-touch-icon.png",
+  },
 }
 
 export default function RootLayout({
