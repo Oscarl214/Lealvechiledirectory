@@ -1,7 +1,17 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   async rewrites() {
-    return [{ source: "/sw.js", destination: "/api/sw" }]
+    return [
+      {
+        source: "/__/auth/:path*",
+        destination: "https://oscars-garage.firebaseapp.com/__/auth/:path*",
+      },
+      {
+        source: "/__/firebase/:path*",
+        destination: "https://oscars-garage.firebaseapp.com/__/firebase/:path*",
+      },
+      { source: "/sw.js", destination: "/api/sw" },
+    ]
   },
   async headers() {
     return [

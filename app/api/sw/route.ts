@@ -3,10 +3,14 @@ import { NextResponse } from "next/server"
 export const runtime = "nodejs"
 export const dynamic = "force-dynamic"
 
-export function GET() {
+export function GET(request: Request) {
+  const url = new URL(request.url)
+  const requested = url.searchParams.get("authDomain")
+  const fallback = process.env.NEXT_PUBLIC_FIREBASE_AUTH_DOMAIN
+  const authDomain = requested === url.host || requested === fallback ? requested : fallback
   const config = {
     apiKey: process.env.NEXT_PUBLIC_FIREBASE_API_KEY,
-    authDomain: process.env.NEXT_PUBLIC_FIREBASE_AUTH_DOMAIN,
+    authDomain,
     projectId: process.env.NEXT_PUBLIC_FIREBASE_PROJECT_ID,
     storageBucket: process.env.NEXT_PUBLIC_FIREBASE_STORAGE_BUCKET,
     messagingSenderId: process.env.NEXT_PUBLIC_FIREBASE_MESSAGING_SENDER_ID,

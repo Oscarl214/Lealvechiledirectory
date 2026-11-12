@@ -105,7 +105,10 @@ function AlertSetup() {
         return
       }
       if (!(await isSupported())) throw new Error("This phone cannot turn on alerts yet")
-      const registration = await navigator.serviceWorker.register("/sw.js", { scope: "/" })
+      const registration = await navigator.serviceWorker.register(
+        `/sw.js?authDomain=${encodeURIComponent(String(clientApp().options.authDomain || ""))}`,
+        { scope: "/" }
+      )
       await navigator.serviceWorker.ready
       const token = await getToken(getMessaging(clientApp()), {
         vapidKey: vapidPublicKey,
