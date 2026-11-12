@@ -18,6 +18,7 @@ import { Textarea } from "@/components/ui/textarea"
 import { formatMoney, highestReading, productSuggestions, raisedOdometer, recordedMiles, scheduleLogs } from "@/lib/garage-logs"
 import { GarageSignIn } from "@/components/garage/sign-in"
 import { LoanPanel } from "@/components/garage/loan-panel"
+import { AlertsPanel } from "@/components/garage/alerts"
 import { InsurancePanel, RegistrationPanel } from "@/components/garage/coverage"
 import { registrationView } from "@/lib/coverage"
 import { RecallPanel } from "@/components/garage/recalls"
@@ -97,6 +98,7 @@ export default function GaragePage() {
   const [recallsOpen, setRecallsOpen] = useState(false)
   const [insuranceOpen, setInsuranceOpen] = useState(false)
   const [registrationOpen, setRegistrationOpen] = useState(false)
+  const [alertsOpen, setAlertsOpen] = useState(false)
   const [recalls, setRecalls] = useState<GarageRecall[]>([])
   const [recallsLoaded, setRecallsLoaded] = useState(false)
   const [recallsFailed, setRecallsFailed] = useState(false)
@@ -359,6 +361,7 @@ export default function GaragePage() {
     setRecallsOpen(false)
     setInsuranceOpen(false)
     setRegistrationOpen(false)
+    setAlertsOpen(false)
     setRecalls([])
     setRecallsLoaded(false)
     setRecallsFailed(false)
@@ -394,6 +397,7 @@ export default function GaragePage() {
           setRecallsOpen(false)
           setInsuranceOpen(false)
           setRegistrationOpen(false)
+          setAlertsOpen(false)
           setPanelOpen(true)
         }}
         onLoan={() => {
@@ -401,6 +405,7 @@ export default function GaragePage() {
           setRecallsOpen(false)
           setInsuranceOpen(false)
           setRegistrationOpen(false)
+          setAlertsOpen(false)
           setLoanOpen(true)
         }}
         onRecalls={() => {
@@ -408,6 +413,7 @@ export default function GaragePage() {
           setLoanOpen(false)
           setInsuranceOpen(false)
           setRegistrationOpen(false)
+          setAlertsOpen(false)
           setRecallsOpen(true)
         }}
         onInsurance={() => {
@@ -415,6 +421,7 @@ export default function GaragePage() {
           setLoanOpen(false)
           setRecallsOpen(false)
           setRegistrationOpen(false)
+          setAlertsOpen(false)
           setInsuranceOpen(true)
         }}
         onRegistration={() => {
@@ -422,7 +429,16 @@ export default function GaragePage() {
           setLoanOpen(false)
           setRecallsOpen(false)
           setInsuranceOpen(false)
+          setAlertsOpen(false)
           setRegistrationOpen(true)
+        }}
+        onAlerts={() => {
+          setPanelOpen(false)
+          setLoanOpen(false)
+          setRecallsOpen(false)
+          setInsuranceOpen(false)
+          setRegistrationOpen(false)
+          setAlertsOpen(true)
         }}
         onRecallStatus={saveRecall}
       />
@@ -437,6 +453,8 @@ export default function GaragePage() {
           onClose={() => setRecallsOpen(false)}
         />
       )}
+
+      {alertsOpen && <AlertsPanel loan={vehicle.loan} onClose={() => setAlertsOpen(false)} />}
 
       {insuranceOpen && <InsurancePanel onClose={() => setInsuranceOpen(false)} />}
 

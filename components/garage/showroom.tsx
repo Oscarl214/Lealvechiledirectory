@@ -279,6 +279,7 @@ export default function Showroom({
   onRecallStatus,
   onInsurance,
   onRegistration,
+  onAlerts,
 }: {
   logs: MaintenanceLog[]
   records: MaintenanceLog[]
@@ -295,6 +296,7 @@ export default function Showroom({
   onRecallStatus: (campaign: string, status: RecallStatus) => void
   onInsurance: () => void
   onRegistration: () => void
+  onAlerts: () => void
 }) {
   const [zone, setZone] = useState<GarageZone>("all")
   const { active, progress, errors } = useProgress()
@@ -504,13 +506,22 @@ export default function Showroom({
             {modelReady ? "Kia K5 · Wolf Gray" : "Opening the K5"}
           </p>
         </div>
-        <button
-          type="button"
-          onClick={onLog}
-          className="pointer-events-auto rounded-full border border-white/20 bg-black/50 px-4 py-1.5 text-xs text-white/90"
-        >
-          Log service
-        </button>
+        <div className="pointer-events-auto flex shrink-0 gap-2">
+          <button
+            type="button"
+            onClick={onAlerts}
+            className="rounded-full border border-white/20 bg-black/50 px-3 py-1.5 text-xs text-white/90"
+          >
+            Alerts
+          </button>
+          <button
+            type="button"
+            onClick={onLog}
+            className="rounded-full border border-white/20 bg-black/50 px-3 py-1.5 text-xs text-white/90"
+          >
+            Log service
+          </button>
+        </div>
       </div>
 
       <div
