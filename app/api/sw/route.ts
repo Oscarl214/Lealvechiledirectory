@@ -3,12 +3,10 @@ import { NextResponse } from "next/server"
 export const runtime = "nodejs"
 export const dynamic = "force-dynamic"
 
-export function GET(request: Request) {
-  const url = new URL(request.url)
-  const secureSite = url.protocol === "https:" && url.hostname !== "localhost"
+export function GET() {
   const config = {
     apiKey: process.env.NEXT_PUBLIC_FIREBASE_API_KEY,
-    authDomain: secureSite ? url.host : process.env.NEXT_PUBLIC_FIREBASE_AUTH_DOMAIN,
+    authDomain: process.env.NEXT_PUBLIC_FIREBASE_AUTH_DOMAIN,
     projectId: process.env.NEXT_PUBLIC_FIREBASE_PROJECT_ID,
     storageBucket: process.env.NEXT_PUBLIC_FIREBASE_STORAGE_BUCKET,
     messagingSenderId: process.env.NEXT_PUBLIC_FIREBASE_MESSAGING_SENDER_ID,
