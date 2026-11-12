@@ -112,13 +112,20 @@ export default function GaragePage() {
 
   useEffect(() => {
     let cancelled = false
+    let decided = false
     fetch("/api/session").then((response) => {
-      if (cancelled) return
-      if (response.ok) setSignedIn(true)
-      else setSignedIn(false)
+      if (cancelled || decided) return
+      if (response.ok) {
+        decided = true
+        setSignedIn(true)
+      } else {
+        setSignedIn(false)
+      }
     })
     resumeGoogleSignIn().then((ok) => {
-      if (!cancelled && ok) setSignedIn(true)
+      if (cancelled) return
+      decided = true
+      setSignedIn(ok)
     })
     return () => {
       cancelled = true

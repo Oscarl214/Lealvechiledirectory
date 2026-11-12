@@ -1,9 +1,10 @@
 "use client"
 
-import { useState } from "react"
+import { useEffect, useState } from "react"
 import {
   GoogleAuthProvider,
   getRedirectResult,
+  onAuthStateChanged,
   signInWithPopup,
   signInWithRedirect,
   type User,
@@ -41,6 +42,8 @@ function signInError(error: unknown) {
   return "Google sign-in did not finish. Try again."
 }
 
+const homeSignInGuard = "k5-home-sign-in"
+
 async function openSession(user: User) {
   await user.reload()
   const idToken = await user.getIdToken(true)
@@ -56,23 +59,73 @@ async function openSession(user: User) {
   }
 }
 
+function restoredUser() {
+  const auth = clientAuth()
+  if (auth.currentUser) return Promise.resolve(auth.currentUser)
+  return new Promise<User | null>((resolve) => {
+    const timeout = window.setTimeout(() => {
+      unsubscribe()
+      resolve(auth.currentUser)
+    }, 2500)
+    const unsubscribe = onAuthStateChanged(auth, (user) => {
+      if (!user) return
+      window.clearTimeout(timeout)
+      unsubscribe()
+      resolve(user)
+    })
+  })
+}
+
+function submitHomeSession(idToken: string) {
+  const form = document.createElement("form")
+  form.method = "POST"
+  form.action = "/api/session"
+  const input = document.createElement("input")
+  input.type = "hidden"
+  input.name = "idToken"
+  input.value = idToken
+  form.append(input)
+  document.body.append(form)
+  form.submit()
+}
+
 export async function resumeGoogleSignIn() {
+  const existing = await fetch("/api/session")
+  if (existing.ok) {
+    sessionStorage.removeItem(homeSignInGuard)
+    return true
+  }
   try {
     const result = await redirectResultOnce()
-    if (result?.user) {
-      await openSession(result.user)
+    const user = result?.user ?? (homeScreenSignIn() ? await restoredUser() : null)
+    if (!user) return false
+    if (homeScreenSignIn()) {
+      if (sessionStorage.getItem(homeSignInGuard) === "1") return false
+      sessionStorage.setItem(homeSignInGuard, "1")
+      await user.reload()
+      submitHomeSession(await user.getIdToken(true))
       return true
     }
+    await openSession(user)
+    return true
   } catch (error) {
     const message = signInError(error)
     if (message) toast.error(message)
+    return false
   }
-  const response = await fetch("/api/session")
-  return response.ok
 }
 
 export function GarageSignIn({ onSignedIn }: { onSignedIn: () => void }) {
   const [pending, setPending] = useState(false)
+
+  useEffect(() => {
+    const url = new URL(window.location.href)
+    const message = url.searchParams.get("signin")
+    if (!message) return
+    toast.error(message)
+    url.searchParams.delete("signin")
+    window.history.replaceState({}, "", `${url.pathname}${url.search}`)
+  }, [])
 
   async function signIn() {
     setPending(true)
@@ -82,6 +135,7 @@ export function GarageSignIn({ onSignedIn }: { onSignedIn: () => void }) {
       provider.setCustomParameters({ prompt: "select_account" })
       const auth = clientAuth()
       if (homeScreenSignIn()) {
+        sessionStorage.removeItem(homeSignInGuard)
         await signInWithRedirect(auth, provider)
         return
       }
