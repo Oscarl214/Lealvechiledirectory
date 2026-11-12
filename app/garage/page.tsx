@@ -18,7 +18,9 @@ import { Textarea } from "@/components/ui/textarea"
 import { formatMoney, highestReading, productSuggestions, raisedOdometer, recordedMiles, scheduleLogs } from "@/lib/garage-logs"
 import { GarageSignIn } from "@/components/garage/sign-in"
 import { LoanPanel } from "@/components/garage/loan-panel"
+import { RecallPanel } from "@/components/garage/recalls"
 import { starterLoan, type CarLoan } from "@/lib/loan"
+import type { GarageRecall, RecallStatus } from "@/lib/recalls"
 import {
   k5,
   k5Schedule,
@@ -90,6 +92,11 @@ export default function GaragePage() {
   const [formKey, setFormKey] = useState(0)
   const [panelOpen, setPanelOpen] = useState(false)
   const [loanOpen, setLoanOpen] = useState(false)
+  const [recallsOpen, setRecallsOpen] = useState(false)
+  const [recalls, setRecalls] = useState<GarageRecall[]>([])
+  const [recallsLoaded, setRecallsLoaded] = useState(false)
+  const [recallsFailed, setRecallsFailed] = useState(false)
+  const [recallPending, setRecallPending] = useState<string | null>(null)
   const [signedIn, setSignedIn] = useState<boolean | null>(null)
 
   useEffect(() => {
@@ -132,6 +139,35 @@ export default function GaragePage() {
       }
     }
     loadGarage()
+    return () => {
+      cancelled = true
+    }
+  }, [signedIn])
+
+  useEffect(() => {
+    if (signedIn !== true) return
+    let cancelled = false
+    async function loadRecalls() {
+      try {
+        const response = await fetch("/api/recalls")
+        if (response.status === 401) {
+          if (!cancelled) setSignedIn(false)
+          return
+        }
+        if (!response.ok) {
+          if (!cancelled) setRecallsFailed(true)
+          return
+        }
+        const data = await response.json()
+        if (cancelled) return
+        setRecalls(Array.isArray(data.recalls) ? data.recalls : [])
+        setRecallsLoaded(true)
+        setRecallsFailed(false)
+      } catch {
+        if (!cancelled) setRecallsFailed(true)
+      }
+    }
+    loadRecalls()
     return () => {
       cancelled = true
     }
@@ -292,12 +328,34 @@ export default function GaragePage() {
     toast.success("Entry removed")
   }
 
+  async function saveRecall(campaign: string, status: RecallStatus) {
+    if (vehicle.id === "local") return
+    setRecallPending(campaign)
+    const response = await fetch("/api/recalls", {
+      method: "PATCH",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ vehicleId: vehicle.id, campaign, status }),
+    })
+    const body = await response.json().catch(() => null)
+    setRecallPending(null)
+    if (!response.ok || !Array.isArray(body?.recalls)) {
+      toast.error(body?.error || "Could not save that recall")
+      return
+    }
+    setRecalls(body.recalls)
+    setRecallsLoaded(true)
+  }
+
   async function signOut() {
     await fetch("/api/session", { method: "DELETE" })
     setVehicle(localVehicle)
     setOdometer("")
     setPanelOpen(false)
     setLoanOpen(false)
+    setRecallsOpen(false)
+    setRecalls([])
+    setRecallsLoaded(false)
+    setRecallsFailed(false)
     setSignedIn(false)
   }
 
@@ -321,15 +379,38 @@ export default function GaragePage() {
         odometer={vehicle.odometer}
         mode={mode}
         loan={vehicle.loan}
+        recalls={recalls}
+        recallsLoaded={recallsLoaded}
+        recallsFailed={recallsFailed}
+        recallPending={recallPending}
         onLog={() => {
           setLoanOpen(false)
+          setRecallsOpen(false)
           setPanelOpen(true)
         }}
         onLoan={() => {
           setPanelOpen(false)
+          setRecallsOpen(false)
           setLoanOpen(true)
         }}
+        onRecalls={() => {
+          setPanelOpen(false)
+          setLoanOpen(false)
+          setRecallsOpen(true)
+        }}
+        onRecallStatus={saveRecall}
       />
+
+      {recallsOpen && (
+        <RecallPanel
+          recalls={recalls}
+          loaded={recallsLoaded}
+          failed={recallsFailed}
+          pending={recallPending}
+          onStatus={saveRecall}
+          onClose={() => setRecallsOpen(false)}
+        />
+      )}
 
       {loanOpen && (
         <LoanPanel

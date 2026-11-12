@@ -16,9 +16,11 @@ import {
   type ServiceEvaluation,
 } from "@/lib/k5"
 import { LoanCard, LoanSheet } from "@/components/garage/loan-panel"
+import { RecallCard, RecallSheet } from "@/components/garage/recalls"
 import { LifeFill, Reveal, useReveal } from "@/components/garage/motion"
 import { batteryStatus, formatMoney, lastRegistration, recordedMiles, tireStatus, totalSpend } from "@/lib/garage-logs"
 import type { CarLoan } from "@/lib/loan"
+import type { GarageRecall, RecallStatus } from "@/lib/recalls"
 
 type GarageZone = "all" | "engine" | "wheels" | "brakes" | "cabin"
 
@@ -157,16 +159,28 @@ export default function Showroom({
   odometer,
   mode,
   loan,
+  recalls,
+  recallsLoaded,
+  recallsFailed,
+  recallPending,
   onLog,
   onLoan,
+  onRecalls,
+  onRecallStatus,
 }: {
   logs: MaintenanceLog[]
   records: MaintenanceLog[]
   odometer: number | null
   mode: ScheduleMode
   loan: CarLoan
+  recalls: GarageRecall[]
+  recallsLoaded: boolean
+  recallsFailed: boolean
+  recallPending: string | null
   onLog: () => void
   onLoan: () => void
+  onRecalls: () => void
+  onRecallStatus: (campaign: string, status: RecallStatus) => void
 }) {
   const [zone, setZone] = useState<GarageZone>("all")
   const { active, progress, errors } = useProgress()
@@ -360,6 +374,9 @@ export default function Showroom({
         <WearCard part={tires} delay={140} ready={modelReady} />
         <WearCard part={battery} delay={210} ready={modelReady} />
         <Reveal ready={modelReady} delay={280} className="shrink-0">
+          <RecallCard recalls={recalls} loaded={recallsLoaded} failed={recallsFailed} onOpen={onRecalls} />
+        </Reveal>
+        <Reveal ready={modelReady} delay={350} className="shrink-0">
         <div className="w-[8.75rem] shrink-0 rounded-lg border border-white/15 bg-black/80 p-2.5 landscape:w-32 landscape:p-2 max-[999px]:portrait:w-auto max-[999px]:portrait:min-w-0 max-[999px]:portrait:p-2 min-[1000px]:w-40 min-[1000px]:bg-black/70 min-[1000px]:p-3 min-[1000px]:backdrop-blur-sm">
           <p className="text-[11px] font-medium uppercase tracking-[0.18em] text-white/50">Registration</p>
           <p className="mt-1 text-sm leading-snug">{registrationDate ?? "Not logged"}</p>
@@ -493,6 +510,13 @@ export default function Showroom({
             </Reveal>
           </div>
           <LoanSheet loan={loan} onOpen={onLoan} ready={modelReady} immediate />
+          <RecallSheet
+            recalls={recalls}
+            loaded={recallsLoaded}
+            failed={recallsFailed}
+            pending={recallPending}
+            onStatus={onRecallStatus}
+          />
         </div>
       </div>
     </section>
